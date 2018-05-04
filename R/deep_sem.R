@@ -99,7 +99,6 @@ for (i in 1 : layers) {
   for (j in 1 : k[i]) {
     stima <- try(factanal(data[s == j, ], r[i+1], rotation="none",
                  scores="Bartlett"), silent=TRUE)
-
     if (is.character(stima)) {
       psi[j,, ] <- 0.1 * diag(r[i])
       psi.inv[j,, ] <- diag(r[i])
@@ -108,10 +107,10 @@ for (i in 1 : layers) {
       if (!is.character(zt)) {
         zt <- matrix(zt, ncol = r[i+1])
       }
-    }
-    if (is.character(zt)) {
-      zt <- matrix(data[s == j, sample(1 : r[i+1])], ncol = r[i+1])
-      z <- rbind(z,zt)
+      if (is.character(zt)) {
+        zt <- matrix(data[s == j, sample(1 : r[i+1])], ncol = r[i+1])
+        z <- rbind(z,zt)
+      }
     }
     if (!is.character(stima)) {
       psi[j,, ] <- diag(stima$uniq)
