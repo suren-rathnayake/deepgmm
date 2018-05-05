@@ -1,9 +1,3 @@
-## needed libraries
-
-library(MASS)
-library(corpcor)
-library(mvtnorm)
-
 ###############################################################################
 # The algorithm implements Deep Gaussian mixture models with a numer of layers
 # h=1,2 and 3 layers and values for k and r.
@@ -29,20 +23,32 @@ library(mvtnorm)
 #        'hclass' hierarchical clustering or 'random'
 ###############################################################################
 
-deep_sem <- function(y, layers, k = rep(2, layers), r = rep(1, layers),
- it = 50, eps = 0.001, seed = 7, init = 'kmeans')
-{
+deep_sem <- function(y, layers, k, r = rep(1, layers),
+                     it = 50, eps = 0.001, seed = 7, init = 'kmeans') {
 
-ptm <- proc.time()
-a <- paste("Fit the model: seed=", seed, " k = (",paste(k, collapse=" "),
-     ") r = (",paste(r, collapse = " "), ")\n", sep = "")
-cat(a)
+  if (any(tolower(init) == c('kmeans', 'k-means', 'k')))
+    init <- 'kmeans'
 
-set.seed(seed)
-y <- scale(y)
-numobs <- nrow(y)
-p <- ncol(y)
-r <- c(p, r)
+  if (any(tolower(init) == c('random', 'r')))
+    init <- 'random'
+
+  if (any(tolower(init) == c('hclass', 'h')))
+    init <- 'hclass'
+
+  # check arguments
+  valid_args(Y = y, layers = layers, k = k, r = r, it = it, eps = eps, 
+						 init = init)
+
+  ptm <- proc.time()
+  a <- paste("Fit the model: seed=", seed, " k = (",paste(k, collapse=" "),
+  	   ") r = (",paste(r, collapse = " "), ")\n", sep = "")
+  cat(a)
+  set.seed(seed)
+  y <- scale(y)
+
+  numobs <- nrow(y)
+  p <- ncol(y)
+  r <- c(p, r)
 
 #init
 w.list <- NULL
@@ -159,8 +165,10 @@ clc <- out$clc
 
 output <- list(H = H.list, w = w.list, mu = mu.list, psi = psi.list, lik = lik,
                bic = bic, aic = aic, clc = clc, s = s, icl.bic = icl.bic,
-               h = h, k = k, r = r, numobs = numobs,
-               elapsed.time = proc.time() - ptm, seed = seed)
+               h = h, k = k, r = r, numobs = numobs)
+               #elapsed.time = proc.time() - ptm, seed = seed)
+
+class(output) <- "dgmm"
 
 message("Estimation Details:")
 cat(paste("Log-Likelihood", round(lik[length(lik)], 2), "BIC:",
