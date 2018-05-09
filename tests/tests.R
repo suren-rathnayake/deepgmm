@@ -1,4 +1,4 @@
-rm(list=ls())
+#rm(list=ls())
 require(testthat)
 y <- mtcars 
 layers <- 2 
@@ -9,7 +9,7 @@ eps <- 0.001
 seed <- 1 
 init <- "kmeans"
 
-model <- deep_sem(y = y, layers = layers, k = k, r = r,
+model <- deepgmm(y = y, layers = layers, k = k, r = r,
                   it = it, eps = eps, seed = seed, init = init)
 
 expect_that(model, is_a("dgmm"))

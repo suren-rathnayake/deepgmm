@@ -1,4 +1,4 @@
-valid_args <- functions (Y = y, layers = layers, k = k, r = r, it = it, 
+valid_args <- function (Y = y, layers = layers, k = k, r = r, it = it, 
                          eps = eps, init = init) {
 
 if (any(is.na(Y))) {
@@ -47,7 +47,7 @@ if (!(length(r) == layers)) {
   stop("Length of k must be equal to layers.")
 }
 
-if any((r[1 : (layers - 1)] - r[2 : layers]) <= 0) {
+if (any((r[1 : (layers - 1)] - r[2 : layers]) <= 0)) {
 
   stop("Elements of r must be in decreasing order.")
 }

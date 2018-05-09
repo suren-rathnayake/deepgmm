@@ -23,7 +23,7 @@
 #        'hclass' hierarchical clustering or 'random'
 ###############################################################################
 
-deep_sem <- function(y, layers, k, r = rep(1, layers),
+deepgmm <- function(y, layers, k, r = rep(1, layers),
                      it = 50, eps = 0.001, seed = 7, init = 'kmeans') {
 
   if (any(tolower(init) == c('kmeans', 'k-means', 'k')))
@@ -35,8 +35,11 @@ deep_sem <- function(y, layers, k, r = rep(1, layers),
   if (any(tolower(init) == c('hclass', 'h')))
     init <- 'hclass'
 
+  if (class(y) == "data.frame") 
+  	y <- as.matrix(y)
+  	 
   # check arguments
-  valid_args(Y = y, layers = layers, k = k, r = r, it = it, eps = eps, 
+  tmp <- valid_args(Y = y, layers = layers, k = k, r = r, it = it, eps = eps, 
 						 init = init)
 
   ptm <- proc.time()
