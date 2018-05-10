@@ -1,9 +1,9 @@
 Package: deepgmm
 Type: Package
-Title: What the package does (short line)
+Title: Deep Gaussian Mixture Models
 Version: 1.0
 Date: 2018-05-04
-Author: Who wrote it
+Author:  Cinzia Viroli, Geoffrey J. McLachlan
 Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)
 Depends: mvtnorm, corpcor

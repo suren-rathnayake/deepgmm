@@ -1,1 +1,3 @@
-exportPattern("^[[:alpha:]]+")
+export(deepgmm)
+importFrom("stats", "factanal", "filter", "kmeans", "princomp",
+             "runif")

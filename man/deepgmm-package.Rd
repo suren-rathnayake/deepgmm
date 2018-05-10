@@ -32,7 +32,10 @@ The DESCRIPTION file:
 Maintainer: \packageMaintainer{deepgmm}
 }
 \references{
-Viroli, C. and McLachlan, G.J. (2018). Deep Gaussian mixture models. Statistics and Computing. (Advance Access, published 1 December, 2017). To appear. Preprint arXiv:1711.06929.
+Viroli, C. and McLachlan, G.J. (2018). 
+Deep Gaussian mixture models. Statistics and Computing. 
+(Advance Access, published 1 December, 2017). To appear. 
+Preprint arXiv:1711.06929.
 }
 \keyword{package}
 \keyword{clustering}
@@ -42,5 +45,4 @@ Viroli, C. and McLachlan, G.J. (2018). Deep Gaussian mixture models. Statistics 
 ~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
 }
 \examples{
-~~ simple examples of the most important functions ~~
 }

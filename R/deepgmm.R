@@ -1,30 +1,5 @@
-###############################################################################
-# The algorithm implements Deep Gaussian mixture models with a numer of layers
-# h=1,2 and 3 layers and values for k and r.
-# The case h=1 corresponds to mixtures of factor analyzers.
-# See Viroli, C. & McLachlan, G.J. Stat Comput (2017).
-# https://doi.org/10.1007/s11222-017-9793-z
-#
-# Input:
-# y -  data matrix of dimension n x p (num of observations x num of variables)
-# layers - the admitted values are 1, 2 or 3
-#          (for the package: please insert a check that k cannot be any other
-#          values and stop if for instance k>3)
-# k - number of groups in the different layers.
-#     a vector of integers of length layers
-# r - dimensions at the different layers. By contraint it is decreasing.
-#     For instance with h=3 layers and p = 10,
-#     it can be r = c(9, 5, 1) but not r=c(9, 1, 5) or r=c(10, 5, 1).
-#     The contraint is p > r1 > r2 ... >=1
-# it - number of iterations of the EM algorithm
-# eps - tolerance of the relative increment of the log-likelihod.
-#       When < eps the algorithm stops.
-# init - initialitation of the partition by 'kmeans' k-means (default);
-#        'hclass' hierarchical clustering or 'random'
-###############################################################################
-
 deepgmm <- function(y, layers, k, r = rep(1, layers),
-                     it = 50, eps = 0.001, init = 'kmeans') {
+                    it = 50, eps = 0.001, init = 'kmeans') {
 
   if (any(tolower(init) == c('kmeans', 'k-means', 'k')))
     init <- 'kmeans'
@@ -168,11 +143,16 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
   icl.bic <- out$icl.bic
   clc <- out$clc
 
-  output <- list(H = H.list, w = w.list, mu = mu.list, psi = psi.list, lik = lik,
-                 bic = bic, aic = aic, clc = clc, s = s, icl.bic = icl.bic,
-                 h = h, k = k, r = r, numobs = numobs)
+  #output <- list(H = H.list, w = w.list, mu = mu.list, psi = psi.list, lik = lik,
+  #               bic = bic, aic = aic, clc = clc, s = s, icl.bic = icl.bic,
+  #               h = h, k = k, r = r, numobs = numobs, layers = layers)
                  #elapsed.time = proc.time() - ptm, seed = seed)
 
+  output <- list (H = H, w = w, mu = mu, psi = psi, lik = lik,
+                 bic = bic, aic = aic, clc = clc, s = s, icl.bic = icl.bic,
+                 h = h, k = k, r = r, numobs = numobs, layers = layers)
+
+  output$call <- match.call()
   class(output) <- "dgmm"
 
   message("Estimation Details:")
@@ -181,4 +161,3 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
   cat("\n")
   invisible(output)
 }
-## s is the final classification
