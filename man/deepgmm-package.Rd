@@ -3,9 +3,19 @@
 \alias{deepgmm}
 \docType{package}
 \title{
+Deep Gaussian Mixture Models
 \packageTitle{deepgmm}
 }
 \description{
+This package provides functions for fitting deep Gaussian 
+mixtures of models.
+
+The deep mixture model consists of a set of nested mixtures of 
+linear models, which globally provide a nonlinear model able 
+to describe the data in a very flexible way. 
+In order to avoid overparameterized solutions, dimension reduction 
+by factor models can be applied at each layer of the architecture, 
+thus resulting in deep mixtures of factor analyzers.
 \packageDescription{deepgmm}
 }
 \details{
@@ -22,13 +32,13 @@ The DESCRIPTION file:
 Maintainer: \packageMaintainer{deepgmm}
 }
 \references{
-~~ Literature or other references for background information ~~
+Viroli, C. and McLachlan, G.J. (2018). Deep Gaussian mixture models. Statistics and Computing. (Advance Access, published 1 December, 2017). To appear. Preprint arXiv:1711.06929.
 }
-~~ Optionally other standard keywords, one per line, from file KEYWORDS in ~~
-~~ the R documentation directory ~~
-\keyword{ package }
+\keyword{package}
+\keyword{clustering}
+\keyword{multivariate}
+\keyword{model}
 \seealso{
-~~ Optional links to other man pages, e.g. ~~
 ~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
 }
 \examples{
