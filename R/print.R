@@ -6,7 +6,7 @@ print.dgmm <- function(x, ...) {
   cat("\n Number of Layers: \n")
   print(x$layers)
 
-  for (lay in 1 : layers) {
+  for (lay in 1 : x$layers) {
     cat(" ---- layer", lay, "-----", "\n")
 
     cat("\nCoefficients: \n")

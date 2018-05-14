@@ -2,6 +2,8 @@
 ## fitting the model with h=1 layer
 deep.sem.alg.1 <- function(y, numobs, p, r, k, H.list, psi.list,
                    psi.list.inv, mu.list, w.list, z.list, it, eps) {
+
+  
 k2 <- 1
 k1 <- k
 r <- r[1]
@@ -276,7 +278,7 @@ icl.bic <- -2 * lik + 2 * EN + h * log(numobs)
 
 out <- list(H = H, w = w1, mu = muf, psi = psi, likelihood = likelihood,
             bic = bic, aic = aic, clc = clc, s = s1, icl.bic = icl.bic,
-            h = h, ps.y = ps.y)
+            h = h) ######, ps.y = ps.y)
 
 return(out)
 }

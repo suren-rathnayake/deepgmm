@@ -1,5 +1,6 @@
 #rm(list=ls())
 require(testthat)
+library(deepgmm)
 y <- mtcars 
 layers <- 2 
 k <- c(3, 2) 
@@ -9,14 +10,16 @@ eps <- 0.001
 seed <- 1 
 init <- "kmeans"
 
+set.seed(seed)
+y <- scale(y)
 model <- deepgmm(y = y, layers = layers, k = k, r = r,
-                  it = it, eps = eps, seed = seed, init = init)
+                  it = it, eps = eps, init = init)
 
 expect_that(model, is_a("dgmm"))
 #expect_that(model, is_a("emmix"))
 expect_named(model, c("H", "w", "mu", "psi", "lik", "bic",
 	                    "aic", "clc", "s", "icl.bic", "h", 
-                      "k", "r", "numobs"))
+                      "k", "r", "numobs", "layers",  "call"))
 
 # expect_that(g, equals(model$g))
 # expect_that(q, equals(model$q))

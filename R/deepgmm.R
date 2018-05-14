@@ -55,7 +55,8 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
 
     if (init == 'hclass') {
       if (k[i] > 1) {
-        s <- hclass(hc(modelName = "VVV", data = y), k[i])
+        #s <- hclass(hc(modelName = "VVV", data = y), k[i])
+        s <- cutree(hclust(dist(y), "ward.D2"), k[i])
       } else {
         s <- rep(1, numobs)
       }

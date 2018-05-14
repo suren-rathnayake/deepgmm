@@ -1,4 +1,4 @@
-valid_args <- function (Y = y, layers = layers, k = k, r = r, it = it, 
+valid_args <- function(Y, layers = layers, k = k, r = r, it = it, 
                          eps = eps, init = init) {
 
 if (any(is.na(Y))) {

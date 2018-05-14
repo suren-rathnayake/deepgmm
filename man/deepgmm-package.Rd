@@ -1,6 +1,5 @@
 \name{deepgmm-package}
 \alias{deepgmm-package}
-\alias{deepgmm}
 \docType{package}
 \title{
 Deep Gaussian Mixture Models
@@ -41,8 +40,8 @@ Preprint arXiv:1711.06929.
 \keyword{clustering}
 \keyword{multivariate}
 \keyword{model}
-\seealso{
-~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
-}
+% \seealso{
+% ~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
+% }
 \examples{
 }

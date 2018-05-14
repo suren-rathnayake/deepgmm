@@ -27,8 +27,9 @@ model.selection=function(y,k,layers,seeds=3,it=50,eps=0.001,criterion="BIC")
     
     for (i in 1:seeds) for (rr in 1:pp) {
       
-      
-      out=try(deep.sem(y,1,k,rr,it=50,eps=0.001,seed=i))
+      set.seed(i)
+      out <- try(deepgmm(y, 1, k, rr, it = 50, eps = 0.001))
+
       if (!is.character(out)) {if (criterion=="BIC") if (out$bic<bic.best) {out.best=out
       bic.best=out$bic
       }
@@ -62,8 +63,8 @@ model.selection=function(y,k,layers,seeds=3,it=50,eps=0.001,criterion="BIC")
 
 for (i in 1:seeds) for (kk in 1:nrow(k))  for (rr in 1:nrow(r)) {
   
-  
-  out=try(deep.sem(y,2,k[kk,],r[rr,],it=50,eps=0.001,seed=i))
+  set.seed(i)
+  out=try(deepgmm(y,2,k[kk,],r[rr,],it=50,eps=0.001))
   if (!is.character(out)) {if (criterion=="BIC") if (out$bic<bic.best) {out.best=out
                                                         bic.best=out$bic
                                                           }
@@ -98,8 +99,8 @@ for (i in 1:seeds) for (kk in 1:nrow(k))  for (rr in 1:nrow(r)) {
    
    for (i in 1:seeds) for (kk in 1:nrow(k))  for (rr in 1:nrow(r)) {
      
-     
-     out=try(deep.sem(y,3,k[kk,],r[rr,],it=50,eps=0.001,seed=i))
+     set.seed(i)
+     out=try(deepgmm(y,3,k[kk,],r[rr,],it=50,eps=0.001))
      if (!is.character(out)) {if (criterion=="BIC") if (out$bic<bic.best) {out.best=out
      bic.best=out$bic
      }
