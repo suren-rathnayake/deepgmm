@@ -8,7 +8,7 @@ Viroli, C. and McLachlan, G.J. (2018). Deep Gaussian mixture models. Statistics 
 
 # Installation
 
-Can be installed directly from using the devtools package.
+Can be installed directly using the devtools package.
 
 ```
 library(devtools)
