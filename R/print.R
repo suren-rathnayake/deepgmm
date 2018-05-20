@@ -27,12 +27,12 @@ summary.dgmm <- function(object, ...) {
 
   cat("Call:\n")
   print(object$call)
-  summ <- cbind(log_like = object$logL,
+  summ <- cbind(log_like = object$lik[length(object$lik)],
                 BIC = object$bic,
                 AIC = object$aic,
-                ICL.BIC = object$cls,
-                CIC = object$icl.bic
+                ICL.BIC = object$icl.bic,
+                CLC = object$clc
               )
-  cat("\n")
+  #cat("\n")
   print(summ)
 }

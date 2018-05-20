@@ -1,6 +1,6 @@
 export(deepgmm)
 S3method(print, dgmm)
-S3method(print, dgmm)
+S3method(summary, dgmm)
 importFrom("stats", "factanal", "filter", "kmeans", "princomp",
              "runif", "hclust", "cutree", "dist")
 importFrom("mvtnorm", "dmvnorm", "rmvnorm")
