@@ -73,15 +73,37 @@ An object of class \code{"dgmm"} containing fitted values.
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+\dontrun{
+library(gclus)
+data(wine)
 
-## The function is currently defined as
+# Scale variables
+y <- scale(wine[, -1])
+cls <- wine[, 1]
+
+## fit a DGMM with two layers
+layers <- 2
+
+## number of groups in the different layers
+k <- c(3, 2)  
+# 3 is the number of clusters at the observed level, 
+# 2 is the number of clusters at the latent level
+
+## dimensions at the different layers
+r <- c(5, 1)
+
+set.seed(1)
+fit <- deepgmm(y, layers, k, r, it=250, eps=0.001)
+
+fit
+
+summary(fit)
+}
 
 }
 
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }% use one of  RShowDoc("KEYWORDS")
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{cluster}% use one of  RShowDoc("KEYWORDS")
+\keyword{models}% __ONLY ONE__ keyword per line
+\keyword{multivariate}

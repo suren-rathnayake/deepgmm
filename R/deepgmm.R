@@ -86,25 +86,32 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
                    scores = "Bartlett"), silent = TRUE)
 
       if (is.character(stima)) {
+
         psi[j,, ] <- 0.1 * diag(r[i])
         psi.inv[j,, ] <- diag(r[i])
         H[j,,] <- matrix(runif(r[i] * r[i+1]), r[i], r[i+1])
         zt <- try(princomp(data[s == j, ])$scores[, 1 : r[i+1]], silent = TRUE)
+
         if (!is.character(zt)) {
+
           zt <- matrix(zt, ncol = r[i+1])
         }
+
         if (is.character(zt)) {
+
           zt <- matrix(data[s == j, sample(1 : r[i+1])], ncol = r[i+1])
           z <- rbind(z,zt)
         }
       }
 
       if (!is.character(stima)) {
+
         psi[j,, ] <- diag(stima$uniq)
         H[j,, ] <- stima$load
         psi.inv[j,,] <- diag(1/stima$uniq)
         z <- rbind(z, stima$scores)
       }
+      
       mu[, j] <- colMeans(data[s == j,, drop = FALSE])
     }
 

@@ -45,10 +45,10 @@ model.selection <- function(y, k, layers, seeds = 3, it = 50, eps = 0.001,
     }
     
     if (criterion == "BIC") 
-      index <- which(bic == min(bic), arr.ind = TRUE)[1, ]
+      index <- which(bic == min(bic, na.rm = TRUE), arr.ind = TRUE)[1, ]
 
     if (criterion == "AIC") 
-      index <- which(aic == min(aic), arr.ind = TRUE)[1, ]
+      index <- which(aic == min(aic, na.rm = TRUE), arr.ind = TRUE)[1, ]
 
     message("Best Fit: \n")
     cat(paste("Seed=", index[1], " r=", index[2],
@@ -90,10 +90,10 @@ model.selection <- function(y, k, layers, seeds = 3, it = 50, eps = 0.001,
         }
   
     if (criterion == "BIC") 
-      index <- which(bic == min(bic), arr.ind = TRUE)[1, ]
+      index <- which(bic == min(bic, na.rm = TRUE), arr.ind = TRUE)[1, ]
 
     if (criterion == "AIC") 
-      index <- which(aic == min(aic), arr.ind = TRUE)[1, ]
+      index <- which(aic == min(aic, na.rm = TRUE), arr.ind = TRUE)[1, ]
 
     message("Best Fit: \n")
     cat(paste("Seed=", index[1], " k=", paste(k[index[2],], collapse=" "),
@@ -140,10 +140,10 @@ model.selection <- function(y, k, layers, seeds = 3, it = 50, eps = 0.001,
         }
    
         if (criterion == "BIC") 
-          index <- which(bic == min(bic), arr.ind = TRUE)[1, ]
+          index <- which(bic == min(bic, na.rm = TRUE), arr.ind = TRUE)[1, ]
 
         if (criterion == "AIC") 
-          index <- which(aic == min(aic), arr.ind = TRUE)[1, ]
+          index <- which(aic == min(aic, na.rm = TRUE), arr.ind = TRUE)[1, ]
 
         message("Best Fit: \n")
         cat(paste("Seed=",index[1], " k=", paste(k[index[2], ], collapse=" "),

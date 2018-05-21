@@ -22,8 +22,6 @@ thus resulting in deep mixtures of factor analyzers.
 The DESCRIPTION file:
 \packageDESCRIPTION{deepgmm}
 \packageIndices{deepgmm}
-~~ An overview of how to use the package, including the most important ~~
-~~ functions ~~
 }
 \author{
 \packageAuthor{deepgmm}
