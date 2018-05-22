@@ -48,7 +48,7 @@ if (!(length(r) == layers)) {
 }
 
 if (length(r) > 1) {
-if (any((r[1 : (layers - 1)] - r[2 : layers]) <= 0)) {
+if (any((r[1 : (layers - 1)] - r[2 : layers]) < 0)) {
 
   stop("Elements of r must be in decreasing order.")
 }}
