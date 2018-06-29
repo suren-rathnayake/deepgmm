@@ -1,7 +1,7 @@
 ## Internal function - it performs the Stochastic EM algorithm for 
 ## fitting the model with h=3 layers
 
-deep.sem.alg.3 <- function (y, numobs, p, r, k, H.list, psi.list, psi.list.inv, 
+deep.sem.alg.3 <- function(y, numobs, p, r, k, H.list, psi.list, psi.list.inv, 
                             mu.list, w.list, z.list, it, eps) {     
   
 likelihood <- NULL
@@ -41,8 +41,8 @@ while ((hh < it) & (ratio > eps )) {
           t(H.list[[l+2]][p3,,]) + psi.list[[l+2]][p3,,]) %*% 
           t(H.list[[l+1]][p2,,]) + psi.list[[l+1]][p2,,])
 
-        A <- sigma.tilde.inv + t(H.list[[l]][p1,, ]) %*% (psi.list.inv[[l]][p1,, ]) %*%
-             (H.list[[l]][p1,, ])
+        A <- sigma.tilde.inv + t(H.list[[l]][p1,, ]) %*% 
+              (psi.list.inv[[l]][p1,, ]) %*% (H.list[[l]][p1,, ])
 
         mu.tilde  <- matrix(mu.list[[l + 1]][, p2] + H.list[[l + 1]][p2,, ] %*%
                      (mu.list[[l + 2]][, p3]), r[l + 1], numobs)
@@ -55,10 +55,13 @@ while ((hh < it) & (ratio > eps )) {
         if (!isSymmetric(chsi)) { 
           chsi <- makeSymm(chsi)
         }
-        roy <- chsi%*%b
-        roy.quadro <- array(apply(roy, 2, function(x) x %*% t(x)), c(r[l + 1], r[l + 1], numobs))
-        zz2[,,, p1, p2, p3]  <- aperm(array(chsi, c(r[l + 1], r[l + 1], numobs)) + 
-                                roy.quadro, c(3, 1, 2))
+
+        roy <- chsi %*% b
+        roy.quadro <- array(apply(roy, 2, function(x) x %*% t(x)), 
+                            c(r[l + 1], r[l + 1], numobs))
+        zz2[,,, p1, p2, p3]  <- aperm(array(chsi, 
+                                     c(r[l + 1], r[l + 1], numobs)) + 
+                                     roy.quadro, c(3, 1, 2))
         z2.one[,, p1, p2, p3]  <- rmvnorm(numobs, rep(0, r[l + 1]), chsi) + t(roy)
         z2[,, p1, p2, p3] <- t(roy)
       }

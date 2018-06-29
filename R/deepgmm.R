@@ -83,7 +83,17 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
 
     for (j in 1 : k[i]) {
       stima <- try(factanal(data[s == j, ], r[i+1], rotation = "none",
-                   scores = "Bartlett"), silent = TRUE)
+                  scores = "Bartlett"), silent = TRUE)
+
+      # # to test without scaling 
+      # if (i == 1) {
+      #   dat <- scale(data)
+      #   stima <- try(factanal(dat[s == j, ], r[i+1], rotation = "none",
+      #              scores = "Bartlett"), silent = TRUE)
+      # } else {
+      #   stima <- try(factanal(data[s == j, ], r[i+1], rotation = "none",
+      #              scores = "Bartlett"), silent = TRUE)
+      # }
 
       if (is.character(stima)) {
 
