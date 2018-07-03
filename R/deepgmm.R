@@ -1,12 +1,6 @@
 deepgmm <- function(y, layers, k, r = rep(1, layers),
                   it = 50, eps = 0.001, init = 'kmeans', method = "factanal") {
 
-	chol.inv <- function(x, ...) {
-	  C <- chol(x)
-	  inv_x <- chol2inv(C)
-	  return(inv_x)
-	}
-
   if (any(tolower(init) == c('kmeans', 'k-means', 'k')))
     init <- 'kmeans'
 
@@ -131,12 +125,10 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
 			for (j in 1 : k[i]) {
 
 				q <- r[i + 1]
-
 			  indices <- which(s == j)
 			  mu[, j] <- colMeans(data[indices,, drop = FALSE]) 
 			  Si <- cov(data[indices, ])
 			  psi[j,, ] <-  diag(diag(Si))
-
 			  Di.sqrt <- diag(sqrt(diag(diag(diag(Si)))))
 			  inv.Di.sqrt <- diag(1 / diag(Di.sqrt))
 			  
@@ -144,7 +136,6 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
 			  # eig.list <- try(eigen(inv.Di.sqrt %*% Si %*% inv.Di.sqrt), TRUE)
 			  # if (class(eig.list) == "try-error")
 			  #   break
-			  
 			  eigH <- eig.list$vectors
 			  sort.lambda <- sort(eig.list$values, decreasing = TRUE,
 			                                       index.return = TRUE)

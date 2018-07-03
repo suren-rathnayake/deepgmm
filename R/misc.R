@@ -1,3 +1,10 @@
+	chol.inv <- function(x, ...) {
+	  C <- chol(x)
+	  inv_x <- chol2inv(C)
+	  return(inv_x)
+	}
+
+
 # ## compute the misclassification rate between the estimated classification and the truth. 
 
 # misc <- function(classification, truth) 

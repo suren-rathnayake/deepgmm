@@ -7,5 +7,5 @@ Author:  Cinzia Viroli, Geoffrey J. McLachlan
 Maintainer: Suren Rathnayake <surenr@gmail.com>
 Description: This package provides functions for fitting deep Gaussian mixtures of models.
 Depends: mvtnorm, corpcor
-Suggests: GGally, ggplot2, testthat
+Suggests: testthat
 License: GPL (>= 3)
