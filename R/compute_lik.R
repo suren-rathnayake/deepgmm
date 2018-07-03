@@ -61,6 +61,13 @@ compute.lik <- function(y, numobs, k, mu.list, H.list, psi.list, w.list) {
   ps.y <- ifelse(is.na(ps.y), 1/k, ps.y)
   py <- exp(-cc) * py
 
+
+# pys_max <- apply(pys, 1, max)
+# pys <- sweep(pys, 1, pys_max, '-')
+# pys <- exp(pys)
+# ps.y <- sweep(pys, 1, rowSums(pys), '/')
+# py <- exp(pys_max) * rowSums(pys)
+
   s <- matrix(0, nrow = numobs, ncol = layers)
   ps.y.list <- NULL
   for (l in 1 : layers)  {
