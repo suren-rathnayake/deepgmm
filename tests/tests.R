@@ -8,7 +8,7 @@ r <- c(3, 1)
 it <- 50 
 eps <- 0.001 
 seed <- 1 
-init <- "kmeans"
+init <- "random"
 
 set.seed(seed)
 y <- scale(y)

@@ -1,9 +1,8 @@
-	chol.inv <- function(x, ...) {
-	  C <- chol(x)
-	  inv_x <- chol2inv(C)
-	  return(inv_x)
-	}
-
+chol.inv <- function(x, ...) {
+  C <- chol(x)
+  inv_x <- chol2inv(C)
+  return(inv_x)
+}
 
 # ## compute the misclassification rate between the estimated classification and the truth. 
 
@@ -71,7 +70,7 @@
 # }
 
 
-# mapClass=function (a, b) 
+# mapClass <- function (a, b) 
 # {
 #     l <- length(a)
 #     x <- y <- rep(NA, l)
