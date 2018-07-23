@@ -164,7 +164,7 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
 	    		z[indices, ] <-  sweep(data[indices,, drop = FALSE], 2, 
 	    			                   mu[, j, drop = FALSE], '-') %*%
 			                         t(chol.inv(t(H[j,, ]) %*% H[j,, ] + 
-			                         	diag(lambda[1 : q])) %*% t(H[j,, ]))                    
+			                         	diag(mean(lambda[1 : q]), q) %*% t(H[j,, ]))                    
 			  }
 			}
 		}
