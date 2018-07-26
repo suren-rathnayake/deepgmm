@@ -1,29 +1,17 @@
 deepgmm <- function(y, layers, k, r = rep(1, layers),
-                  it = 50, eps = 0.001, init = 'kmeans', method = "factanal") {
+            it = 50, eps = 0.001, init = 'kmeans', method = "factanal") {
 
   if (any(tolower(init) == c('kmeans', 'k-means', 'k')))
     init <- 'kmeans'
-
   if (any(tolower(init) == c('random', 'r')))
     init <- 'random'
-
   if (any(tolower(init) == c('hclass', 'h')))
     init <- 'hclass'
-
-  if (class(y) == "data.frame") 
+  if (class(y) == "data.frame")
   	y <- as.matrix(y)
-
   # check arguments
-  tmp <- valid_args(Y = y, layers = layers, k = k, r = r, it = it, eps = eps, 
-						 init = init)
-
-  # ptm <- proc.time()
-  # a <- paste("Fit the model: seed=", seed, " k = (",paste(k, collapse=" "),
-  # 	   ") r = (",paste(r, collapse = " "), ")\n", sep = "")
-  # cat(a)
-  # set.seed(seed)
-  # y <- scale(y)
-
+  tmp <- valid_args(Y = y, layers = layers, k = k, r = r, it = it,
+                    eps = eps, init = init)
   numobs <- nrow(y)
   p <- ncol(y)
   r <- c(p, r) #### *
@@ -47,7 +35,7 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
     if (init == 'kmeans') {
       if (k[i] > 1) {
         s <- kmeans(data, k[i], iter.max = 100, nstart = 30,
-              algorithm = "Hartigan-Wong")$cluster
+               algorithm = "Hartigan-Wong")$cluster
       } else {
         s <- rep(1, numobs)
       }
@@ -55,7 +43,6 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
 
     if (init == 'hclass') {
       if (k[i] > 1) {
-        #s <- hclass(hc(modelName = "VVV", data = y), k[i])
         s <- cutree(hclust(dist(y), "ward.D2"), k[i])
       } else {
         s <- rep(1, numobs)
@@ -77,14 +64,15 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
     }
 
     psi <- psi.inv <- array(0, c(k[i], r[i], r[i]))
-    H <- array(0, c(k[i], r[i], r[i+1]))
+    H <- array(0, c(k[i], r[i], r[i + 1]))
     mu <- matrix(0, r[i], k[i])
 
-     z <- NULL
+    #z <- NULL
     #z <- matrix(NA, nrow = numobs, ncol = r[i + 1])
 
 	  if (method == "factanal") {
 
+      z <- NULL
 	    for (j in 1 : k[i]) {
 
 	    	indices <- which(s == j)
@@ -120,11 +108,11 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
 	        z <- rbind(z, stima$scores)
 	        #z[indices, ] <- stima$scores
 	      }
-	      
+
 	      mu[, j] <- colMeans(data[s == j,, drop = FALSE])
 	    }
 
-	  } else { 
+	  } else {
 
       z <- matrix(NA, nrow = numobs, ncol = r[i + 1])
 
@@ -132,12 +120,12 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
 
 				q <- r[i + 1]
 			  indices <- which(s == j)
-			  mu[, j] <- colMeans(data[indices,, drop = FALSE]) 
+			  mu[, j] <- colMeans(data[indices,, drop = FALSE])
 			  Si <- cov(data[indices, ])
 			  psi[j,, ] <-  diag(diag(Si))
 			  Di.sqrt <- diag(sqrt(diag(diag(diag(Si)))))
 			  inv.Di.sqrt <- diag(1 / diag(Di.sqrt))
-			  
+
 			  eig.list <- eigen(inv.Di.sqrt %*% Si %*% inv.Di.sqrt)
 			  # eig.list <- try(eigen(inv.Di.sqrt %*% Si %*% inv.Di.sqrt), TRUE)
 			  # if (class(eig.list) == "try-error")
@@ -153,18 +141,18 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
 			    H[j,, ] <- Di.sqrt %*% eigH[, ix.lambda[1 : q]] %*%
 			                    diag((lambda[1 : q] - sigma2), q)
 
-			    z[indices, ] <-  sweep(data[indices,, drop = FALSE], 2, 
+			    z[indices, ] <-  sweep(data[indices,, drop = FALSE], 2,
 			   	                   mu[, j, drop = FALSE], '-') %*%
-			                        t(1 / (t(H[j,, ]) %*% H[j,, ] + 
-			                        	diag(sigma2, q)) %*% t(H[j,, ]))                    
+			                        t(1 / (t(H[j,, ]) %*% H[j,, ] +
+			                        	diag(sigma2, q)) %*% t(H[j,, ]))
 			  } else {
 			    H[j,, ] <- Di.sqrt %*% eigH[, ix.lambda[1 : q]] %*%
 			                    diag((lambda[1 : q] - sigma2))
 
-	    		z[indices, ] <-  sweep(data[indices,, drop = FALSE], 2, 
+	    		z[indices, ] <-  sweep(data[indices,, drop = FALSE], 2,
 	    			                   mu[, j, drop = FALSE], '-') %*%
-			                         t(chol.inv(t(H[j,, ]) %*% H[j,, ] + 
-			                         	diag(sigma2, q)) %*% t(H[j,, ]))                    
+			                         t(chol.inv(t(H[j,, ]) %*% H[j,, ] +
+			                         	diag(sigma2, q)) %*% t(H[j,, ]))
 			  }
 			}
 		}
@@ -182,7 +170,7 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
   ##############################################################################
   if (layers == 1) {
     out <- deep.sem.alg.1(y, numobs, p, r[2], k, H.list, psi.list,
-                        psi.list.inv, mu.list, w.list, z.list, it, eps) 
+                        psi.list.inv, mu.list, w.list, z.list, it, eps)
   }
   if (layers == 2) {
     out <- deep.sem.alg.2(y, numobs, p, r, k, H.list, psi.list,

@@ -170,4 +170,3 @@ out <- list(H = H.list, w = w.list, mu = mu.list, psi = psi.list,
             s = s, icl.bic = icl.bic, h = h, ps.y = ps.y)
 return(out)
 }
-
