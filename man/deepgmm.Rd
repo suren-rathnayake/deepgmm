@@ -10,7 +10,7 @@
 }
 \usage{
 deepgmm(y, layers, k, r = rep(1, layers),
-        it = 50, eps = 0.001, init = "kmeans")
+        it = 50, eps = 0.001, init = "kmeans", method = "factanal")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -85,8 +85,8 @@ cls <- wine[, 1]
 layers <- 2
 
 ## number of groups in the different layers
-k <- c(3, 2)  
-# 3 is the number of clusters at the observed level, 
+k <- c(3, 2)
+# 3 is the number of clusters at the observed level,
 # 2 is the number of clusters at the latent level
 
 ## dimensions at the different layers
