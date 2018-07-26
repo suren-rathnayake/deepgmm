@@ -66,60 +66,55 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
     psi <- psi.inv <- array(0, c(k[i], r[i], r[i]))
     H <- array(0, c(k[i], r[i], r[i + 1]))
     mu <- matrix(0, r[i], k[i])
-
     #z <- NULL
     #z <- matrix(NA, nrow = numobs, ncol = r[i + 1])
-
 	  if (method == "factanal") {
 
-      z <- NULL
+      #z <- NULL
+      z <- matrix(NA, nrow = numobs, ncol = r[i + 1])
 	    for (j in 1 : k[i]) {
 
 	    	indices <- which(s == j)
-
-	      stima <- try(factanal(data[s == j, ], r[i + 1], rotation = "none",
+	      stima <- try(factanal(data[indices, ], r[i + 1], rotation = "none",
 	                  scores = "Bartlett"), silent = TRUE)
 
 	      if (is.character(stima)) {
 
-	        psi[j,, ] <- 0.1 * diag(r[i])
+          psi[j,, ] <- 0.1 * diag(r[i])
 	        psi.inv[j,, ] <- diag(r[i])
-	        H[j,,] <- matrix(runif(r[i] * r[i+1]), r[i], r[i+1])
-	        zt <- try(princomp(data[s == j, ])$scores[, 1 : r[i+1]], silent = TRUE)
+	        H[j,,] <- matrix(runif(r[i] * r[i + 1]), r[i], r[i + 1])
+	        zt <- try(princomp(data[indices, ])$scores[, 1 : r[i + 1]],
+                    silent = TRUE)
 
 	        if (!is.character(zt)) {
-
 	          zt <- matrix(zt, ncol = r[i+1])
 	        }
-
 	        if (is.character(zt)) {
-
-	          zt <- matrix(data[s == j, sample(1 : r[i+1])], ncol = r[i+1])
+	          zt <- matrix(data[indices, sample(1 : r[i + 1])], ncol = r[i + 1])
 	        }
-	        z <- rbind(z, zt)
-	        #z[indices, ] <- zt
+	        #z <- rbind(z, zt)
+	        z[indices, ] <- zt
 	      }
 
 	      if (!is.character(stima)) {
 
 	        psi[j,, ] <- diag(stima$uniq)
 	        H[j,, ] <- stima$load
-	        psi.inv[j,,] <- diag(1/stima$uniq)
-	        z <- rbind(z, stima$scores)
-	        #z[indices, ] <- stima$scores
+	        psi.inv[j,, ] <- diag(1/stima$uniq)
+	        #z <- rbind(z, stima$scores)
+	        z[indices, ] <- stima$scores
 	      }
 
-	      mu[, j] <- colMeans(data[s == j,, drop = FALSE])
+	      mu[, j] <- colMeans(data[indices,, drop = FALSE])
 	    }
 
 	  } else {
 
       z <- matrix(NA, nrow = numobs, ncol = r[i + 1])
-
 			for (j in 1 : k[i]) {
 
 				q <- r[i + 1]
-			  indices <- which(s == j)
+			  indices <- which(indices)
 			  mu[, j] <- colMeans(data[indices,, drop = FALSE])
 			  Si <- cov(data[indices, ])
 			  psi[j,, ] <-  diag(diag(Si))
@@ -163,8 +158,8 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
     mu.list[i] <- list(mu)
     psi.list[i] <- list(psi)
     psi.list.inv[i] <- list(psi.inv)
-    z.list[i] <- list(aperm(array(z[, 1 : r[i+1]], c(numobs, r[i+1], k[i])),
-                     c(3, 1, 2)))
+    z.list[i] <- list(aperm(array(z[, 1 : r[i + 1]],
+                      c(numobs, r[i + 1], k[i])), c(3, 1, 2)))
   }
 
   ##############################################################################

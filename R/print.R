@@ -13,14 +13,21 @@ print.dgmm <- function(x, ...) {
     cat("pi_i : ", round(x$w[[lay]], 3), "\n")
 
 
-	  for(j in 1 : x$k[lay]) {
+	  for (j in 1 : x$k[lay]) {
 	    cat("mu_", j, ":\n", sep = "")
 	    print(round(x$mu[[lay]][, j], 3))
 	  }
 
+    for (j in 1 : x$k[lay]) {
+	    cat("Lambda_", j, ":\n", sep = "")
+	    print(round(x$H[[lay]][j,, ], 3))
+	  }
 
+    for (j in 1 : x$k[lay]) {
+      cat("diag of Lambda_", j, ":\n", sep = "")
+      print(round(diag(x$psi[[lay]][j,, ]), 3))
+    }
 	}
-
 }
 
 summary.dgmm <- function(object, ...) {
