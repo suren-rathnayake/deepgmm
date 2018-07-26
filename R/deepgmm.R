@@ -66,11 +66,8 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
     psi <- psi.inv <- array(0, c(k[i], r[i], r[i]))
     H <- array(0, c(k[i], r[i], r[i + 1]))
     mu <- matrix(0, r[i], k[i])
-    #z <- NULL
-    #z <- matrix(NA, nrow = numobs, ncol = r[i + 1])
 	  if (method == "factanal") {
 
-      #z <- NULL
       z <- matrix(NA, nrow = numobs, ncol = r[i + 1])
 	    for (j in 1 : k[i]) {
 
@@ -82,7 +79,7 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
 
           psi[j,, ] <- 0.1 * diag(r[i])
 	        psi.inv[j,, ] <- diag(r[i])
-	        H[j,,] <- matrix(runif(r[i] * r[i + 1]), r[i], r[i + 1])
+	        H[j,, ] <- matrix(runif(r[i] * r[i + 1]), r[i], r[i + 1])
 	        zt <- try(princomp(data[indices, ])$scores[, 1 : r[i + 1]],
                     silent = TRUE)
 
@@ -92,16 +89,12 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
 	        if (is.character(zt)) {
 	          zt <- matrix(data[indices, sample(1 : r[i + 1])], ncol = r[i + 1])
 	        }
-	        #z <- rbind(z, zt)
 	        z[indices, ] <- zt
-	      }
-
-	      if (!is.character(stima)) {
+	      } else {
 
 	        psi[j,, ] <- diag(stima$uniq)
 	        H[j,, ] <- stima$load
 	        psi.inv[j,, ] <- diag(1/stima$uniq)
-	        #z <- rbind(z, stima$scores)
 	        z[indices, ] <- stima$scores
 	      }
 
@@ -114,13 +107,12 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
 			for (j in 1 : k[i]) {
 
 				q <- r[i + 1]
-			  indices <- which(indices)
+			  indices <- which(s == j)
 			  mu[, j] <- colMeans(data[indices,, drop = FALSE])
 			  Si <- cov(data[indices, ])
 			  psi[j,, ] <-  diag(diag(Si))
 			  Di.sqrt <- diag(sqrt(diag(diag(diag(Si)))))
 			  inv.Di.sqrt <- diag(1 / diag(Di.sqrt))
-
 			  eig.list <- eigen(inv.Di.sqrt %*% Si %*% inv.Di.sqrt)
 			  # eig.list <- try(eigen(inv.Di.sqrt %*% Si %*% inv.Di.sqrt), TRUE)
 			  # if (class(eig.list) == "try-error")
@@ -131,7 +123,6 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
 			  lambda <- sort.lambda$x
 			  ix.lambda   <- sort.lambda$ix
 			  sigma2 <- mean(lambda[(q + 1) : ncol(data)])
-
 			  if (q == 1) {
 			    H[j,, ] <- Di.sqrt %*% eigH[, ix.lambda[1 : q]] %*%
 			                    diag((lambda[1 : q] - sigma2), q)
@@ -158,22 +149,22 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
     mu.list[i] <- list(mu)
     psi.list[i] <- list(psi)
     psi.list.inv[i] <- list(psi.inv)
-    z.list[i] <- list(aperm(array(z[, 1 : r[i + 1]],
-                      c(numobs, r[i + 1], k[i])), c(3, 1, 2)))
+    #z.list[i] <- list(aperm(array(z[, 1 : r[i + 1]],
+    #                  c(numobs, r[i + 1], k[i])), c(3, 1, 2)))
   }
 
   ##############################################################################
   if (layers == 1) {
     out <- deep.sem.alg.1(y, numobs, p, r[2], k, H.list, psi.list,
-                        psi.list.inv, mu.list, w.list, z.list, it, eps)
+                        psi.list.inv, mu.list, w.list, it, eps)
   }
   if (layers == 2) {
     out <- deep.sem.alg.2(y, numobs, p, r, k, H.list, psi.list,
-                        psi.list.inv, mu.list, w.list, z.list, it, eps)
+                        psi.list.inv, mu.list, w.list, it, eps)
   }
   if (layers == 3) {
     out <- deep.sem.alg.3(y, numobs, p, r, k, H.list, psi.list,
-                        psi.list.inv, mu.list, w.list, z.list, it, eps)
+                        psi.list.inv, mu.list, w.list, it, eps)
   }
 
   H <- out$H

@@ -1,9 +1,9 @@
-## Internal function - it performs the Stochastic EM algorithm for 
+## Internal function - it performs the Stochastic EM algorithm for
 ## fitting the model with h=3 layers
 
-deep.sem.alg.3 <- function(y, numobs, p, r, k, H.list, psi.list, psi.list.inv, 
-                            mu.list, w.list, z.list, it, eps) {     
-  
+deep.sem.alg.3 <- function(y, numobs, p, r, k, H.list, psi.list, psi.list.inv,
+                            mu.list, w.list, it, eps) {
+
 likelihood <- NULL
 hh <- 0
 ratio <- 1000
@@ -22,9 +22,10 @@ temp <- sum(log(py))
 likelihood <- c(likelihood, temp)
 #####################################################
 
+z.list <- NULL
 while ((hh < it) & (ratio > eps )) {
-  hh <- hh+1 
-  ###############################################################                          
+  hh <- hh+1
+  ###############################################################
   ###################  first layer ##############################
   ###############################################################
   l <- 1
@@ -34,33 +35,33 @@ while ((hh < it) & (ratio > eps )) {
   z <- z.one <- array(0, c(numobs, r[l+1], k[l]))
   zz <- array(0, c(numobs, r[l+1], r[l+1], k[l]))
 
-  for (p1 in 1 : k[l]) { 
+  for (p1 in 1 : k[l]) {
     for (p2 in 1 : k[l+1]) {
-      for (p3 in 1 : k[l+2]) { 
-        sigma.tilde.inv  <- ginv(H.list[[l+1]][p2,, ] %*% (H.list[[l+2]][p3,,] %*% 
-          t(H.list[[l+2]][p3,,]) + psi.list[[l+2]][p3,,]) %*% 
+      for (p3 in 1 : k[l+2]) {
+        sigma.tilde.inv  <- ginv(H.list[[l+1]][p2,, ] %*% (H.list[[l+2]][p3,,] %*%
+          t(H.list[[l+2]][p3,,]) + psi.list[[l+2]][p3,,]) %*%
           t(H.list[[l+1]][p2,,]) + psi.list[[l+1]][p2,,])
 
-        A <- sigma.tilde.inv + t(H.list[[l]][p1,, ]) %*% 
+        A <- sigma.tilde.inv + t(H.list[[l]][p1,, ]) %*%
               (psi.list.inv[[l]][p1,, ]) %*% (H.list[[l]][p1,, ])
 
         mu.tilde  <- matrix(mu.list[[l + 1]][, p2] + H.list[[l + 1]][p2,, ] %*%
                      (mu.list[[l + 2]][, p3]), r[l + 1], numobs)
-        
+
         b <- sigma.tilde.inv %*% mu.tilde +
-             t(H.list[[l]][p1,, ]) %*% (psi.list.inv[[l]][p1,, ]) %*% 
+             t(H.list[[l]][p1,, ]) %*% (psi.list.inv[[l]][p1,, ]) %*%
              (t(yy) - matrix(mu.list[[l]][, p1], r[l], numobs))
 
-        chsi  <- ginv(A)  
-        if (!isSymmetric(chsi)) { 
+        chsi  <- ginv(A)
+        if (!isSymmetric(chsi)) {
           chsi <- makeSymm(chsi)
         }
 
         roy <- chsi %*% b
-        roy.quadro <- array(apply(roy, 2, function(x) x %*% t(x)), 
+        roy.quadro <- array(apply(roy, 2, function(x) x %*% t(x)),
                             c(r[l + 1], r[l + 1], numobs))
-        zz2[,,, p1, p2, p3]  <- aperm(array(chsi, 
-                                     c(r[l + 1], r[l + 1], numobs)) + 
+        zz2[,,, p1, p2, p3]  <- aperm(array(chsi,
+                                     c(r[l + 1], r[l + 1], numobs)) +
                                      roy.quadro, c(3, 1, 2))
         z2.one[,, p1, p2, p3]  <- rmvnorm(numobs, rep(0, r[l + 1]), chsi) + t(roy)
         z2[,, p1, p2, p3] <- t(roy)
@@ -69,19 +70,19 @@ while ((hh < it) & (ratio > eps )) {
   }
 
   for (i1 in 1 : k[l + 1]) {
-    for (i2 in 1:k[l+2]) { 
+    for (i2 in 1:k[l+2]) {
       prob <- ps.y.list[[l + 1]][, i1, drop = FALSE] * ps.y.list[[l + 2]][, i2, drop = FALSE]
       z <- z + array(z2[,,, i1, i2, drop = FALSE] * array(rowSums(prob), c(numobs, r[l + 1], k[l], 1, 1)),
                          c(numobs, r[l + 1], k[l]))
-      z.one  <- z.one + array(z2.one[,,, i1, i2, drop = FALSE] * 
+      z.one  <- z.one + array(z2.one[,,, i1, i2, drop = FALSE] *
                 array(rowSums(prob), c(numobs, r[l + 1], k[l], 1, 1)), c(numobs, r[l + 1], k[l]))
-      zz <- zz + array(zz2[,,,, i1, i2, drop = FALSE] * array(rowSums(prob), c(numobs, r[l + 1], 
+      zz <- zz + array(zz2[,,,, i1, i2, drop = FALSE] * array(rowSums(prob), c(numobs, r[l + 1],
                  r[l + 1], k[l], 1, 1)), c(numobs, r[l + 1], r[l + 1], k[l]))
     }
   }
 
   z.list[[l]] <- aperm(z.one, c(3, 1, 2))
-  out <- compute.est(k[l], r[l], r[l + 1], ps.y.list[[l]], yy, aperm(z, c(3, 1, 2)), 
+  out <- compute.est(k[l], r[l], r[l + 1], ps.y.list[[l]], yy, aperm(z, c(3, 1, 2)),
             aperm(zz, c(4, 2, 3, 1)), mu.list[[l]])
 
   H.list[[l]] <- out$H
@@ -89,7 +90,7 @@ while ((hh < it) & (ratio > eps )) {
   psi.list.inv[[l]] <- out$psi.inv
   mu.list[[l]] <- out$mu
   w.list[[l]] <- out$w
-  ###############################################################                          
+  ###############################################################
   ###################  second layer #############################
   ###############################################################
 
@@ -106,24 +107,24 @@ while ((hh < it) & (ratio > eps )) {
   zz <- array(0, c(numobs, r[l + 1], r[l + 1], k[l]))
 
   for (p1 in 1 : k[l]) {
-    for (p2 in 1:k[l+1])  { 
-      A <- ginv(H.list[[l + 1]][p2,, ] %*% t(H.list[[l + 1]][p2,, ]) + 
-           psi.list[[l + 1]][p2,, ]) + t(H.list[[l]][p1,, ]) %*% 
+    for (p2 in 1:k[l+1])  {
+      A <- ginv(H.list[[l + 1]][p2,, ] %*% t(H.list[[l + 1]][p2,, ]) +
+           psi.list[[l + 1]][p2,, ]) + t(H.list[[l]][p1,, ]) %*%
            (psi.list.inv[[l]][p1,, ]) %*% (H.list[[l]][p1,, ])
 
-      b <- ginv(H.list[[l + 1]][p2,, ] %*% t(H.list[[l + 1]][p2,, ]) + 
+      b <- ginv(H.list[[l + 1]][p2,, ] %*% t(H.list[[l + 1]][p2,, ]) +
            psi.list[[l + 1]][p2,, ]) %*% matrix(mu.list[[l + 1]][, p2], r[l + 1], numobs) +
-           t(H.list[[l]][p1,, ]) %*% (psi.list.inv[[l]][p1,, ]) %*% 
+           t(H.list[[l]][p1,, ]) %*% (psi.list.inv[[l]][p1,, ]) %*%
            (t(yy) - matrix(mu.list[[l]][, p1], r[l], numobs))
 
-      chsi  <- ginv(A)  
-      
+      chsi  <- ginv(A)
+
       if (!isSymmetric(chsi)) {
         chsi  <- makeSymm(chsi)
       }
-      
+
       roy  <- chsi %*% b
-      
+
       roy.quadro  <- array(apply(roy, 2, function(x) x %*% t(x)), c(r[l + 1], r[l + 1], numobs))
       zz2[,,, p1, p2]  <- aperm(array(chsi, c(r[l + 1], r[l + 1], numobs)) + roy.quadro, c(3, 1, 2))
       z2.one[,, p1, p2]  <- rmvnorm(numobs, rep(0, r[l + 1]), chsi) + t(roy)
@@ -131,18 +132,18 @@ while ((hh < it) & (ratio > eps )) {
     }
   }
 
-  for (i in 1 : k[l + 1]) { 
+  for (i in 1 : k[l + 1]) {
     prob  <- ps.y.list[[l + 1]][, i, drop = FALSE]
-    z  <- z + array(z2[,,, i, drop = FALSE] * array(rowSums(prob), c(numobs, r[l + 1], k[l], 1)), 
+    z  <- z + array(z2[,,, i, drop = FALSE] * array(rowSums(prob), c(numobs, r[l + 1], k[l], 1)),
           c(numobs, r[l + 1], k[l]))
-    z.one  <- z.one + array(z2.one[,,, i, drop = FALSE] * 
+    z.one  <- z.one + array(z2.one[,,, i, drop = FALSE] *
           array(rowSums(prob), c(numobs, r[l + 1], k[l], 1)), c(numobs, r[l + 1], k[l]))
-    zz <- zz + array(zz2[,,,, i, drop = FALSE] * array(rowSums(prob), 
+    zz <- zz + array(zz2[,,,, i, drop = FALSE] * array(rowSums(prob),
           c(numobs, r[l + 1], r[l + 1], k[l], 1)), c(numobs, r[l + 1], r[l + 1], k[l]))
   }
-                        
+
   z.list[[l]] <- aperm(z.one, c(3, 1, 2))
-  out  <- compute.est(k[l], r[l], r[l +1 ], ps.y.list[[l]], yy, aperm(z, c(3, 1, 2)), 
+  out  <- compute.est(k[l], r[l], r[l +1 ], ps.y.list[[l]], yy, aperm(z, c(3, 1, 2)),
           aperm(zz, c(4, 2, 3, 1)), mu.list[[l]])
 
   H.list[[l]] <- out$H
@@ -151,10 +152,10 @@ while ((hh < it) & (ratio > eps )) {
   mu.list[[l]] <- out$mu
   w.list[[l]] <- out$w
 
-  ###############################################################                          
+  ###############################################################
   ###################  third layer ##############################
   ###############################################################
-  l <- 3 
+  l <- 3
   yy <- matrix(0, numobs, r[l])
   zz <- z.list[[l-1]]
   for (i in 1 : k[l - 1]) {
@@ -166,14 +167,14 @@ while ((hh < it) & (ratio > eps )) {
   zz <- array(0,c(numobs, r[l + 1], r[l + 1], k[l]))
 
   for (p1 in 1:k[l]) {
- 
-   A <- diag(r[l + 1]) + t(H.list[[l]][p1,, ]) %*% (psi.list.inv[[l]][p1,, ]) %*% 
+
+   A <- diag(r[l + 1]) + t(H.list[[l]][p1,, ]) %*% (psi.list.inv[[l]][p1,, ]) %*%
         (H.list[[l]][p1,, ])
 
-   b <- t(H.list[[l]][p1,, ]) %*% (psi.list.inv[[l]][p1,, ]) %*% 
+   b <- t(H.list[[l]][p1,, ]) %*% (psi.list.inv[[l]][p1,, ]) %*%
         (t(yy) - matrix(mu.list[[l]][, p1], r[l], numobs))
 
-   chsi <- ginv(A)  
+   chsi <- ginv(A)
    if (!isSymmetric(chsi)) {
      chsi <- makeSymm(chsi)
    }
@@ -201,7 +202,7 @@ while ((hh < it) & (ratio > eps )) {
   ps.y.list <- out$ps.y.list
   k.comb <- out$k.comb
   s <- out$s
-         
+
   lik <- sum(log(py))
   likelihood <- c(likelihood, lik)
 
@@ -215,7 +216,7 @@ while ((hh < it) & (ratio > eps )) {
 
 h <- 0
 for (j in 1 : layers) {
-  h <- h + (k[j] - 1) + (r[j] * r[j + 1]) * k[j] + r[j] * k[j] + k[j] * r[j]  
+  h <- h + (k[j] - 1) + (r[j] * r[j + 1]) * k[j] + r[j] * k[j] + k[j] * r[j]
 }
 
 if (layers > 1) {
@@ -223,7 +224,7 @@ if (layers > 1) {
     h <- h - (r[j] * k[j] * (r[j] - 1)/2)
   }
 }
-  
+
 bic <- -2 * lik + h * log(numobs)
 aic <- -2 * lik + 2 * h
 EN <- entr(ps.y.list[[1]])

@@ -1,8 +1,5 @@
-# internal function - it performs the Stochastic EM algorithm for fitting
-# the model with h=2 layers
-
 deep.sem.alg.2 <- function(y, numobs, p, r, k, H.list, psi.list, psi.list.inv,
-                           mu.list, w.list, z.list, it, eps) {
+                           mu.list, w.list, it, eps) {
 likelihood <- NULL
 hh <- 0
 ratio <- 1000
@@ -10,7 +7,7 @@ layers <- length(k)
 #################################
 #### compute the likelihood #####
 #################################
-out <- compute.lik(y,numobs,k,mu.list,H.list,psi.list,w.list)
+out <- compute.lik(y, numobs, k, mu.list, H.list, psi.list, w.list)
 py <- out$py
 ps.y <- out$ps.y
 ps.y.list <- out$ps.y.list
@@ -19,6 +16,9 @@ s <- out$s
 tot.k <- prod(k)
 temp <- sum(log(py))
 likelihood <- c(likelihood, temp)
+
+z.list <- NULL
+
 #####################################################
 while ((hh < it) & (ratio > eps )) {
   hh <- hh + 1
@@ -27,7 +27,7 @@ while ((hh < it) & (ratio > eps )) {
   ###############################################################
   l <- 1
   yy <- y
-  z2 <- z2.one <- array(0, c(numobs, r[l+1], k[l], k[l+1]))
+  z2 <- z2.one <- array(0, c(numobs, r[l + 1], k[l], k[l + 1]))
   zz2 <- array(0, c(numobs, r[l + 1], r[l + 1], k[l], k[l + 1]))
   z <- z.one <- array(0, c(numobs, r[l + 1], k[l]))
   zz <- array(0, c(numobs, r[l + 1], r[l + 1], k[l]))
@@ -151,7 +151,8 @@ if (hh > 5) {
 
 h <- 0
 for (j in 1 : layers) {
-  h <- h + (k[j] - 1) + (r[j] * r[j + 1]) * k[j] + r[j] * k[j] + k[j] * r[j]  #- (r[j+1]*(r[j+1]-1)/2)*k[j]
+  h <- h + (k[j] - 1) + (r[j] * r[j + 1]) * k[j] + r[j] * k[j] + k[j] * r[j]
+  #- (r[j+1]*(r[j+1]-1)/2)*k[j]
 }
 if (layers > 1) {
   for (j in 2:layers) {

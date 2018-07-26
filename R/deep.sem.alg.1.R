@@ -1,13 +1,11 @@
-## internal function - it performs the Stochastic EM algorithm for
-## fitting the model with h=1 layer
 deep.sem.alg.1 <- function(y, numobs, p, r, k, H.list, psi.list,
-                   psi.list.inv, mu.list, w.list, z.list, it, eps) {
+                      psi.list.inv, mu.list, w.list, it, eps) {
 
-  
+some_small_value <- 0.000000001
 k2 <- 1
 k1 <- k
 r <- r[1]
-lik <- -100000000000
+lik <- -Inf
 muf <- matrix(0, p, k1)
 
 psi <- psi.list[[1]]
@@ -20,43 +18,42 @@ mu <- array(0, c(1, r))
 sigma <- array(0, c(1, r, r))
 sigma[1,, ] <- diag(r)
 w2 <- 1
-
 w1 <- matrix(w1)
 w2 <- matrix(w2)
-
 likelihood <- NULL
 hh <- 0
 ratio <- 1000
 
 chsi <- array(0, c(k2, k1, r, r))
-roy <- array(0, c(k2, k1, r, numobs))
+roy  <- array(0, c(k2, k1, r, numobs))
 py.s1.s2 <- array(0, c(k2, k1, numobs))
-ps1s2.y <- array(0, c(k2, k1, numobs))
-Ezz.y.s1.s2 <- array(0,c(k2, k1, r, r, numobs))
-ps1.y.s2 <- array(0,c(k2, k1, numobs))
-ps2.y.s1 <- array(0,c(k2, k1, numobs))
-sigma.tot <- array(0,c(k2, k1, p, p))
-ps2.y <- array(0,c(k2, numobs))
-ps1.y <- array(0,c(k1, numobs))
-lambda.1  <- rep(1, k1)
+ps1s2.y  <- array(0, c(k2, k1, numobs))
+Ezz.y.s1.s2 <- array(0, c(k2, k1, r, r, numobs))
+ps1.y.s2  <- array(0, c(k2, k1, numobs))
+ps2.y.s1  <- array(0, c(k2, k1, numobs))
+sigma.tot <- array(0, c(k2, k1, p, p))
+ps2.y <- array(0, c(k2, numobs))
+ps1.y <- array(0, c(k1, numobs))
+lambda.1 <- rep(1, k1)
 lambda.2 <- rep(1, k2)
-
 #####################################################
 py <- matrix(0, numobs)
 for (i in 1 : k2) {
-  for (j in 1:k1) {
-    sigma.tot[i,j,, ] <- matrix(H[j,, ], ncol = r) %*% sigma[i,, ] %*%
+  for (j in 1 : k1) {
+    sigma.tot[i, j,, ] <- matrix(H[j,, ], ncol = r) %*% sigma[i,, ] %*%
                          t(matrix(H[j,, ], ncol = r)) + psi[j,, ]
 
-    if (det(as.matrix(sigma.tot[i, j,, ])) < 0.000000001) {
-      diag(sigma.tot[i, j,, ]) <- diag(sigma.tot[i, j, ,]) + 0.5
+    if (det(as.matrix(sigma.tot[i, j,, ])) < some_small_value) {
+      diag(sigma.tot[i, j,, ]) <- diag(sigma.tot[i, j,, ]) + 0.5
     }
-    py.s1.s2[i, j, ] <- dmvnorm(y, muf[, j] + t(matrix(H[j,, ], ncol = r) %*%
-                        mu[i, ]), as.matrix(sigma.tot[i, j, ,]))
-
+    py.s1.s2[i, j, ] <- dmvnorm(y, muf[, j] +
+                          t(matrix(H[j,, ], ncol = r) %*% mu[i, ]),
+                          as.matrix(sigma.tot[i, j,, ]))
    ## suren - combine?
-    py.s1.s2 <- ifelse(is.na(py.s1.s2), 0.0000000001, py.s1.s2)
-    py.s1.s2 <- ifelse(py.s1.s2 == 0, 0.0000000001, py.s1.s2)
+    #py.s1.s2 <- ifelse(is.na(py.s1.s2), some_small_value, py.s1.s2)
+    #py.s1.s2 <- ifelse(py.s1.s2 == 0, some_small_value, py.s1.s2)
+    py.s1.s2 <- ifelse(is.na(py.s1.s2) | py.s1.s2 == 0, some_small_value,
+                  py.s1.s2)
 
     py <- py + w1[j] * w2[i] * py.s1.s2[i, j, ]
   }
@@ -64,8 +61,8 @@ for (i in 1 : k2) {
 
 #####################################################
 cl <- NULL
-
 while ((hh < it) & (ratio > eps )) {
+
   hh <- hh + 1
 
   Ez.y.s2  <- array(0, c(k2, r, numobs))
@@ -81,10 +78,10 @@ while ((hh < it) & (ratio > eps )) {
       roy[i, j,, ] <- chsi[i, j,, ] %*% (t(H[j,, ]) %*% ginv(psi[j,, ])
                      %*% t(y - t(matrix(muf[, j], p, numobs))) +
                      matrix(ginv(sigma[i,, ]) %*% mu[i, ], r, numobs))
-      roy[i, j,, ] <- ifelse(is.na(roy[i,j,, ]), 0, roy[i,j,, ])
+      roy[i, j,, ] <- ifelse(is.na(roy[i, j,, ]), 0, roy[i, j,, ])
       if (r > 1) {
         for (h in 1 : numobs) {
-          temp[,,h] <- (roy[i, j,, h]) %*% t(roy[i,j,, h])
+          temp[,,h] <- (roy[i, j,, h]) %*% t(roy[i, j,, h])
         }
         temp2 <- array(chsi[i, j,, ], c(r, r, numobs))
         Ezz.y.s1.s2[i, j,,, ] <- temp + temp2
@@ -105,13 +102,13 @@ while ((hh < it) & (ratio > eps )) {
   A <- apply(ps2.y.s1, c(2, 3), sum)
   A <- array(A, c(k1, numobs, k2))
   A <- aperm(A, c(3, 1, 2))
-  A <- ifelse(A==0, 0.000001, A)
+  A <- ifelse(A == 0, 0.000001, A)
   ps2.y.s1 <- ps2.y.s1 / A
 
   ### compute ps1.y.s2
   ### compute ps1.y
   for (j in 1 : k1) {
-    ps1.y[j, ] <- (w1[j] * (t(w2) %*% py.s1.s2[,j, ])) / t(py)
+    ps1.y[j, ] <- (w1[j] * (t(w2) %*% py.s1.s2[, j, ])) / t(py)
     ps1.y[j, ] <- ifelse(is.na(ps1.y[j, ]), mean(ps1.y[j, ], na.rm = TRUE),
                    ps1.y[j, ])
     ps1.y.s2[, j, ] <- w1[j] * py.s1.s2[, j, ]
@@ -120,7 +117,7 @@ while ((hh < it) & (ratio > eps )) {
   A <- apply(ps1.y.s2, c(1, 3), sum)
   A <- array(A, c(k2, numobs, k1))
   A <- aperm(A, c(1, 3, 2))
-  A <- ifelse(A==0, 0.000001, A)
+  A <- ifelse(A == 0, 0.000001, A)
   ps1.y.s2 <- ps1.y.s2 / A
 
   for (h1 in 1 : r) {
@@ -175,12 +172,12 @@ while ((hh < it) & (ratio > eps )) {
   ### M-step get H
   ### M-step get Psi
   ### M-step get muf
-
   for (j in 1 : k1) {
+
     Ez.y.s1[j,, ] <- ifelse(is.na(Ez.y.s1[j,, ]),
                      rowMeans(matrix(Ez.y.s1[j,, ], ncol = numobs), na.rm=TRUE),
                      Ez.y.s1[j,, ])
-    if (r>1) {
+    if (r > 1) {
       Ezz.y.s1[j,,, ] <- ifelse(is.na(Ezz.y.s1[j,,, ]),
                           apply(Ezz.y.s1[j,,, ], c(1, 2), mean, na.rm=TRUE),
                           Ezz.y.s1[j,,, ])
@@ -197,7 +194,6 @@ while ((hh < it) & (ratio > eps )) {
     if (r == 1) {
       EEzz.y.s1 <- Ezz.y.s1[j,,, ] %*% (ps1.y[j, ]) / sum(ps1.y[j, ])
     }
-
     H[j,, ] <- (t((y - t(matrix(muf[, j], p, numobs))) *
                matrix(ps1.y[j, ], numobs, p)) %*%
                (t(matrix(Ez.y.s1[j,, ], ncol = numobs)) *
@@ -270,7 +266,7 @@ h2 <- (k2 - 1) + r * (k2 - 1) + (r * (r + 1) / 2) * (k2 - 1)
 
 h <- h1 + h2
 lik <- likelihood[length(likelihood)]
-bic <- -2 * lik +h * log(numobs)
+bic <- -2 * lik + h * log(numobs)
 aic <- -2 * lik + 2 * h
 EN <- entr(matrix(ps1s2.y, k2 * k1, numobs))
 clc <- -2 * lik + 2 * EN
