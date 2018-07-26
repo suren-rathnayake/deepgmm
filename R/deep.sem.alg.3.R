@@ -206,6 +206,8 @@ while ((hh < it) & (ratio > eps )) {
   lik <- sum(log(py))
   likelihood <- c(likelihood, lik)
 
+print(lik)
+
   if (hh < 5) {
     ratio <- 2 * eps
   }

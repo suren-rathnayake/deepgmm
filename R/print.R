@@ -24,7 +24,7 @@ print.dgmm <- function(x, ...) {
 	  }
 
     for (j in 1 : x$k[lay]) {
-      cat("diag of Lambda_", j, ":\n", sep = "")
+      cat("diag of Psi", j, ":\n", sep = "")
       print(round(diag(x$psi[[lay]][j,, ]), 3))
     }
 	}

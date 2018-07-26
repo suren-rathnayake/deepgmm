@@ -251,6 +251,9 @@ if (hh < 5) {
   ratio <- 2 * eps
 }
 lik <- temp
+
+print(lik)
+
 }
 
 if (k1 > 1) {
