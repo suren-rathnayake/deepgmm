@@ -1,6 +1,3 @@
-## Internal function - it performs the Stochastic EM algorithm for
-## fitting the model with h=3 layers
-
 deep.sem.alg.3 <- function(y, numobs, p, r, k, H.list, psi.list, psi.list.inv,
                             mu.list, w.list, it, eps) {
 
@@ -21,7 +18,6 @@ tot.k <- prod(k)
 temp <- sum(log(py))
 likelihood <- c(likelihood, temp)
 #####################################################
-
 z.list <- NULL
 while ((hh < it) & (ratio > eps )) {
   hh <- hh+1
@@ -30,17 +26,18 @@ while ((hh < it) & (ratio > eps )) {
   ###############################################################
   l <- 1
   yy <- y
-  z2 <- z2.one <- array(0, c(numobs, r[l+1], k[l], k[l+1], k[l+2]))
-  zz2 <- array(0, c(numobs, r[l+1], r[l+1], k[l], k[l+1], k[l+2]))
+  z2 <- z2.one <- array(0, c(numobs, r[l + 1], k[l], k[l + 1], k[l + 2]))
+  zz2 <- array(0, c(numobs, r[l +1], r[l+1], k[l], k[l+1], k[l + 2]))
   z <- z.one <- array(0, c(numobs, r[l+1], k[l]))
   zz <- array(0, c(numobs, r[l+1], r[l+1], k[l]))
 
   for (p1 in 1 : k[l]) {
     for (p2 in 1 : k[l+1]) {
       for (p3 in 1 : k[l+2]) {
-        sigma.tilde.inv  <- ginv(H.list[[l+1]][p2,, ] %*% (H.list[[l+2]][p3,,] %*%
-          t(H.list[[l+2]][p3,,]) + psi.list[[l+2]][p3,,]) %*%
-          t(H.list[[l+1]][p2,,]) + psi.list[[l+1]][p2,,])
+        sigma.tilde.inv <- ginv(H.list[[l+1]][p2,, ] %*%
+                            (H.list[[l+2]][p3,,] %*% t(H.list[[l+2]][p3,,]) +
+                            psi.list[[l+2]][p3,,]) %*% t(H.list[[l+1]][p2,,]) +
+                            psi.list[[l+1]][p2,,])
 
         A <- sigma.tilde.inv + t(H.list[[l]][p1,, ]) %*%
               (psi.list.inv[[l]][p1,, ]) %*% (H.list[[l]][p1,, ])
@@ -63,7 +60,8 @@ while ((hh < it) & (ratio > eps )) {
         zz2[,,, p1, p2, p3]  <- aperm(array(chsi,
                                      c(r[l + 1], r[l + 1], numobs)) +
                                      roy.quadro, c(3, 1, 2))
-        z2.one[,, p1, p2, p3]  <- rmvnorm(numobs, rep(0, r[l + 1]), chsi) + t(roy)
+        z2.one[,, p1, p2, p3]  <- rmvnorm(numobs, rep(0, r[l + 1]), chsi) +
+                                      t(roy)
         z2[,, p1, p2, p3] <- t(roy)
       }
     }
@@ -71,19 +69,23 @@ while ((hh < it) & (ratio > eps )) {
 
   for (i1 in 1 : k[l + 1]) {
     for (i2 in 1:k[l+2]) {
-      prob <- ps.y.list[[l + 1]][, i1, drop = FALSE] * ps.y.list[[l + 2]][, i2, drop = FALSE]
-      z <- z + array(z2[,,, i1, i2, drop = FALSE] * array(rowSums(prob), c(numobs, r[l + 1], k[l], 1, 1)),
+      prob <- ps.y.list[[l + 1]][, i1, drop = FALSE] *
+                ps.y.list[[l + 2]][, i2, drop = FALSE]
+      z <- z + array(z2[,,, i1, i2, drop = FALSE] *
+                array(rowSums(prob), c(numobs, r[l + 1], k[l], 1, 1)),
                          c(numobs, r[l + 1], k[l]))
       z.one  <- z.one + array(z2.one[,,, i1, i2, drop = FALSE] *
-                array(rowSums(prob), c(numobs, r[l + 1], k[l], 1, 1)), c(numobs, r[l + 1], k[l]))
-      zz <- zz + array(zz2[,,,, i1, i2, drop = FALSE] * array(rowSums(prob), c(numobs, r[l + 1],
-                 r[l + 1], k[l], 1, 1)), c(numobs, r[l + 1], r[l + 1], k[l]))
+                  array(rowSums(prob), c(numobs, r[l + 1], k[l], 1, 1)),
+                  c(numobs, r[l + 1], k[l]))
+      zz <- zz + array(zz2[,,,, i1, i2, drop = FALSE] *
+              array(rowSums(prob), c(numobs, r[l + 1],
+                r[l + 1], k[l], 1, 1)), c(numobs, r[l + 1], r[l + 1], k[l]))
     }
   }
 
   z.list[[l]] <- aperm(z.one, c(3, 1, 2))
-  out <- compute.est(k[l], r[l], r[l + 1], ps.y.list[[l]], yy, aperm(z, c(3, 1, 2)),
-            aperm(zz, c(4, 2, 3, 1)), mu.list[[l]])
+  out <- compute.est(k[l], r[l], r[l + 1], ps.y.list[[l]], yy,
+            aperm(z, c(3, 1, 2)), aperm(zz, c(4, 2, 3, 1)), mu.list[[l]])
 
   H.list[[l]] <- out$H
   psi.list[[l]] <- out$psi
@@ -98,8 +100,9 @@ while ((hh < it) & (ratio > eps )) {
   yy <- matrix(0, numobs, r[l])
   zz <- z.list[[l - 1]]
   for (i in 1 : k[l - 1]) {
-    yy <- yy + matrix(zz[i,,, drop = FALSE] * array(rowSums(ps.y.list[[l - 1]][, i, drop = FALSE]),
-          c(1, numobs, r[l])), numobs, r[l])
+    yy <- yy + matrix(zz[i,,, drop = FALSE] *
+            array(rowSums(ps.y.list[[l - 1]][, i, drop = FALSE]),
+            c(1, numobs, r[l])), numobs, r[l])
   }
   z2 <- z2.one <- array(0, c(numobs, r[l + 1], k[l], k[l + 1]))
   zz2 <- array(0, c(numobs, r[l + 1], r[l + 1], k[l], k[l + 1]))
@@ -113,7 +116,8 @@ while ((hh < it) & (ratio > eps )) {
            (psi.list.inv[[l]][p1,, ]) %*% (H.list[[l]][p1,, ])
 
       b <- ginv(H.list[[l + 1]][p2,, ] %*% t(H.list[[l + 1]][p2,, ]) +
-           psi.list[[l + 1]][p2,, ]) %*% matrix(mu.list[[l + 1]][, p2], r[l + 1], numobs) +
+           psi.list[[l + 1]][p2,, ]) %*%
+           matrix(mu.list[[l + 1]][, p2], r[l + 1], numobs) +
            t(H.list[[l]][p1,, ]) %*% (psi.list.inv[[l]][p1,, ]) %*%
            (t(yy) - matrix(mu.list[[l]][, p1], r[l], numobs))
 
@@ -122,11 +126,11 @@ while ((hh < it) & (ratio > eps )) {
       if (!isSymmetric(chsi)) {
         chsi  <- makeSymm(chsi)
       }
-
       roy  <- chsi %*% b
-
-      roy.quadro  <- array(apply(roy, 2, function(x) x %*% t(x)), c(r[l + 1], r[l + 1], numobs))
-      zz2[,,, p1, p2]  <- aperm(array(chsi, c(r[l + 1], r[l + 1], numobs)) + roy.quadro, c(3, 1, 2))
+      roy.quadro  <- array(apply(roy, 2, function(x) x %*%
+                          t(x)), c(r[l + 1], r[l + 1], numobs))
+      zz2[,,, p1, p2]  <- aperm(array(chsi, c(r[l + 1], r[l + 1], numobs)) +
+                            roy.quadro, c(3, 1, 2))
       z2.one[,, p1, p2]  <- rmvnorm(numobs, rep(0, r[l + 1]), chsi) + t(roy)
       z2[,, p1, p2]  <- t(roy)
     }
@@ -134,17 +138,20 @@ while ((hh < it) & (ratio > eps )) {
 
   for (i in 1 : k[l + 1]) {
     prob  <- ps.y.list[[l + 1]][, i, drop = FALSE]
-    z  <- z + array(z2[,,, i, drop = FALSE] * array(rowSums(prob), c(numobs, r[l + 1], k[l], 1)),
-          c(numobs, r[l + 1], k[l]))
+    z  <- z + array(z2[,,, i, drop = FALSE] *
+            array(rowSums(prob), c(numobs, r[l + 1], k[l], 1)),
+            c(numobs, r[l + 1], k[l]))
     z.one  <- z.one + array(z2.one[,,, i, drop = FALSE] *
-          array(rowSums(prob), c(numobs, r[l + 1], k[l], 1)), c(numobs, r[l + 1], k[l]))
+              array(rowSums(prob), c(numobs, r[l + 1], k[l], 1)),
+              c(numobs, r[l + 1], k[l]))
     zz <- zz + array(zz2[,,,, i, drop = FALSE] * array(rowSums(prob),
-          c(numobs, r[l + 1], r[l + 1], k[l], 1)), c(numobs, r[l + 1], r[l + 1], k[l]))
+            c(numobs, r[l + 1], r[l + 1], k[l], 1)),
+            c(numobs, r[l + 1], r[l + 1], k[l]))
   }
 
   z.list[[l]] <- aperm(z.one, c(3, 1, 2))
-  out  <- compute.est(k[l], r[l], r[l +1 ], ps.y.list[[l]], yy, aperm(z, c(3, 1, 2)),
-          aperm(zz, c(4, 2, 3, 1)), mu.list[[l]])
+  out  <- compute.est(k[l], r[l], r[l +1 ], ps.y.list[[l]], yy,
+            aperm(z, c(3, 1, 2)), aperm(zz, c(4, 2, 3, 1)), mu.list[[l]])
 
   H.list[[l]] <- out$H
   psi.list[[l]] <- out$psi
@@ -159,7 +166,8 @@ while ((hh < it) & (ratio > eps )) {
   yy <- matrix(0, numobs, r[l])
   zz <- z.list[[l-1]]
   for (i in 1 : k[l - 1]) {
-    yy <- yy + matrix(zz[i,,, drop = FALSE] * array(rowSums(ps.y.list[[l-1]][, i, drop = FALSE]),
+    yy <- yy + matrix(zz[i,,, drop = FALSE] *
+          array(rowSums(ps.y.list[[l-1]][, i, drop = FALSE]),
            c(1, numobs, r[l])), numobs, r[l])
   }
 
@@ -168,8 +176,8 @@ while ((hh < it) & (ratio > eps )) {
 
   for (p1 in 1:k[l]) {
 
-   A <- diag(r[l + 1]) + t(H.list[[l]][p1,, ]) %*% (psi.list.inv[[l]][p1,, ]) %*%
-        (H.list[[l]][p1,, ])
+   A <- diag(r[l + 1]) + t(H.list[[l]][p1,, ]) %*%
+          (psi.list.inv[[l]][p1,, ]) %*% (H.list[[l]][p1,, ])
 
    b <- t(H.list[[l]][p1,, ]) %*% (psi.list.inv[[l]][p1,, ]) %*%
         (t(yy) - matrix(mu.list[[l]][, p1], r[l], numobs))
@@ -180,15 +188,17 @@ while ((hh < it) & (ratio > eps )) {
    }
 
    roy <- chsi %*% b
-   roy.quadro <- array(apply(roy, 2, function(x) x %*% t(x)), c(r[l + 1], r[l + 1], numobs))
-   zz[,,, p1]  <- aperm(array(chsi, c(r[l + 1], r[l + 1], numobs)) + roy.quadro, c(3, 1, 2))
+   roy.quadro <- array(apply(roy, 2, function(x) x %*%
+                  t(x)), c(r[l + 1], r[l + 1], numobs))
+   zz[,,, p1]  <- aperm(array(chsi, c(r[l + 1], r[l + 1], numobs)) +
+                    roy.quadro, c(3, 1, 2))
    z.one[,, p1] <- t(roy) + rmvnorm(numobs, rep(0, r[l + 1]), chsi)
    z[,, p1]  <- t(roy)
   }
 
   z.list[[l]] <- aperm(z.one, c(3, 1, 2))
-  out <- compute.est(k[l], r[l], r[l + 1], ps.y.list[[l]], yy, aperm(z, c(3, 1, 2)),
-         aperm(zz, c(4, 2, 3, 1)), mu.list[[l]])
+  out <- compute.est(k[l], r[l], r[l + 1], ps.y.list[[l]], yy,
+          aperm(z, c(3, 1, 2)), aperm(zz, c(4, 2, 3, 1)), mu.list[[l]])
 
   H.list[[l]] <- out$H
   psi.list[[l]] <- out$psi
@@ -212,7 +222,8 @@ print(lik)
     ratio <- 2 * eps
   }
   if (hh > 5) {
-    ratio <- (ma(likelihood, 5)[hh + 1] - ma(likelihood, 5)[hh]) / abs(ma(likelihood, 5)[hh])
+    ratio <- (ma(likelihood, 5)[hh + 1] - ma(likelihood, 5)[hh]) /
+              abs(ma(likelihood, 5)[hh])
   }
 }
 
@@ -233,7 +244,8 @@ EN <- entr(ps.y.list[[1]])
 clc <- -2 * lik + 2 * EN
 icl.bic <- -2 * lik + 2 * EN + h * log(numobs)
 
-out <- list(H = H.list, w = w.list, mu = mu.list, psi = psi.list, likelihood = likelihood,
-            bic = bic, aic = aic, clc = clc, s = s, icl.bic = icl.bic, h = h, ps.y =ps.y)
+out <- list(H = H.list, w = w.list, mu = mu.list, psi = psi.list,
+            likelihood = likelihood, bic = bic, aic = aic, clc = clc,
+            s = s, icl.bic = icl.bic, h = h, ps.y =ps.y)
 return(out)
 }

@@ -18,7 +18,6 @@ temp <- sum(log(py))
 likelihood <- c(likelihood, temp)
 
 z.list <- NULL
-
 #####################################################
 while ((hh < it) & (ratio > eps )) {
   hh <- hh + 1
@@ -107,7 +106,7 @@ for (p1 in 1 : k[l]) {
     chsi <- makeSymm(chsi)
   }
 
-  roy <- chsi%*%b
+  roy <- chsi %*% b
   roy.quadro <- array(apply(roy, 2, function(x) x %*% t(x)),
                   c(r[l + 1], r[l + 1], numobs))
   zz[,,,p1] <- aperm(array(chsi, c(r[l + 1], r[l + 1], numobs)) +
@@ -152,7 +151,6 @@ if (hh > 5) {
 h <- 0
 for (j in 1 : layers) {
   h <- h + (k[j] - 1) + (r[j] * r[j + 1]) * k[j] + r[j] * k[j] + k[j] * r[j]
-  #- (r[j+1]*(r[j+1]-1)/2)*k[j]
 }
 if (layers > 1) {
   for (j in 2:layers) {
@@ -160,10 +158,10 @@ if (layers > 1) {
   }
 }
 
-bic <- -2*lik+h*log(numobs)
-aic <- -2*lik+2*h
+bic <- -2 * lik + h * log(numobs)
+aic <- -2 * lik + 2 * h
 EN <- entr(ps.y.list[[1]])
-clc <- -2*lik+2*EN
+clc <- -2 * lik + 2 * EN
 icl.bic <- -2 * lik + 2 * EN + h * log(numobs)
 
 out <- list(H = H.list, w = w.list, mu = mu.list, psi = psi.list,

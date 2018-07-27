@@ -15,17 +15,17 @@ print.dgmm <- function(x, ...) {
 
 	  for (j in 1 : x$k[lay]) {
 	    cat("mu_", j, ":\n", sep = "")
-	    print(round(x$mu[[lay]][, j], 3))
+	    print(x$mu[[lay]][, j])
 	  }
 
     for (j in 1 : x$k[lay]) {
 	    cat("Lambda_", j, ":\n", sep = "")
-	    print(round(x$H[[lay]][j,, ], 3))
+	    print(x$H[[lay]][j,, ])
 	  }
 
     for (j in 1 : x$k[lay]) {
-      cat("diag of Psi", j, ":\n", sep = "")
-      print(round(diag(x$psi[[lay]][j,, ]), 3))
+      cat("diag of Psi_", j, ":\n", sep = "")
+      print(diag(x$psi[[lay]][j,, ]))
     }
 	}
 }

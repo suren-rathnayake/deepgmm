@@ -12,7 +12,6 @@ psi <- psi.list[[1]]
 H <- H.list[[1]]
 muf <- mu.list[[1]]
 w1 <- w.list[[1]]
-#####################################################
 
 mu <- array(0, c(1, r))
 sigma <- array(0, c(1, r, r))
@@ -36,35 +35,32 @@ ps2.y <- array(0, c(k2, numobs))
 ps1.y <- array(0, c(k1, numobs))
 lambda.1 <- rep(1, k1)
 lambda.2 <- rep(1, k2)
-#####################################################
-py <- matrix(0, numobs)
-for (i in 1 : k2) {
-  for (j in 1 : k1) {
-    sigma.tot[i, j,, ] <- matrix(H[j,, ], ncol = r) %*% sigma[i,, ] %*%
-                         t(matrix(H[j,, ], ncol = r)) + psi[j,, ]
 
-    if (det(as.matrix(sigma.tot[i, j,, ])) < some_small_value) {
-      diag(sigma.tot[i, j,, ]) <- diag(sigma.tot[i, j,, ]) + 0.5
-    }
-    py.s1.s2[i, j, ] <- dmvnorm(y, muf[, j] +
+py <- matrix(0, numobs)
+#for (i in 1 : k2) {
+i <- 1
+for (j in 1 : k1) {
+  sigma.tot[i, j,, ] <- matrix(H[j,, ], ncol = r) %*% sigma[i,, ] %*%
+                       t(matrix(H[j,, ], ncol = r)) + psi[j,, ]
+
+  if (det(as.matrix(sigma.tot[i, j,, ])) < some_small_value) {
+    diag(sigma.tot[i, j,, ]) <- diag(sigma.tot[i, j,, ]) + 0.5
+  }
+  py.s1.s2[i, j, ] <- dmvnorm(y, muf[, j] +
                           t(matrix(H[j,, ], ncol = r) %*% mu[i, ]),
                           as.matrix(sigma.tot[i, j,, ]))
-   ## suren - combine?
-    #py.s1.s2 <- ifelse(is.na(py.s1.s2), some_small_value, py.s1.s2)
-    #py.s1.s2 <- ifelse(py.s1.s2 == 0, some_small_value, py.s1.s2)
-    py.s1.s2 <- ifelse(is.na(py.s1.s2) | py.s1.s2 == 0, some_small_value,
+
+  py.s1.s2 <- ifelse(is.na(py.s1.s2) | py.s1.s2 == 0, some_small_value,
                   py.s1.s2)
 
-    py <- py + w1[j] * w2[i] * py.s1.s2[i, j, ]
-  }
+  py <- py + w1[j] * w2[i] * py.s1.s2[i, j, ]
 }
+#}
 
-#####################################################
 cl <- NULL
-while ((hh < it) & (ratio > eps )) {
+while ((hh < it) & (ratio > eps)) {
 
   hh <- hh + 1
-
   Ez.y.s2  <- array(0, c(k2, r, numobs))
   Ez.y.s1  <- array(0, c(k1, r, numobs))
   Ezz.y.s2 <- array(0, c(k2, r, r, numobs))
@@ -74,11 +70,14 @@ while ((hh < it) & (ratio > eps )) {
   for (i in 1 : k2) {
     for (j in 1 : k1) {
       chsi[i, j,, ] <- ginv(t(H[j,, ]) %*% ginv(psi[j,, ]) %*%
-                        H[j,,] + ginv(sigma[i,, ]))
-      roy[i, j,, ] <- chsi[i, j,, ] %*% (t(H[j,, ]) %*% ginv(psi[j,, ])
-                     %*% t(y - t(matrix(muf[, j], p, numobs))) +
-                     matrix(ginv(sigma[i,, ]) %*% mu[i, ], r, numobs))
+                        H[j,, ] + ginv(sigma[i,, ]))
+
+      roy[i, j,, ] <- chsi[i, j,, ] %*% (t(H[j,, ]) %*% ginv(psi[j,, ]) %*%
+                      t(y - t(matrix(muf[, j], p, numobs))) +
+                      matrix(ginv(sigma[i,, ]) %*% mu[i, ], r, numobs))
+
       roy[i, j,, ] <- ifelse(is.na(roy[i, j,, ]), 0, roy[i, j,, ])
+
       if (r > 1) {
         for (h in 1 : numobs) {
           temp[,,h] <- (roy[i, j,, h]) %*% t(roy[i, j,, h])
@@ -264,7 +263,7 @@ if (k1 > 1) {
 
 likelihood <- matrix(likelihood[!likelihood == 0])
 
-h1 <- (k1 - 1) + (p * r) * k1 + p * k1 - (k1 * r * (r - 1) / 2 ) + (k1 - 1) * p
+h1 <- (k1 - 1) + (p * r) * k1 + p * k1 - (k1 * r * (r - 1) / 2) + (k1 - 1) * p
 h2 <- (k2 - 1) + r * (k2 - 1) + (r * (r + 1) / 2) * (k2 - 1)
 
 h <- h1 + h2
