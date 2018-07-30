@@ -7,8 +7,11 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
     init <- 'random'
   if (any(tolower(init) == c('hclass', 'h')))
     init <- 'hclass'
+  if (any(tolower(method) == c('factanal', 'factana', 'fact', 'f')))
+    method <- "factanal"
   if (class(y) == "data.frame")
   	y <- as.matrix(y)
+
   # check arguments
   tmp <- valid_args(Y = y, layers = layers, k = k, r = r, it = it,
                     eps = eps, init = init)
@@ -181,7 +184,7 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
 
   output <- list (H = H, w = w, mu = mu, psi = psi, lik = lik,
                  bic = bic, aic = aic, clc = clc, s = s, icl.bic = icl.bic,
-                 h = h, k = k, r = r, numobs = numobs, layers = layers)
+                 h = h, k = k, r = r[-1], numobs = numobs, layers = layers)
 
   output$call <- match.call()
   class(output) <- "dgmm"
