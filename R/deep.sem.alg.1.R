@@ -274,7 +274,8 @@ EN <- entr(matrix(ps1s2.y, k2 * k1, numobs))
 clc <- -2 * lik + 2 * EN
 icl.bic <- -2 * lik + 2 * EN + h * log(numobs)
 
-out <- list(H = H, w = w1, mu = muf, psi = psi, likelihood = likelihood,
+out <- list(H = list(H = H), w = list(w = w1), mu = list(mu = muf),
+            psi = list(psi = psi), likelihood = likelihood,
             bic = bic, aic = aic, clc = clc, s = s1, icl.bic = icl.bic,
             h = h) ######, ps.y = ps.y)
 

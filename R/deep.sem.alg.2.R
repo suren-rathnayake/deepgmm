@@ -152,6 +152,7 @@ h <- 0
 for (j in 1 : layers) {
   h <- h + (k[j] - 1) + (r[j] * r[j + 1]) * k[j] + r[j] * k[j] + k[j] * r[j]
 }
+
 if (layers > 1) {
   for (j in 2:layers) {
     h <- h - (r[j] * k[j] * (r[j] - 1) / 2)
