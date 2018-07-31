@@ -251,8 +251,6 @@ if (hh < 5) {
 }
 lik <- temp
 
-print(lik)
-
 }
 
 if (k1 > 1) {
