@@ -48,7 +48,15 @@ deepgmm(y, layers, k, r = rep(1, layers),
 }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+A Deep Gaussian Mixture model is a network of multiple
+layers of latent variables, where, at each layer, the variables follow a
+mixture of Gaussian distributions.
+Thus, the deep mixture model consists of a set of nested
+mixtures of linear models, which globally provide a nonlinear model
+able to describe the data in a very  flexible way. In order to avoid over
+parameterized solutions, dimension reduction by factor models can be
+applied at each layer of the architecture thus resulting in deep mixtures
+of factor analysers.
 }
 \value{
 An object of class \code{"dgmm"} containing fitted values.
@@ -65,17 +73,17 @@ An object of class \code{"dgmm"} containing fitted values.
     Preprint arXiv:1711.06929.
 }
 \author{
-%%  ~~who you are~~
+ Cinzia Viroli, Geoffrey J. McLachlan
 }
-\note{
+%%\note{
 %%  ~~further notes~~
-}
+%%}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{
+%%\seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
-}
+%%}
 \examples{
 \dontrun{
 library(gclus)

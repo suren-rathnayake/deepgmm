@@ -1,5 +1,5 @@
 export(deepgmm)
-export(model.selection)
+export(model_selection)
 S3method(print, dgmm)
 S3method(summary, dgmm)
 importFrom("stats", "factanal", "filter", "kmeans", "princomp",

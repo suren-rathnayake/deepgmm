@@ -48,7 +48,8 @@ model_selection(y, layers, k, seeds = 3, it = 50, eps = 0.001,
 }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+Compare different models and return the best one selected according to
+criterion (BIC or AIC). One can use diffefrent number of seeds.
 }
 \value{
 An object of class \code{"dgmm"} containing fitted values.
@@ -64,18 +65,18 @@ An object of class \code{"dgmm"} containing fitted values.
     (Advance Access, published 1 December, 2017). To appear.
     Preprint arXiv:1711.06929.
 }
-\author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
-}
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
+% \author{
+% %%  ~~who you are~~
+% }
+% \note{
+% %%  ~~further notes~~
+% }
+%
+% %% ~Make other sections like Warning with \section{Warning }{....} ~
+%
+% \seealso{
+% %% ~~objects to See Also as \code{\link{help}}, ~~~
+% }
 \examples{
 \dontrun{
 library(gclus)
