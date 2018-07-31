@@ -6,4 +6,5 @@ importFrom("stats", "factanal", "filter", "kmeans", "princomp",
              "runif", "hclust", "cutree", "dist")
 importFrom("mvtnorm", "dmvnorm", "rmvnorm")
 importFrom("corpcor", "make.positive.definite", "is.positive.definite")
+importFrom("stats", "cov")
 

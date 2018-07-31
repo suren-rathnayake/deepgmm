@@ -261,7 +261,8 @@ if (k1 > 1) {
   s1 <- rep(k1, numobs)
 }
 
-likelihood <- matrix(likelihood[!likelihood == 0])
+# commented out by Suren
+#likelihood <- matrix(likelihood[!likelihood == 0])
 
 h1 <- (k1 - 1) + (p * r) * k1 + p * k1 - (k1 * r * (r - 1) / 2) + (k1 - 1) * p
 h2 <- (k2 - 1) + r * (k2 - 1) + (r * (r + 1) / 2) * (k2 - 1)

@@ -40,7 +40,11 @@ deepgmm(y, layers, k, r = rep(1, layers),
    falls below this value.
 }
   \item{init}{
-   To determine how the initial parameter values are computed. See Details.
+   Initial paritioning of the observations to determine initial
+   parameter values. See Details.
+}
+\item{method}{
+ To determine how the initial parameter values are computed. See Details.
 }
 }
 \details{

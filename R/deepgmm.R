@@ -182,6 +182,8 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
   icl.bic <- out$icl.bic
   clc <- out$clc
 
+  s <- matrix(s, nrow = numobs)
+  
   output <- list (H = H, w = w, mu = mu, psi = psi, lik = lik,
                  bic = bic, aic = aic, clc = clc, s = s, icl.bic = icl.bic,
                  h = h, k = k, r = r[-1], numobs = numobs, layers = layers)
