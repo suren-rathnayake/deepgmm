@@ -1,8 +1,8 @@
 Package: deepgmm
 Type: Package
 Title: Deep Gaussian Mixture Models
-Version: 0.1.41
-Date: 2018-05-04
+Version: 0.1.42
+Date: 2018-07-31
 Author:  Cinzia Viroli, Geoffrey J. McLachlan
 Maintainer: Suren Rathnayake <surenr@gmail.com>
 Description: This package provides functions for fitting deep Gaussian mixtures of models.
