@@ -1,11 +1,12 @@
-## compare different models and return the best one selected according to criterion (BIC or AIC)
+## compare different models and return the best one selected according to
+## criterion (BIC or AIC)
 ## seeds is the different number of seeds to try
 ## layers can be 1,2 or 3
 ## k in an integer number of groups
 
 ## example: out=model.selection(y,3,2,seeds=1)
 
-model.selection <- function (y, k, layers, seeds = 3, it = 50, eps = 0.001,
+model_selection <- function (y, layers, k, seeds = 3, it = 50, eps = 0.001,
                     init = "kmeans", method = "factanal", criterion = "BIC") {
 
 bic.best <- Inf

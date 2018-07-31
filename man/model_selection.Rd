@@ -1,16 +1,16 @@
-\name{deepgmm}
-\alias{deepgmm}
-%- Also NEED an '\alias' for EACH other topic documented here.
+\name{model_selection}
+\alias{model_selection}
+
 \title{
- Fits Deep Gaussian Mixture Models Using
- Stochastic EM algorithm.
+ Function to compare different models
 }
 \description{
-  Fits deep Gaussian mixture model to a multivariate data.
+  Compare different models and return the best one selected according to
+  criterion (BIC or AIC).
 }
 \usage{
-deepgmm(y, layers, k, r = rep(1, layers),
-        it = 50, eps = 0.001, init = "kmeans", method = "factanal")
+model_selection(y, layers, k, seeds = 3, it = 50, eps = 0.001,
+                    init = "kmeans", method = "factanal", criterion = "BIC")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -26,11 +26,8 @@ deepgmm(y, layers, k, r = rep(1, layers),
    A vector of integers of length \code{layers}
    containing the number of groups in the different layers.
 }
-  \item{r}{
-   A vector of integers of length \code{layers}
-   containing the dimensions at the different layers.
-   Dimension of the layers must be in decreasing
-   size.
+  \item{seeds}{
+   Numeric vector containing seeds to try.
 }
   \item{it}{
    Maximum number of EM iterations.
@@ -45,6 +42,9 @@ deepgmm(y, layers, k, r = rep(1, layers),
 }
 \item{method}{
  To determine how the initial parameter values are computed. See Details.
+}
+\item{criterion}{
+ Model selection criterion, either \code{"AIC"} of \code{"BIC"}.
 }
 }
 \details{
@@ -80,27 +80,20 @@ An object of class \code{"dgmm"} containing fitted values.
 \dontrun{
 library(gclus)
 data(wine)
-
 # Scale variables
 y <- scale(wine[, -1])
 cls <- wine[, 1]
-
 ## fit a DGMM with two layers
 layers <- 2
-
 ## number of groups in the different layers
 k <- c(3, 2)
 # 3 is the number of clusters at the observed level,
 # 2 is the number of clusters at the latent level
 
-## dimensions at the different layers
-r <- c(5, 1)
+sel <- model_selection(y, layers, k, seeds = 3, it = 250, eps = 0.001)
+sel
 
-set.seed(1)
-fit <- deepgmm(y, layers, k, r, it=250, eps=0.001)
-fit
-
-summary(fit)
+summary(sel)
 }
 }
 
