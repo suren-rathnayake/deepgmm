@@ -9,7 +9,7 @@
   criterion (BIC or AIC).
 }
 \usage{
-model_selection(y, layers, k, seeds = 3, it = 50, eps = 0.001,
+model_selection(y, layers, g, seeds = 3, it = 50, eps = 0.001,
                     init = "kmeans", method = "factanal", criterion = "BIC")
 }
 %- maybe also 'usage' for other objects documented here.
@@ -22,9 +22,8 @@ model_selection(y, layers, k, seeds = 3, it = 50, eps = 0.001,
    The number of layers in the deep Gaussian mixture model.
    Admitted values are 1, 2 or 3.
 }
-  \item{k}{
-   A vector of integers of length \code{layers}
-   containing the number of groups in the different layers.
+  \item{g}{
+  The number of clusters.
 }
   \item{seeds}{
    Numeric vector containing seeds to try.
@@ -52,7 +51,9 @@ Compare different models and return the best one selected according to
 criterion (BIC or AIC). One can use diffefrent number of seeds.
 }
 \value{
-An object of class \code{"dgmm"} containing fitted values.
+A list containing
+an object of class \code{"dgmm"} containing fitted values
+and list of BIC and AIC values.
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
@@ -87,7 +88,7 @@ cls <- wine[, 1]
 ## fit a DGMM with two layers
 layers <- 2
 ## number of groups in the different layers
-k <- c(3, 2)
+k <- 3
 # 3 is the number of clusters at the observed level,
 # 2 is the number of clusters at the latent level
 

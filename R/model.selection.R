@@ -62,7 +62,7 @@ if (layers == 1) {
 
     r <- as.matrix(expand.grid(1 : pp, 1 : ppp))
     r <- r[(r[, 1]) > (r[, 2]), ]
-    k <- rbind(c(k, 1), c(k, 2), c(k, 3))
+    k <- rbind(c(g, 1), c(g, 2), c(g, 3))
 
     bic <- array(NA, c(seeds, nrow(k), nrow(r)))
     bic.best <- Inf
@@ -109,9 +109,9 @@ if (layers == 1) {
     r <- as.matrix(expand.grid(1 : pp, 1 : ppp, 1 : ppp))
     r <- r[((r[, 1]) > (r[, 2])) & ((r[, 2]) > (r[, 3])), ]
 
-    k <- rbind(c(k, 1, 1), c(k, 2, 1), c(k, 3, 1), c(k, 1, 2),
-               c(k, 2, 2), c(k, 3, 2), c(k, 1, 3), c(k, 2, 3),
-               c(k, 3, 3))
+    k <- rbind(c(g, 1, 1), c(g, 2, 1), c(g, 3, 1), c(g, 1, 2),
+               c(g, 2, 2), c(g, 3, 2), c(g, 1, 3), c(g, 2, 3),
+               c(g, 3, 3))
 
     bic <- array(NA, c(seeds, nrow(k), nrow(r)))
     bic.best <- Inf
