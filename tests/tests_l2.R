@@ -7,7 +7,7 @@ k <- c(3, 4)
 r <- c(3, 2)
 it <- 50
 eps <- 0.001
-seed <- 1
+seed <- 2
 init <- "random"
 
 set.seed(seed)

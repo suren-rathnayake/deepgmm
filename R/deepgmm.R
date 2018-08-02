@@ -19,7 +19,7 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
   p <- ncol(y)
   r <- c(p, r) #### *
 
-  #init
+  # init
   w.list <- NULL
   H.list <- NULL
   psi.list <- NULL
@@ -183,7 +183,7 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
   clc <- out$clc
 
   s <- matrix(s, nrow = numobs)
-  
+
   output <- list (H = H, w = w, mu = mu, psi = psi, lik = lik,
                  bic = bic, aic = aic, clc = clc, s = s, icl.bic = icl.bic,
                  h = h, k = k, r = r[-1], numobs = numobs, layers = layers)

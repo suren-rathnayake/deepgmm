@@ -3,7 +3,7 @@ deep.sem.alg.3 <- function(y, numobs, p, r, k, H.list, psi.list, psi.list.inv,
 
 likelihood <- NULL
 hh <- 0
-ratio <- 1000
+ratio <- Inf
 layers <- length(k)
 #################################
 #### compute the likelihood #####
@@ -215,6 +215,8 @@ while ((hh < it) & (ratio > eps )) {
 
   lik <- sum(log(py))
   likelihood <- c(likelihood, lik)
+
+  print(c(lik, ratio))
 
   if (hh < 5) {
     ratio <- 2 * eps

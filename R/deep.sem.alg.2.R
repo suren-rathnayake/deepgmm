@@ -2,7 +2,7 @@ deep.sem.alg.2 <- function(y, numobs, p, r, k, H.list, psi.list, psi.list.inv,
                            mu.list, w.list, it, eps) {
 likelihood <- NULL
 hh <- 0
-ratio <- 1000
+ratio <- Inf #1000
 layers <- length(k)
 #################################
 #### compute the likelihood #####
@@ -55,7 +55,7 @@ while ((hh < it) & (ratio > eps )) {
       z2.one[,, p1, p2] <- rmvnorm(numobs, rep(0, r[l + 1]), chsi) + t(roy)
       z2[,,p1,p2] <- t(roy)
     }
-}
+  }
 
 for (i in 1 : k[l + 1]) {
   prob <- ps.y.list[[l + 1]][, i, drop = FALSE]
@@ -134,6 +134,9 @@ s <- out$s
 
 lik <- sum(log(py))
 likelihood <- c(likelihood, lik)
+
+print(lik)
+
 
 if (hh < 5) {
   ratio <- 2 * eps

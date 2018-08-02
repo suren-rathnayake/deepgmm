@@ -4,106 +4,93 @@ chol.inv <- function(x, ...) {
   return(inv_x)
 }
 
-# ## compute the misclassification rate between the estimated classification and the truth. 
+compute.est <- function(k, p, qq, ps.y, y, Ez, Ezz, mu) {
 
-# misc <- function(classification, truth) 
-# {
-#     q <- function(map, len, x) {
-#         x <- as.character(x)
-#         map <- lapply(map, as.character)
-#         y <- sapply(map, function(x) x[1])
-#         best <- y != x
-#         if (all(len) == 1) 
-#             return(best)
-#         errmin <- sum(as.numeric(best))
-#         z <- sapply(map, function(x) x[length(x)])
-#         mask <- len != 1
-#         counter <- rep(0, length(len))
-#         k <- sum(as.numeric(mask))
-#         j <- 0
-#         while (y != z) {
-#             i <- k - j
-#             m <- mask[i]
-#             counter[m] <- (counter[m]%%len[m]) + 1
-#             y[x == name(map)[m]] <- map[[m]][counter[m]]
-#             temp <- y != x
-#             err <- sum(as.numeric(temp))
-#             if (err < errmin) {
-#                 errmin <- err
-#                 best <- temp
-#             }
-#             j <- (j + 1)%%k
-#         }
-#         best
-#     }
-#     if (any(isNA <- is.na(classification))) {
-#         classification <- as.character(classification)
-#         nachar <- paste(unique(classification[!isNA]), collapse = "")
-#         classification[isNA] <- nachar
-#     }
-#     MAP <- mapClass(classification, truth)
-#     len <- sapply(MAP[[1]], length)
-#     if (all(len) == 1) {
-#         CtoT <- unlist(MAP[[1]])
-#         I <- match(as.character(classification), names(CtoT), 
-#             nomatch = 0)
-#         one <- CtoT[I] != truth
-#     }
-#     else {
-#         one <- q(MAP[[1]], len, truth)
-#     }
-#     len <- sapply(MAP[[2]], length)
-#     if (all(len) == 1) {
-#         TtoC <- unlist(MAP[[2]])
-#         I <- match(as.character(truth), names(TtoC), nomatch = 0)
-#         two <- TtoC[I] != classification
-#     }
-#     else {
-#         two <- q(MAP[[2]], len, classification)
-#     }
-#     err <- if (sum(as.numeric(one)) > sum(as.numeric(two))) 
-#         as.vector(one)
-#     else as.vector(two)
-#     bad <- seq(along = classification)[err]
-#     errorRate = length(bad)/length(truth)
-#     return(errorRate)
-# }
+value <- .Machine$double.eps #1e-20
+H <- array(0, c(k, p, qq))
+psi <- psi.inv <- array(0, c(k, p, p))
+numobs <- dim(y)[1]
+w <- 0
+for (i in 1 : k) {
+
+  if (qq > 1) {
+    EEzz <- apply((Ezz[i,,, ] * (aperm(array(t(t(ps.y[, i])),
+               c(numobs, qq, qq)), c(2, 3, 1)))), 1, rowSums) / sum(ps.y[, i])
+  }
+  if (qq == 1) {
+    EEzz <- Ezz[i,,, ] %*% (ps.y[, i]) / sum(ps.y[, i])
+  }
+
+  H[i,, ] <- (t((y - t(matrix(mu[, i], p, numobs))) *
+               matrix(ps.y[,i], numobs, p)) %*%
+               (matrix(Ez[i,, ], nrow = numobs) *
+               matrix(ps.y[, i], numobs, qq))) %*% ginv(EEzz) / sum(ps.y[, i])
+
+  H[i,, ] <- ifelse(is.na(H[i,, ]), mean(H[i,, ], na.rm = TRUE), H[i,, ])
+
+  psi[i,, ] <- (t((y - t(matrix(mu[, i], p, numobs))) *
+                matrix(ps.y[, i], numobs, p)) %*%
+                (matrix((y - t(matrix(mu[, i], p, numobs))) *
+                matrix(ps.y[, i], numobs, p), ncol = p)) -
+                t((y - t(matrix(mu[, i], p, numobs))) *
+                matrix(ps.y[, i], numobs, p)) %*%
+                (matrix(Ez[i,, ], nrow = numobs) *
+                matrix(ps.y[, i], numobs, qq)) %*% t(H[i,, ]))
+
+  psi[i,, ] <- psi[i,,, drop = FALSE] / sum(ps.y[, i])
+  psi[i,, ] <- ifelse((psi[i,, ] == 0), value, psi[i,, ])
+  if (p > 1) {
+    psi[i,, ] <- diag(diag(psi[i,, ]))
+    psi.inv[i,, ] <- diag(1/diag(psi[i,, ]))
+  }
+  psi[i,, ]  <- ifelse(is.na(psi[i,, ]), 1, psi[i,, ])
+  psi.inv[i,, ] <- ifelse(is.na(psi.inv[i,, ]), 1, psi.inv[i,, ])
+  mu[, i] <- colSums(matrix(ps.y[, i], numobs, p) *
+               (y - t(matrix(H[i,, ], ncol = qq) %*%
+               t(Ez[i,, ]))))/sum(ps.y[, i])
+  w[i] <- mean(ps.y[, i])
+}
+
+return(list(H = H, mu = mu, psi = psi, psi.inv = psi.inv, w = w))
+}
+
+makeSymm <- function(m) {
+  m[upper.tri(m)] <- t(m)[upper.tri(m)]
+  return(m)
+
+  # pmean <- function(x, y) (x + y) / 2
+  # m[] <- pmean(m, matrix(m, nrow(m), byrow=TRUE))
+  # m
+}
+
+ma <- function(x, n = 5) {
+  filter(x, rep(1/n, n), sides = 1)
+}
+
+entr <- function(z) {
+  numobs <- nrow(z)
+  numg <- ncol(z)
+  temp <- 0
+  # z <- ifelse(z == 0, z + 0.000000000000000000000001, z)
+  z <- ifelse(z == 0, z + .Machine$double.eps, z)
+  for (i in 1 : numg)  {
+    for (j in 1 : numobs) {
+      temp <- temp + (z[j, i] * log(z[j, i]))
+    }
+  }
+  return(-temp)
+}
 
 
-# mapClass <- function (a, b) 
-# {
-#     l <- length(a)
-#     x <- y <- rep(NA, l)
-#     if (l != length(b)) {
-#         warning("unequal lengths")
-#         return(x)
+# entr <- function(z) {
+#   numobs <- nrow(z)
+#   numg <- ncol(z)
+#   temp <- 0
+#   z <- ifelse(z == 0, z + 0.000000000000000000000001, z)
+#   for (i in 1 : numg) {
+#     for (j in 1:numobs) {
+#       temp <- temp + (z[j, i] * log(z[j, i]))
 #     }
-#     aChar <- as.character(a)
-#     bChar <- as.character(b)
-#     Tab <- table(a, b)
-#     Ua <- dimnames(Tab)[[1]]
-#     Ub <- dimnames(Tab)[[2]]
-#     aTOb <- rep(list(Ub), length(Ua))
-#     names(aTOb) <- Ua
-#     bTOa <- rep(list(Ua), length(Ub))
-#     names(bTOa) <- Ub
-#     k <- nrow(Tab)
-#     Map <- rep(0, k)
-#     Max <- apply(Tab, 1, max)
-#     for (i in 1:k) {
-#         I <- match(Max[i], Tab[i, ], nomatch = 0)
-#         aTOb[[i]] <- Ub[I]
-#     }
-#     if (is.numeric(b)) 
-#         aTOb <- lapply(aTOb, as.numeric)
-#     k <- ncol(Tab)
-#     Map <- rep(0, k)
-#     Max <- apply(Tab, 2, max)
-#     for (j in (1:k)) {
-#         J <- match(Max[j], Tab[, j])
-#         bTOa[[j]] <- Ua[J]
-#     }
-#     if (is.numeric(a)) 
-#         bTOa <- lapply(bTOa, as.numeric)
-#     list(aTOb = aTOb, bTOa = bTOa)
+#   }
+#   return(-temp)
 # }

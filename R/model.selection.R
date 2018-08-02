@@ -1,12 +1,4 @@
-## compare different models and return the best one selected according to
-## criterion (BIC or AIC)
-## seeds is the different number of seeds to try
-## layers can be 1,2 or 3
-## k in an integer number of groups
-
-## example: out=model.selection(y,3,2,seeds=1)
-
-model_selection <- function (y, layers, k, seeds = 3, it = 50, eps = 0.001,
+model_selection <- function (y, layers, g, seeds = 3, it = 50, eps = 0.001,
                     init = "kmeans", method = "factanal", criterion = "BIC") {
 
 bic.best <- Inf
@@ -20,19 +12,19 @@ if (layers == 1) {
 
   r <- c(1 : pp)
 
-  bic <- array(NA,c(seeds,pp))
+  bic <- array(NA,c(seeds, pp))
   bic.best <- Inf
-  aic <- array(NA,c(seeds,pp))
+  aic <- array(NA,c(seeds, pp))
   aic.best <- Inf
 
   for (i in 1 : seeds) for (rr in 1 : pp) {
 
       set.seed(i)
-      out <- try(deepgmm(y, 1, k, rr, it = it, eps = eps, init = init,
+      out <- try(deepgmm(y, 1, k = g, rr, it = it, eps = eps, init = init,
                   method = method))
 
       if (!is.character(out)) {
-        if (criterion=="BIC") if (out$bic<bic.best) {
+        if (criterion=="BIC") if (out$bic < bic.best) {
           out.best <- out
           bic.best <- out$bic
         }
@@ -56,9 +48,9 @@ if (layers == 1) {
     cat(paste("Seed=", index[1], " r=", index[2],
               " BIC:", round(out.best$bic, 2), " AIC:",
               round(out.best$aic, 2)))
-  }
+}
 
-  if (layers == 2) {
+if (layers == 2) {
 
     r <- as.matrix(expand.grid(1 : pp, 1 : ppp))
     r <- r[(r[, 1]) > (r[, 2]), ]
@@ -102,9 +94,9 @@ if (layers == 1) {
     cat(paste("Seed=", index[1], " k=", paste(k[index[2],], collapse=" "),
       " r=", paste(r[index[3], ], collapse = " "),
       " BIC:", round(out.best$bic, 2), " AIC:", round(out.best$aic, 2)))
-  }
+}
 
-  if (layers == 3) {
+if (layers == 3) {
 
     r <- as.matrix(expand.grid(1 : pp, 1 : ppp, 1 : ppp))
     r <- r[((r[, 1]) > (r[, 2])) & ((r[, 2]) > (r[, 3])), ]
@@ -153,8 +145,8 @@ if (layers == 1) {
         cat(paste("Seed=",index[1], " k=", paste(k[index[2], ], collapse=" "),
             " r=", paste(r[index[3], ], collapse=" "),
             " BIC:", round(out.best$bic, 2), " AIC:", round(out.best$aic, 2)))
-  }
+}
 
-  out <- list(fit = out.best, bic = bic, aic = aic)
-  invisible(out)
+out <- list(fit = out.best, bic = bic, aic = aic)
+invisible(out)
 }
