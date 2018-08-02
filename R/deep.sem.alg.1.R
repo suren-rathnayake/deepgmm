@@ -230,12 +230,12 @@ for (i in 1 : k2) {
     sigma.tot[i, j,, ] <- matrix(H[j,, ], ncol = r) %*% sigma[i,, ] %*%
                           t(matrix(H[j,, ], ncol = r)) + psi[j,, ]
 
-    if (det(as.matrix(sigma.tot[i, j,, ])) < 0.000000001) {
+    if (det(as.matrix(sigma.tot[i, j,, ])) < some_small_value) {
       diag(sigma.tot[i, j,, ]) <- diag(sigma.tot[i, j, ,]) + 0.5
     }
       py.s1.s2[i,j,] <- dmvnorm(y, muf[, j] + t(matrix(H[j,, ], ncol = r) %*%
                        mu[i, ]), as.matrix(sigma.tot[i, j,, ]))
-      py.s1.s2 <- ifelse(is.na(py.s1.s2), 0.0000001, py.s1.s2)
+      py.s1.s2 <- ifelse(is.na(py.s1.s2), some_small_value, py.s1.s2)
       ps1s2.y[i,j, ] <- w1[j] * w2[i] * py.s1.s2[i, j, ]
       py <- py + ps1s2.y[i, j, ]
   }

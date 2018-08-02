@@ -52,6 +52,11 @@ while ((hh < it) & (ratio > eps )) {
                          c(r[l + 1], r[l + 1], numobs))
       zz2[,,, p1, p2] <- aperm(array(chsi, c(r[l + 1], r[l + 1], numobs)) +
                          roy.quadro, c(3, 1, 2))
+
+      if (!is.positive.definite(chsi)) {
+        chsi <- make.positive.definite(chsi)
+      }
+
       z2.one[,, p1, p2] <- rmvnorm(numobs, rep(0, r[l + 1]), chsi) + t(roy)
       z2[,,p1,p2] <- t(roy)
     }
@@ -111,6 +116,11 @@ for (p1 in 1 : k[l]) {
                   c(r[l + 1], r[l + 1], numobs))
   zz[,,,p1] <- aperm(array(chsi, c(r[l + 1], r[l + 1], numobs)) +
                  roy.quadro,c(3, 1, 2))
+
+  if (!is.positive.definite(chsi)) {
+      chsi <- make.positive.definite(chsi)
+  }
+
   z.one[,, p1] <- t(roy) + rmvnorm(numobs, rep(0, r[l + 1]), chsi)
   z[,, p1] <- t(roy)
 }
