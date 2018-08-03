@@ -58,7 +58,7 @@ while ((hh < it) & (ratio > eps )) {
       }
 
       z2.one[,, p1, p2] <- rmvnorm(numobs, rep(0, r[l + 1]), chsi) + t(roy)
-      z2[,,p1,p2] <- t(roy)
+      z2[,, p1,p2] <- t(roy)
     }
   }
 
