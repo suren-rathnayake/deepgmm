@@ -33,6 +33,7 @@ while ((hh < it) & (ratio > eps )) {
 
   for (p1 in 1 : k[l]) {
     for (p2 in 1 : k[l + 1]) {
+
       A <- ginv(H.list[[l + 1]][p2,, ] %*% t(H.list[[l + 1]][p2,, ]) +
             psi.list[[l + 1]][p2,, ]) + t(H.list[[l]][p1,, ]) %*%
             (psi.list.inv[[l]][p1,, ]) %*% (H.list[[l]][p1,, ])
@@ -151,7 +152,6 @@ print(lik)
 if (hh < 5) {
   ratio <- 2 * eps
 }
-
 if (hh > 5) {
   ratio <- (ma(likelihood, 5) [hh + 1] - ma(likelihood, 5) [hh]) /
             abs(ma(likelihood,5)[hh])
@@ -163,7 +163,6 @@ h <- 0
 for (j in 1 : layers) {
   h <- h + (k[j] - 1) + (r[j] * r[j + 1]) * k[j] + r[j] * k[j] + k[j] * r[j]
 }
-
 if (layers > 1) {
   for (j in 2:layers) {
     h <- h - (r[j] * k[j] * (r[j] - 1) / 2)

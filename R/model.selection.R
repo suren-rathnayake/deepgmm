@@ -52,7 +52,7 @@ if (layers == 1) {
 if (layers == 2) {
 
   r <- as.matrix(expand.grid(1 : pp, 1 : ppp))
-  r <- r[(r[, 1]) > (r[, 2]), ]
+  r <- r[(r[, 1]) > (r[, 2]),, drop = FALSE]
   k <- rbind(c(g, 1), c(g, 2), c(g, 3))
 
   bic <- array(NA, c(seeds, nrow(k), nrow(r)))
