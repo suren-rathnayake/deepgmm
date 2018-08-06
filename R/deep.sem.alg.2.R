@@ -59,7 +59,7 @@ while ((hh < it) & (ratio > eps )) {
       }
 
       z2.one[,, p1, p2] <- rmvnorm(numobs, rep(0, r[l + 1]), chsi) + t(roy)
-      z2[,, p1,p2] <- t(roy)
+      z2[,, p1, p2] <- t(roy)
     }
   }
 
@@ -76,6 +76,7 @@ for (i in 1 : k[l + 1]) {
 }
 
 z.list[[l]] <- aperm(z.one, c(3, 1, 2))
+
 out <- compute.est(k[l], r[l], r[l+1], ps.y.list[[l]], yy,
         aperm(z, c(3, 1, 2)), aperm(zz, c(4, 2, 3, 1)), mu.list[[l]])
 

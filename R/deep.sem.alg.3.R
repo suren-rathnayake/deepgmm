@@ -27,13 +27,13 @@ while ((hh < it) & (ratio > eps )) {
   l <- 1
   yy <- y
   z2 <- z2.one <- array(0, c(numobs, r[l + 1], k[l], k[l + 1], k[l + 2]))
-  zz2 <- array(0, c(numobs, r[l +1], r[l+1], k[l], k[l+1], k[l + 2]))
-  z <- z.one <- array(0, c(numobs, r[l+1], k[l]))
-  zz <- array(0, c(numobs, r[l+1], r[l+1], k[l]))
+  zz2 <- array(0, c(numobs, r[l +1], r[l + 1], k[l], k[l + 1], k[l + 2]))
+  z <- z.one <- array(0, c(numobs, r[l + 1], k[l]))
+  zz <- array(0, c(numobs, r[l + 1], r[l + 1], k[l]))
 
   for (p1 in 1 : k[l]) {
-    for (p2 in 1 : k[l+1]) {
-      for (p3 in 1 : k[l+2]) {
+    for (p2 in 1 : k[l + 1]) {
+      for (p3 in 1 : k[l + 2]) {
         sigma.tilde.inv <- ginv(H.list[[l+1]][p2,, ] %*%
                             (H.list[[l+2]][p3,,] %*% t(H.list[[l+2]][p3,,]) +
                             psi.list[[l+2]][p3,,]) %*% t(H.list[[l+1]][p2,,]) +
@@ -53,7 +53,6 @@ while ((hh < it) & (ratio > eps )) {
         if (!isSymmetric(chsi)) {
           chsi <- makeSymm(chsi)
         }
-
         roy <- chsi %*% b
         roy.quadro <- array(apply(roy, 2, function(x) x %*% t(x)),
                             c(r[l + 1], r[l + 1], numobs))
