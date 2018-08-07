@@ -83,13 +83,12 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
           psi[j,, ] <- 0.1 * diag(r[i])
 	        psi.inv[j,, ] <- diag(r[i])
 	        H[j,, ] <- matrix(runif(r[i] * r[i + 1]), r[i], r[i + 1])
+
 	        zt <- try(princomp(data[indices, ])$scores[, 1 : r[i + 1]],
                     silent = TRUE)
-
 	        if (!is.character(zt)) {
 	          zt <- matrix(zt, ncol = r[i+1])
-	        }
-	        if (is.character(zt)) {
+	        } else {
 	          zt <- matrix(data[indices, sample(1 : r[i + 1])], ncol = r[i + 1])
 	        }
 	        z[indices, ] <- zt
@@ -104,7 +103,7 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
 	      mu[, j] <- colMeans(data[indices,, drop = FALSE])
 	    }
 
-	  } else {
+    } else {
 
       z <- matrix(NA, nrow = numobs, ncol = r[i + 1])
 			for (j in 1 : k[i]) {
@@ -117,9 +116,6 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
 			  Di.sqrt <- diag(sqrt(diag(diag(diag(Si)))))
 			  inv.Di.sqrt <- diag(1 / diag(Di.sqrt))
 			  eig.list <- eigen(inv.Di.sqrt %*% Si %*% inv.Di.sqrt)
-			  # eig.list <- try(eigen(inv.Di.sqrt %*% Si %*% inv.Di.sqrt), TRUE)
-			  # if (class(eig.list) == "try-error")
-			  #   break
 			  eigH <- eig.list$vectors
 			  sort.lambda <- sort(eig.list$values, decreasing = TRUE,
 			                                       index.return = TRUE)
@@ -129,7 +125,6 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
 			  if (q == 1) {
 			    H[j,, ] <- Di.sqrt %*% eigH[, ix.lambda[1 : q]] %*%
 			                    diag((lambda[1 : q] - sigma2), q)
-
 			    z[indices, ] <-  sweep(data[indices,, drop = FALSE], 2,
 			   	                   mu[, j, drop = FALSE], '-') %*%
 			                        t(1 / (t(H[j,, ]) %*% H[j,, ] +
@@ -152,8 +147,6 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
     mu.list[i] <- list(mu)
     psi.list[i] <- list(psi)
     psi.list.inv[i] <- list(psi.inv)
-    #z.list[i] <- list(aperm(array(z[, 1 : r[i + 1]],
-    #                  c(numobs, r[i + 1], k[i])), c(3, 1, 2)))
   }
 
   ##############################################################################
@@ -182,12 +175,17 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
   icl.bic <- out$icl.bic
   clc <- out$clc
 
-  s <- matrix(s, nrow = numobs)
+  if (! class(s) %in% "matrix")
+    s <- matrix(s, nrow = numobs)
 
-  output <- list (H = H, w = w, mu = mu, psi = psi, lik = lik,
-                 bic = bic, aic = aic, clc = clc, s = s, icl.bic = icl.bic,
-                 h = h, k = k, r = r[-1], numobs = numobs, layers = layers)
-
+  out$lik <- out$likelihood
+  output <- out[c("H", "w", "mu", "psi", "lik", "bic", "aic", "clc",
+                  "icl.bic", "s", "h")]
+  output <- c(output, list(k = k, r = r[-1], numobs = numobs,
+                              layers = layers))
+  #output <- list (H = H, w = w, mu = mu, psi = psi, lik = lik,
+  #               bic = bic, aic = aic, clc = clc, icl.bic = icl.bic, s = s,
+  #               h = h, k = k, r = r[-1], numobs = numobs, layers = layers)
   output$call <- match.call()
   class(output) <- "dgmm"
 

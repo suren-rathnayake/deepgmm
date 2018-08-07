@@ -17,7 +17,7 @@ s <- out$s
 tot.k <- prod(k)
 temp <- sum(log(py))
 likelihood <- c(likelihood, temp)
-#####################################################
+#################################
 z.list <- NULL
 while ((hh < it) & (ratio > eps )) {
   hh <- hh+1
@@ -67,7 +67,7 @@ while ((hh < it) & (ratio > eps )) {
   }
 
   for (i1 in 1 : k[l + 1]) {
-    for (i2 in 1:k[l+2]) {
+    for (i2 in 1:k[l + 2]) {
       prob <- ps.y.list[[l + 1]][, i1, drop = FALSE] *
                 ps.y.list[[l + 2]][, i2, drop = FALSE]
       z <- z + array(z2[,,, i1, i2, drop = FALSE] *

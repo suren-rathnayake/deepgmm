@@ -1,5 +1,6 @@
 deep.sem.alg.2 <- function(y, numobs, p, r, k, H.list, psi.list, psi.list.inv,
                            mu.list, w.list, it, eps) {
+
 likelihood <- NULL
 hh <- 0
 ratio <- Inf #1000
