@@ -27,6 +27,7 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
   mu.list <- NULL
   z.list <- NULL
 
+  # Initial parameters
   for (i in 1 : layers) {
 
     if (i == 1) {
@@ -163,18 +164,6 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
                         psi.list.inv, mu.list, w.list, it, eps)
   }
 
-  H <- out$H
-  w <- out$w
-  mu <- out$mu
-  psi <- out$psi
-  lik <- out$likelihood
-  s <- out$s
-  bic <- out$bic
-  h <- out$h
-  aic <- out$aic
-  icl.bic <- out$icl.bic
-  clc <- out$clc
-
   if (! class(s) %in% "matrix")
     s <- matrix(s, nrow = numobs)
 
@@ -183,9 +172,6 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
                   "icl.bic", "s", "h")]
   output <- c(output, list(k = k, r = r[-1], numobs = numobs,
                               layers = layers))
-  #output <- list (H = H, w = w, mu = mu, psi = psi, lik = lik,
-  #               bic = bic, aic = aic, clc = clc, icl.bic = icl.bic, s = s,
-  #               h = h, k = k, r = r[-1], numobs = numobs, layers = layers)
   output$call <- match.call()
   class(output) <- "dgmm"
 
