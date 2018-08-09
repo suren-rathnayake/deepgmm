@@ -144,7 +144,7 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
     lst$psi.inv[i] <- list(psi.inv)
   }
 
-  ##############################################################################
+  ############################################################################
   if (layers == 1) {
     out <- deep.sem.alg.1(y, numobs, p, r[2], k, lst$H, lst$psi,
                         lst$psi.inv, lst$mu, lst$w, it, eps)
@@ -158,9 +158,6 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
     out <- deep.sem.alg.3(y, numobs, p, r, k, lst$H, lst$psi,
                         lst$psi.inv, lst$mu, lst$w, it, eps)
   }
-
-  # if (! class(s) %in% "matrix")
-  #   s <- matrix(s, nrow = numobs)
 
   out$lik <- out$likelihood
   output <- out[c("H", "w", "mu", "psi", "lik", "bic", "aic", "clc",
