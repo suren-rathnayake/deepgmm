@@ -17,17 +17,11 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
                     eps = eps, init = init)
   numobs <- nrow(y)
   p <- ncol(y)
-  r <- c(p, r) #### *
+  r <- c(p, r)
 
-  # init
-  w.list <- NULL
-  H.list <- NULL
-  psi.list <- NULL
-  psi.list.inv <- NULL
-  mu.list <- NULL
-  z.list <- NULL
-
-  # Initial parameters
+  # Initialing parameters
+  lst <- list(w = list(), H = list(), mu = list(), psi = list(),
+                                                   psi.inv = list())
   for (i in 1 : layers) {
 
     if (i == 1) {
@@ -143,41 +137,41 @@ deepgmm <- function(y, layers, k, r = rep(1, layers),
 		}
 
     w <- matrix(table(s) / numobs)
-    w.list[i] <- list(w)
-    H.list[i] <- list(H)
-    mu.list[i] <- list(mu)
-    psi.list[i] <- list(psi)
-    psi.list.inv[i] <- list(psi.inv)
+    lst$w[i] <- list(w)
+    lst$H[i] <- list(H)
+    lst$mu[i] <- list(mu)
+    lst$psi[i] <- list(psi)
+    lst$psi.inv[i] <- list(psi.inv)
   }
 
   ##############################################################################
   if (layers == 1) {
-    out <- deep.sem.alg.1(y, numobs, p, r[2], k, H.list, psi.list,
-                        psi.list.inv, mu.list, w.list, it, eps)
+    out <- deep.sem.alg.1(y, numobs, p, r[2], k, lst$H, lst$psi,
+                        lst$psi.inv, lst$mu, lst$w, it, eps)
+
   }
   if (layers == 2) {
-    out <- deep.sem.alg.2(y, numobs, p, r, k, H.list, psi.list,
-                        psi.list.inv, mu.list, w.list, it, eps)
+    out <- deep.sem.alg.2(y, numobs, p, r, k, lst$H, lst$psi,
+                        lst$psi.inv, lst$mu, lst$w, it, eps)
   }
   if (layers == 3) {
-    out <- deep.sem.alg.3(y, numobs, p, r, k, H.list, psi.list,
-                        psi.list.inv, mu.list, w.list, it, eps)
+    out <- deep.sem.alg.3(y, numobs, p, r, k, lst$H, lst$psi,
+                        lst$psi.inv, lst$mu, lst$w, it, eps)
   }
 
-  if (! class(s) %in% "matrix")
-    s <- matrix(s, nrow = numobs)
+  # if (! class(s) %in% "matrix")
+  #   s <- matrix(s, nrow = numobs)
 
   out$lik <- out$likelihood
   output <- out[c("H", "w", "mu", "psi", "lik", "bic", "aic", "clc",
                   "icl.bic", "s", "h")]
-  output <- c(output, list(k = k, r = r[-1], numobs = numobs,
-                              layers = layers))
+  output <- c(output, list(k = k, r = r[-1], numobs = numobs, layers = layers))
   output$call <- match.call()
   class(output) <- "dgmm"
 
   message("Estimation Details:")
-  cat(paste("Log-Likelihood", round(lik[length(lik)], 2), "BIC:",
-        round(bic, 2), "AIC:", round(aic, 2), "\n"))
+  cat(paste("Log-Likelihood", round(output$lik[length(output$lik)], 2), "BIC:",
+        round(output$bic, 2), "AIC:", round(output$aic, 2), "\n"))
   cat("\n")
   invisible(output)
 }

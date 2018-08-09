@@ -259,6 +259,9 @@ if (k1 > 1) {
   s1 <- rep(k1, numobs)
 }
 
+if (! class(s1) %in% "matrix")
+  s1 <- matrix(s1, nrow = numobs)
+
 # commented out by Suren
 #likelihood <- matrix(likelihood[!likelihood == 0])
 
