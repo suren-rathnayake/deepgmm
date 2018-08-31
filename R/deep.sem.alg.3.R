@@ -56,10 +56,10 @@ while ((hh < it) & (ratio > eps )) {
         roy <- chsi %*% b
         roy.quadro <- array(apply(roy, 2, function(x) x %*% t(x)),
                             c(r[l + 1], r[l + 1], numobs))
-        zz2[,,, p1, p2, p3]  <- aperm(array(chsi,
+        zz2[,,, p1, p2, p3] <- aperm(array(chsi,
                                      c(r[l + 1], r[l + 1], numobs)) +
                                      roy.quadro, c(3, 1, 2))
-        z2.one[,, p1, p2, p3]  <- rmvnorm(numobs, rep(0, r[l + 1]), chsi) +
+        z2.one[,, p1, p2, p3] <- rmvnorm(numobs, rep(0, r[l + 1]), chsi) +
                                       t(roy)
         z2[,, p1, p2, p3] <- t(roy)
       }
@@ -67,7 +67,7 @@ while ((hh < it) & (ratio > eps )) {
   }
 
   for (i1 in 1 : k[l + 1]) {
-    for (i2 in 1:k[l + 2]) {
+    for (i2 in 1 : k[l + 2]) {
       prob <- ps.y.list[[l + 1]][, i1, drop = FALSE] *
                 ps.y.list[[l + 2]][, i2, drop = FALSE]
       z <- z + array(z2[,,, i1, i2, drop = FALSE] *
@@ -77,8 +77,8 @@ while ((hh < it) & (ratio > eps )) {
                   array(rowSums(prob), c(numobs, r[l + 1], k[l], 1, 1)),
                   c(numobs, r[l + 1], k[l]))
       zz <- zz + array(zz2[,,,, i1, i2, drop = FALSE] *
-              array(rowSums(prob), c(numobs, r[l + 1],
-                r[l + 1], k[l], 1, 1)), c(numobs, r[l + 1], r[l + 1], k[l]))
+              array(rowSums(prob), c(numobs, r[l + 1], r[l + 1], k[l], 1, 1)),
+              c(numobs, r[l + 1], r[l + 1], k[l]))
     }
   }
 

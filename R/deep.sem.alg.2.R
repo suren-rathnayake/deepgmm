@@ -35,10 +35,14 @@ while ((hh < it) & (ratio > eps )) {
   for (p1 in 1 : k[l]) {
     for (p2 in 1 : k[l + 1]) {
 
+      # A is the inverse of \xi_{sl}
+      # = (\Sigma_{sl}^(-1) + \Lambda_{sl}^T \Psi_{sl}^(-1) \Lambda_{sl} )
       A <- ginv(H.list[[l + 1]][p2,, ] %*% t(H.list[[l + 1]][p2,, ]) +
             psi.list[[l + 1]][p2,, ]) + t(H.list[[l]][p1,, ]) %*%
             (psi.list.inv[[l]][p1,, ]) %*% (H.list[[l]][p1,, ])
 
+      # b contains part of p_{sl} (z^{l-1})
+      # =  Sigma_{sl}^(-1) mu_{sl}
       b <- ginv(H.list[[l + 1]][p2,, ] %*% t(H.list[[l + 1]][p2,, ]) +
             psi.list[[l + 1]][p2,, ]) %*%
             matrix(mu.list[[l + 1]][, p2], r[l + 1], numobs) +
@@ -65,9 +69,10 @@ while ((hh < it) & (ratio > eps )) {
   }
 
 for (i in 1 : k[l + 1]) {
-  prob <- ps.y.list[[l + 1]][, i, drop = FALSE]
-  z <- z + array(z2[,,, i, drop = FALSE] * array(rowSums(prob),
-         c(numobs, r[l + 1], k[l], 1)), c(numobs, r[l + 1], k[l]))
+  prob <- ps.y.list[[l + 1]][, `i`, drop = FALSE]
+  z <- z + array(z2[,,, i, drop = FALSE] *
+           array(rowSums(prob), c(numobs, r[l + 1], k[l], 1)),
+           c(numobs, r[l + 1], k[l]))
   z.one <- z.one + array(z2.one[,,, i, drop = FALSE] *
                    array(rowSums(prob), c(numobs, r[l + 1], k[l], 1)),
                    c(numobs, r[l+1], k[l]))
