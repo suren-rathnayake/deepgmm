@@ -1,3 +1,4 @@
+
 deepgmm <- function(y, layers, k, r = rep(1, layers),
             it = 50, eps = 0.001, init = 'kmeans', method = "factanal") {
 
