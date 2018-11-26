@@ -6,9 +6,6 @@ Deep Gaussian Mixture Models
 \packageTitle{deepgmm}
 }
 \description{
-This package provides functions for fitting deep Gaussian
-mixtures of models.
-
 The deep mixture model consists of a set of nested mixtures of
 linear models, which globally provide a nonlinear model able
 to describe the data in a very flexible way.

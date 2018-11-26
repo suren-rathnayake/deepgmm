@@ -1,6 +1,5 @@
-
-deepgmm <- function(y, layers, k, r = rep(1, layers),
-            it = 50, eps = 0.001, init = 'kmeans', method = "factanal") {
+deepgmm <- function(y, layers, k, r,
+            it = 250, eps = 0.001, init = 'kmeans', method = "factanal") {
 
   if (any(tolower(init) == c('kmeans', 'k-means', 'k')))
     init <- 'kmeans'

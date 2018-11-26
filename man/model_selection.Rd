@@ -10,7 +10,7 @@
 }
 \usage{
 model_selection(y, layers, g, seeds = 3, it = 50, eps = 0.001,
-                    init = "kmeans", method = "factanal", criterion = "BIC")
+        init = "kmeans", method = "factanal", criterion = "BIC")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
