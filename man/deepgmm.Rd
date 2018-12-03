@@ -14,7 +14,7 @@ deepgmm(y, layers, k, r,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{y}{
-   A matrix or a data frame of which the rows correspond to
+   A matrix or a data frame in which the rows correspond to
    observations and the columns to variables.
 }
   \item{layers}{
@@ -47,14 +47,14 @@ deepgmm(y, layers, k, r,
 }
 }
 \details{
-Deep Gaussian mixture model is hierarchical inference method organized
-in a multi-layered architecture, where, at each layer, 
+The deep Gaussian mixture model is an hierarchical inference method organized
+in a multilayered architecture where, at each layer, 
 the variables follow a mixture of Gaussian distributions.
-This set of nested mixtures of linear models provide a globally 
-nonlinear model that can to describe the data in a very flexible way. 
-In order to avoid over parameterized solutions, 
+This set of nested mixtures of linear models provides a globally 
+nonlinear model that can describe the data in a very flexible way. 
+In order to avoid overparameterized solutions, 
 dimension reduction by factor models can be applied at each layer of 
-the architecture thus resulting in deep mixtures of factor analyzers.
+the architecture, thus resulting in deep mixtures of factor analyzers.
 
 The data \code{y} must be a matrix or a data frame containing
 numerical values, with no missing values. The rows must correspond to
@@ -66,33 +66,41 @@ is 3.
 The ith element of \code{k} contain number of groups in the ith layer. Thus
 the length \code{k} must equal to \code{layers}. 
 
-The parameter \code{r} contain the latent variable dimension of each layer. 
-Variable at different layers have progressively decreasing dimension,
+The parameters \code{r} contain the latent variable dimension of each layer. 
+Variables at different layers have progressively decreasing dimension,
 \eqn{r_1}, \eqn{r_2}, \dots, \eqn{r_h}, where \eqn{p > r_1 > r_2 > 
 \dots > r_h \geq 1}.
 
-The EM algorithm used by \code{dgmm} require initialization. 
-The initialization is done by partitioning the dataset.
-For this, three options are available in \code{dgmm};
-random partitioning, clustering using the k-means algorithm
-and using the hierarchical clustering.
- With the \code{init = "random"},
+The EM algorithm used by \code{dgmm} requires initialization. 
+The initialization is done by partitioning the dataset, 
+and then estimating the initial values for model parameters 
+based on the partition. 
+There are three options available in \code{dgmm} for the
+initial partitioning of the data;
+random partitioning, clustering using the \emph{k}-means algorithm
+and using the agglomerative hierarchical clustering.
+With the \code{init = "random"}
 the partitioning is done randomly,
-With \code{init = "kmeans"}, the data are partitioned using the
-k-means algorithm of "Hartigan-Wong", 
-while \code{init = "hclass"}
+with \code{init = "kmeans"} the data are partitioned using the
+\emph{k}-means algorithm of "Hartigan-Wong", 
+while with \code{init = "hclass"} agglomerative 
 hierarchical clustering is done to obtain initial partitioning. 
-For this the dissimilarity structure obtained using the 
+For this option the dissimilarity structure is obtained using the 
 Euclidean distance measure.
 
-By default, \code{method = "factanal"}, estimation of initial parameter
-values for the SEM algorithm is done using an approach based on 
-the maximum-likelihood factor analysis. Otherwise, mixtures of 
-probabilistic principal component analysis is done within each layer
-to estimate initial model parameters. 
+After the initial partitioning has been chosen, initial values of
+the parameters in the component analyzers need to be 
+specified. There are two methods available in \code{dgmm}.
+The default option, \code{method = "factanal"} provides estimates of the
+initial parameters based on factor analysis. If 
+\code{method = "ppca"} then mixtures of 
+probabilistic principal component analyzers are fitted within each layer
+to estimate values for model parameters. 
 }
 \value{
 An object of class \code{"dgmm"} containing fitted values.
+It contains
+ \item{H}
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}

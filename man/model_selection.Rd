@@ -5,7 +5,7 @@
  Function to compare different models
 }
 \description{
-  Compare different models and return the best one selected according to
+  Compares different models and return the best one selected according to
   criterion (BIC or AIC).
 }
 \usage{
@@ -15,7 +15,7 @@ model_selection(y, layers, g, seeds = 3, it = 50, eps = 0.001,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{y}{
-   A matrix or a data frame of which rows correspond to
+   A matrix or a data frame in which rows correspond to
    observations and columns to variables.
 }
   \item{layers}{
@@ -47,7 +47,7 @@ model_selection(y, layers, g, seeds = 3, it = 50, eps = 0.001,
 }
 }
 \details{
-Compare different models and return the best one selected according to
+Compares different models and return the best one selected according to
 criterion (BIC or AIC). One can use diffefrent number of seeds.
 }
 \value{

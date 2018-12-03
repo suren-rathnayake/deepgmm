@@ -100,6 +100,9 @@ deepgmm <- function(y, layers, k, r,
 
     } else {
 
+      if (method != "ppca") 
+        stop("method has to be either `factanal` or `ppca`")
+
       z <- matrix(NA, nrow = numobs, ncol = r[i + 1])
 			for (j in 1 : k[i]) {
 
