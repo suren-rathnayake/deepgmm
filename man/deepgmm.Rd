@@ -100,30 +100,24 @@ to estimate values for model parameters.
 \value{
 An object of class \code{"dgmm"} containing fitted values.
 It contains
- \item{H} a list in which the \emph{i}th element is the loading 
- matrix for the \emph{i}th layer.
- \item{w} a list containing mixing proportions for each layer. (i.e. 
+ \item{H}{A list in which the \emph{i}th element is the loading 
+ matrix for the \emph{i}th layer}
+ \item{w}{A list containing mixing proportions for each layer. (i.e. 
  the element w[[i]][j] contain the mixing proportion of the \emph{j}th
- component in the \emph{i} layer.)
- \item{mu} a list of matrices containing components means in the columns.
+ component in the \emph{i} layer.)}
+ \item{mu}{A list of matrices containing components means in the columns.
   (i.e. the element mu[[i]][, j] contain the component mean of the \emph{j}th
- component in the \emph{i} layer.)
- \item{psi} a list of arrays which contain covariance matrices for 
+ component in the \emph{i} layer.)}
+ \item{psi}{A list of arrays which contain covariance matrices for 
  the random error components of each component (i.e. the element 
  psi[[i]][j, ,, ] contain the error covariance matrix 
- for the \emph{j}th component in the \emph{i} layer.) 
-\item{lik} the log-likelihood after each EM iteration.
-\item{bic} the Bayesian information criterion for the model fit.
-\item{acl} the Akaike information criterion for the model fit.
-\item{clc} the Classification likelihood information criterion for the model fit.
-\item{icl.bic} the integrated classification criterion for the model fit.
-\item{s} clustering of the observations.
-
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+ for the \emph{j}th component in the \emph{i} layer.)} 
+\item{lik}{The log-likelihood after each EM iteration}
+\item{bic}{The Bayesian information criterion for the model fit}
+\item{acl}{The Akaike information criterion for the model fit}
+\item{clc}{The Classification likelihood information criterion for the model fit}
+\item{icl.bic}{The integrated classification criterion for the model fit}
+\item{s}{Clustering of the observations}
 }
 \references{
     Viroli, C. and McLachlan, G.J. (2018).
