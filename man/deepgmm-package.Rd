@@ -2,7 +2,6 @@
 \alias{deepgmm-package}
 \docType{package}
 \title{
-Deep Gaussian Mixture Models
 \packageTitle{deepgmm}
 }
 \description{

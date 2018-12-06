@@ -5,7 +5,8 @@ Version: 0.1.50
 Date: 2018-12-04
 Author:  Cinzia Viroli, Geoffrey J. McLachlan
 Maintainer: Suren Rathnayake <surenr@gmail.com>
-Description: This package provides functions for fitting deep Gaussian mixture of models.
+Description: This package provides functions for fitting 
+    deep Gaussian mixture models.
 Depends: mvtnorm, corpcor
 Suggests: testthat
 License: GPL (>= 3)
