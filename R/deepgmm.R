@@ -164,7 +164,7 @@ deepgmm <- function(y, layers, k, r,
 
   out$lik <- out$likelihood
   output <- out[c("H", "w", "mu", "psi", "lik", "bic", "aic", "clc",
-                  "icl.bic", "s", "h")]
+                  "icl_bic", "s", "h")]
   output <- c(output, list(k = k, r = r[-1], numobs = numobs, layers = layers))
   output$call <- match.call()
   class(output) <- "dgmm"

@@ -181,6 +181,6 @@ icl.bic <- -2 * lik + 2 * EN + h * log(numobs)
 
 out <- list(H = H.list, w = w.list, mu = mu.list, psi = psi.list,
             likelihood = likelihood, bic = bic, aic = aic, clc = clc,
-            s = s, icl.bic = icl.bic, h = h, ps.y = ps.y)
+            s = s, icl_bic = icl.bic, h = h, ps.y = ps.y)
 return(out)
 }

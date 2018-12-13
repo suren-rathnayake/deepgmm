@@ -285,7 +285,7 @@ deep.sem.alg.1 <- function(y, numobs, p, r, k, H.list, psi.list,
 
   out <- list(H = list(H = H), w = list(w = w1), mu = list(mu = muf),
               psi = list(psi = psi), likelihood = likelihood,
-              bic = bic, aic = aic, clc = clc, s = s1, icl.bic = icl.bic,
+              bic = bic, aic = aic, clc = clc, s = s1, icl_bic = icl.bic,
               h = h) ######, ps.y = ps.y)
 
   return(out)
