@@ -40,6 +40,11 @@ if (!is.numeric(k)) {
 }
 
 # r
+if (r[1] >= ncol(Y)) {
+
+  stop("Elements of r must be less than the number of variables in the data")
+}
+
 if (!is.numeric(r)) {
 
   stop("Elements of k must be numeric.")
