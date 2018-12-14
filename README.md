@@ -1,3 +1,8 @@
+**Build Status**
+
+[![Build Status](https://travis-ci.org/suren-rathnayake/deepgmm.svg?branch=master)](https://travis-ci.org/suren-rathnayake/deepgmm)
+
+
 # deepgmm
 
 This package is provides a mixture model based approach for deep learning. It is based on the work done by Viroli and McLachlan (2018).
