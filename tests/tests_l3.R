@@ -18,7 +18,7 @@ model <- deepgmm(y = y, layers = layers, k = k, r = r,
 expect_that(model, is_a("dgmm"))
 #expect_that(model, is_a("emmix"))
 expect_named(model, c("H", "w", "mu", "psi", "lik", "bic",
-	                    "aic", "clc", "icl.bic", "s", "h",
+	                    "aic", "clc", "icl_bic", "s", "h",
                       "k", "r", "numobs", "layers",  "call"))
 
 n <- nrow(y)

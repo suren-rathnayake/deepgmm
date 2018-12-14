@@ -17,6 +17,7 @@ if (is.null(p)) {
   stop("The data must have more than one variable.")
 }
 
+# layers
 if (!is.numeric(layers)) {
 
   stop("Layers can only be 1, 2, or 3.")
@@ -27,6 +28,7 @@ if (!(layers %in% c(1, 2, 3))) {
   stop("Only upto three layers are allowed.")
 }
 
+# k
 if (!(length(k) == layers)) {
 
   stop("Length of k must be equal to layers.")
@@ -37,6 +39,7 @@ if (!is.numeric(k)) {
   stop("Elements of k must be numeric.")
 }
 
+# r
 if (!is.numeric(r)) {
 
   stop("Elements of k must be numeric.")
@@ -47,12 +50,21 @@ if (!(length(r) == layers)) {
   stop("Length of k must be equal to layers.")
 }
 
+if (any(r <= 0)) {
+
+  stop("Elements of r must be positive integers.")
+}
+
+# make sure r is decreasing
 if (length(r) > 1) {
-if (any((r[1 : (layers - 1)] - r[2 : layers]) < 0)) {
+  if (any (diff(r) > -1)) {
 
-  stop("Elements of r must be in decreasing order.")
-}}
+    stop("Elements of r must be in decreasing order.")
+  }
+}
 
+
+# it
 if (it < 1) {
 
   stop("Maximum number of iterations, itmax, must be greather than one.")

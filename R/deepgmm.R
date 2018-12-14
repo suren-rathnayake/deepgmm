@@ -11,6 +11,7 @@ deepgmm <- function(y, layers, k, r,
     method <- "factanal"
   if (class(y) == "data.frame")
   	y <- as.matrix(y)
+  
 
   # check arguments
   tmp <- valid_args(Y = y, layers = layers, k = k, r = r, it = it,
