@@ -65,6 +65,7 @@ deepgmm <- function(y, layers, k, r,
     psi <- psi.inv <- array(0, c(k[i], r[i], r[i]))
     H <- array(0, c(k[i], r[i], r[i + 1]))
     mu <- matrix(0, r[i], k[i])
+
 	  if (method == "factanal") {
 
       z <- matrix(NA, nrow = numobs, ncol = r[i + 1])
@@ -82,12 +83,14 @@ deepgmm <- function(y, layers, k, r,
 
 	        zt <- try(princomp(data[indices, ])$scores[, 1 : r[i + 1]],
                     silent = TRUE)
+
 	        if (!is.character(zt)) {
 	          zt <- matrix(zt, ncol = r[i+1])
 	        } else {
 	          zt <- matrix(data[indices, sample(1 : r[i + 1])], ncol = r[i + 1])
 	        }
 	        z[indices, ] <- zt
+          
 	      } else {
 
 	        psi[j,, ] <- diag(stima$uniq)
@@ -170,9 +173,9 @@ deepgmm <- function(y, layers, k, r,
   output$call <- match.call()
   class(output) <- "dgmm"
 
-  message("Estimation Details:")
-  cat(paste("Log-Likelihood", round(output$lik[length(output$lik)], 2), "BIC:",
-        round(output$bic, 2), "AIC:", round(output$aic, 2), "\n"))
-  cat("\n")
+  # message("Estimation Details:")
+  # cat(paste("Log-Likelihood", round(output$lik[length(output$lik)], 2), "BIC:",
+  #       round(output$bic, 2), "AIC:", round(output$aic, 2), "\n"))
+  # cat("\n")
   invisible(output)
 }

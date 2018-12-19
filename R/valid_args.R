@@ -40,7 +40,7 @@ if (!is.numeric(k)) {
 }
 
 # r
-if (r[1] >= ncol(Y)) {
+if  (any(r >= ncol(Y))) {
 
   stop("Elements of r must be less than the number of variables in the data")
 }

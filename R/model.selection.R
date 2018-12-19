@@ -11,9 +11,9 @@ pppp <- round(p / 4, 0)
 if (layers == 1) {
 
   r <- c(1 : pp)
-  bic <- array(NA,c(seeds, pp))
+  bic <- array(NA, c(seeds, pp))
   bic.best <- Inf
-  aic <- array(NA,c(seeds, pp))
+  aic <- array(NA, c(seeds, pp))
   aic.best <- Inf
 
   for (i in 1 : seeds) for (rr in 1 : pp) {
@@ -43,10 +43,11 @@ if (layers == 1) {
   if (criterion == "AIC")
     index <- which(aic == min(aic, na.rm = TRUE), arr.ind = TRUE)[1, ]
 
-  message("Best Fit: \n")
-  cat(paste("Seed=", index[1], " r=", index[2],
-            " BIC:", round(out.best$bic, 2), " AIC:",
-            round(out.best$aic, 2)))
+  message(paste("Best Fit with init =", init, "and method =", method, "\n"))
+  cat(paste0("Seed=", index[1], 
+    ", r = ", index[2],
+    ", BIC: ", round(out.best$bic, 2), 
+    ", AIC: ", round(out.best$aic, 2)))
 }
 
 if (layers == 2) {
@@ -89,10 +90,12 @@ if (criterion == "BIC")
 if (criterion == "AIC")
   index <- which(aic == min(aic, na.rm = TRUE), arr.ind = TRUE)[1, ]
 
-message("Best Fit: \n")
-cat(paste("Seed=", index[1], " k=", paste(k[index[2],], collapse=" "),
-  " r=", paste(r[index[3], ], collapse = " "),
-  " BIC:", round(out.best$bic, 2), " AIC:", round(out.best$aic, 2)))
+message(paste("Best Fit with init =", init, "and method =", method, "\n"))
+cat(paste0("Seed = ", index[1], 
+  ", k =", paste(k[index[2],], collapse=" "),
+  ", r = ", paste(r[index[3], ], collapse = " "),
+  ", BIC:", round(out.best$bic, 2), 
+  ", AIC:", round(out.best$aic, 2)))
 }
 
 if (layers == 3) {
@@ -140,10 +143,13 @@ if (layers == 3) {
       if (criterion == "AIC")
         index <- which(aic == min(aic, na.rm = TRUE), arr.ind = TRUE)[1, ]
 
-      message("Best Fit: \n")
-        cat(paste("Seed=",index[1], " k=", paste(k[index[2], ], collapse=" "),
-            " r=", paste(r[index[3], ], collapse=" "),
-            " BIC:", round(out.best$bic, 2), " AIC:", round(out.best$aic, 2)))
+     message(paste("Best Fit with init =", init, "and method =", method, "\n"))
+
+        cat(paste0("Seed = ", index[1], 
+          ", k = ", paste(k[index[2], ], collapse=" "),
+          ", r = ", paste(r[index[3], ], collapse=" "),
+          ", BIC: ", round(out.best$bic, 2), 
+          ", AIC: ", round(out.best$aic, 2)))
 }
 
 out <- list(fit = out.best, bic = bic, aic = aic)
