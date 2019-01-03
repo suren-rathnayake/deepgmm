@@ -41,11 +41,5 @@ factanal_para <- function(data, s, k, r, i, numobs) {
   }
 
   w <- matrix(table(s) / numobs)
-  lst$w[i] <- list(w)
-  lst$H[i] <- list(H)
-  lst$mu[i] <- list(mu)
-  lst$psi[i] <- list(psi)
-  lst$psi.inv[i] <- list(psi.inv)
-
-  lst
+  return(list(w = w, H = H, mu = mu, psi = psi, psi.inv = psi.inv, z = z))
 }

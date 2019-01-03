@@ -79,7 +79,14 @@ deepgmm <- function(y, layers, k, r,
       #
 	    #   mu[, j] <- colMeans(data[indices,, drop = FALSE])
 	    # }
-      lst <- factanal_para(data, s, k, r, i, numobs)
+      i_lst <- factanal_para(data, s, k, r, i, numobs)
+
+      lst$w[i] <- list(i_lst$w)
+      lst$H[i] <- list(i_lst$H)
+      lst$mu[i] <- list(i_lst$mu)
+      lst$psi[i] <- list(i_lst$psi)
+      lst$psi.inv[i] <- list(i_lst$psi.inv)
+      z <- i_lst$z
 
     } else {
     # initialize parameters using probabilistic principal component analysis
