@@ -1,4 +1,4 @@
-initial_clustering <- function(data, k, init = 'random') {
+initial_clustering <- function(data, k, i, init = 'random') {
 
   numobs <- nrow(data)
 
@@ -13,7 +13,7 @@ initial_clustering <- function(data, k, init = 'random') {
 
   if (init == 'hclass') {
     if (k[i] > 1) {
-      s <- cutree(hclust(dist(y), "ward.D2"), k[i])
+      s <- cutree(hclust(dist(data), "ward.D2"), k[i])
     } else {
       s <- rep(1, numobs)
     }

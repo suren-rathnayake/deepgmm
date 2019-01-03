@@ -30,7 +30,7 @@ deepgmm <- function(y, layers, k, r,
       data <- z[, 1 : r[i], drop = FALSE]
     }
 
-    s <- initial_clustering(data, k, init)
+    s <- initial_clustering(data, k, i, init)
 
     # in case if one of the groups is small
     for  (j in 1 : k[i]) {
