@@ -12,7 +12,6 @@ deepgmm <- function(y, layers, k, r,
   if (class(y) == "data.frame")
   	y <- as.matrix(y)
 
-
   # check arguments
   tmp <- valid_args(Y = y, layers = layers, k = k, r = r, it = it,
                     eps = eps, init = init)
@@ -31,30 +30,7 @@ deepgmm <- function(y, layers, k, r,
       data <- z[, 1 : r[i], drop = FALSE]
     }
 
-    if (init == 'kmeans') {
-      if (k[i] > 1) {
-        s <- kmeans(data, k[i], iter.max = 100, nstart = 30,
-               algorithm = "Hartigan-Wong")$cluster
-      } else {
-        s <- rep(1, numobs)
-      }
-    }
-
-    if (init == 'hclass') {
-      if (k[i] > 1) {
-        s <- cutree(hclust(dist(y), "ward.D2"), k[i])
-      } else {
-        s <- rep(1, numobs)
-      }
-    }
-
-    if (init == 'random') {
-      if (k[i] > 1) {
-        s <- sample(1 : k[i], numobs, replace = TRUE)
-      } else {
-        s <- rep(1, numobs)
-      }
-    }
+    s <- initial_clustering(data, k, init)
 
     # in case if one of the groups is small
     for  (j in 1 : k[i]) {
