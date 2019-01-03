@@ -99,3 +99,27 @@ test_that('data types correct', {
     expect_is(model$aic,'numeric')
     expect_is(model$clc,'numeric')
 })
+
+
+context("method  = ppca")
+
+set.seed(seed)
+y <- scale(y)
+model <- deepgmm(y = y, layers = layers, k = k, r = r,
+                  it = it, eps = eps, init = init, method = "ppca")
+
+expect_that(model, is_a("dgmm"))
+#expect_that(model, is_a("emmix"))
+expect_named(model, c("H", "w", "mu", "psi", "lik", "bic",
+	                    "aic", "clc", "icl_bic", "s", "h",
+                      "k", "r", "numobs", "layers",  "call"))
+#
+set.seed(seed)
+y <- iris[, -5]
+model <- deepgmm(y = y, layers = layers, k = k, r = r,
+                  it = it, eps = eps, init = init, method = "ppca")
+
+expect_that(model, is_a("dgmm"))
+expect_named(model, c("H", "w", "mu", "psi", "lik", "bic",
+	                    "aic", "clc", "icl_bic", "s", "h",
+                      "k", "r", "numobs", "layers",  "call"))

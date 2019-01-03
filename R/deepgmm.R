@@ -135,6 +135,15 @@ deepgmm <- function(y, layers, k, r,
       lst$mu[i] <- list(mu)
       lst$psi[i] <- list(psi)
       lst$psi.inv[i] <- list(psi.inv)
+
+      i_lst <- ppca_para(data, s, k, r, i, numobs)
+
+      lst$w[i] <- list(i_lst$w)
+      lst$H[i] <- list(i_lst$H)
+      lst$mu[i] <- list(i_lst$mu)
+      lst$psi[i] <- list(i_lst$psi)
+      lst$psi.inv[i] <- list(i_lst$psi.inv)
+      z <- i_lst$z
     }
 
 
