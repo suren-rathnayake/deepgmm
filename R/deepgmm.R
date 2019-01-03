@@ -11,7 +11,7 @@ deepgmm <- function(y, layers, k, r,
     method <- "factanal"
   if (class(y) == "data.frame")
   	y <- as.matrix(y)
-  
+
 
   # check arguments
   tmp <- valid_args(Y = y, layers = layers, k = k, r = r, it = it,
@@ -56,6 +56,7 @@ deepgmm <- function(y, layers, k, r,
       }
     }
 
+    # in case if one of the groups is small
     for  (j in 1 : k[i]) {
       if ((table(s)[j]) < 2) {
         s[sample(1 : numobs, 2, replace = FALSE)] <- j
@@ -90,7 +91,7 @@ deepgmm <- function(y, layers, k, r,
 	          zt <- matrix(data[indices, sample(1 : r[i + 1])], ncol = r[i + 1])
 	        }
 	        z[indices, ] <- zt
-          
+
 	      } else {
 
 	        psi[j,, ] <- diag(stima$uniq)
@@ -104,7 +105,7 @@ deepgmm <- function(y, layers, k, r,
 
     } else {
 
-      if (method != "ppca") 
+      if (method != "ppca")
         stop("method has to be either `factanal` or `ppca`")
 
       z <- matrix(NA, nrow = numobs, ncol = r[i + 1])
