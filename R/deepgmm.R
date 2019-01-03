@@ -45,41 +45,7 @@ deepgmm <- function(y, layers, k, r,
     mu <- matrix(0, r[i], k[i])
 
 	  if (method == "factanal") {
-    # initialize parameters using factor analysis of covariance matrix
-      # z <- matrix(NA, nrow = numobs, ncol = r[i + 1])
-	    # for (j in 1 : k[i]) {
-      #
-	    # 	indices <- which(s == j)
-	    #   stima <- try(factanal(data[indices, ], r[i + 1], rotation = "none",
-	    #               scores = "Bartlett"), silent = TRUE)
-      #
-	    #   if (is.character(stima)) {
-      #
-      #     psi[j,, ] <- 0.1 * diag(r[i])
-	    #     psi.inv[j,, ] <- diag(r[i])
-	    #     H[j,, ] <- matrix(runif(r[i] * r[i + 1]), r[i], r[i + 1])
-      #
-	    #     zt <- try(princomp(data[indices, ])$scores[, 1 : r[i + 1]],
-      #               silent = TRUE)
-      #
-	    #     if (!is.character(zt)) {
-	    #       zt <- matrix(zt, ncol = r[i+1])
-	    #     } else {
-	    #       zt <- matrix(data[indices, sample(1 : r[i + 1])], ncol = r[i + 1])
-	    #     }
-	    #     z[indices, ] <- zt
-      #
-	    #   } else {
-      #
-	    #     psi[j,, ] <- diag(stima$uniq)
-	    #     H[j,, ] <- stima$load
-	    #     psi.inv[j,, ] <- diag(1/stima$uniq)
-	    #     z[indices, ] <- stima$scores
-	    #   }
-      #
-	    #   mu[, j] <- colMeans(data[indices,, drop = FALSE])
-	    # }
-      i_lst <- factanal_para(data, s, k, r, i, numobs)
+        i_lst <- factanal_para(data, s, k, r, i, numobs)
 
       lst$w[i] <- list(i_lst$w)
       lst$H[i] <- list(i_lst$H)
@@ -94,50 +60,50 @@ deepgmm <- function(y, layers, k, r,
       if (method != "ppca")
         stop("method has to be either `factanal` or `ppca`")
 
-      z <- matrix(NA, nrow = numobs, ncol = r[i + 1])
-			for (j in 1 : k[i]) {
-
-				q <- r[i + 1]
-			  indices <- which(s == j)
-			  mu[, j] <- colMeans(data[indices,, drop = FALSE])
-			  Si <- cov(data[indices, ])
-			  psi[j,, ] <-  diag(diag(Si))
-			  Di.sqrt <- diag(sqrt(diag(diag(diag(Si)))))
-			  inv.Di.sqrt <- diag(1 / diag(Di.sqrt))
-			  eig.list <- eigen(inv.Di.sqrt %*% Si %*% inv.Di.sqrt)
-			  eigH <- eig.list$vectors
-			  sort.lambda <- sort(eig.list$values, decreasing = TRUE,
-			                                       index.return = TRUE)
-			  lambda <- sort.lambda$x
-			  ix.lambda   <- sort.lambda$ix
-			  sigma2 <- mean(lambda[(q + 1) : ncol(data)])
-			  if (q == 1) {
-			    H[j,, ] <- Di.sqrt %*% eigH[, ix.lambda[1 : q]] %*%
-			                    diag((lambda[1 : q] - sigma2), q)
-			    z[indices, ] <-  sweep(data[indices,, drop = FALSE], 2,
-			   	                   mu[, j, drop = FALSE], '-') %*%
-			                        t(1 / (t(H[j,, ]) %*% H[j,, ] +
-			                        	diag(sigma2, q)) %*% t(H[j,, ]))
-			  } else {
-			    H[j,, ] <- Di.sqrt %*% eigH[, ix.lambda[1 : q]] %*%
-			                    diag((lambda[1 : q] - sigma2))
-
-	    		z[indices, ] <-  sweep(data[indices,, drop = FALSE], 2,
-	    			                   mu[, j, drop = FALSE], '-') %*%
-			                         t(chol.inv(t(H[j,, ]) %*% H[j,, ] +
-			                         	diag(sigma2, q)) %*% t(H[j,, ]))
-			  }
-			}
-
-      w <- matrix(table(s) / numobs)
-      lst$w[i] <- list(w)
-      lst$H[i] <- list(H)
-      lst$mu[i] <- list(mu)
-      lst$psi[i] <- list(psi)
-      lst$psi.inv[i] <- list(psi.inv)
+      # z <- matrix(NA, nrow = numobs, ncol = r[i + 1])
+			# for (j in 1 : k[i]) {
+      #
+			# 	q <- r[i + 1]
+			#   indices <- which(s == j)
+			#   mu[, j] <- colMeans(data[indices,, drop = FALSE])
+			#   Si <- cov(data[indices, ])
+			#   psi[j,, ] <-  diag(diag(Si))
+			#   Di.sqrt <- diag(sqrt(diag(diag(diag(Si)))))
+			#   inv.Di.sqrt <- diag(1 / diag(Di.sqrt))
+			#   eig.list <- eigen(inv.Di.sqrt %*% Si %*% inv.Di.sqrt)
+			#   eigH <- eig.list$vectors
+			#   sort.lambda <- sort(eig.list$values, decreasing = TRUE,
+			#                                        index.return = TRUE)
+			#   lambda <- sort.lambda$x
+			#   ix.lambda   <- sort.lambda$ix
+			#   sigma2 <- mean(lambda[(q + 1) : ncol(data)])
+			#   if (q == 1) {
+			#     H[j,, ] <- Di.sqrt %*% eigH[, ix.lambda[1 : q]] %*%
+			#                     diag((lambda[1 : q] - sigma2), q)
+			#     z[indices, ] <-  sweep(data[indices,, drop = FALSE], 2,
+			#    	                   mu[, j, drop = FALSE], '-') %*%
+			#                         t(1 / (t(H[j,, ]) %*% H[j,, ] +
+			#                         	diag(sigma2, q)) %*% t(H[j,, ]))
+			#   } else {
+			#     H[j,, ] <- Di.sqrt %*% eigH[, ix.lambda[1 : q]] %*%
+			#                     diag((lambda[1 : q] - sigma2))
+      #
+	    # 		z[indices, ] <-  sweep(data[indices,, drop = FALSE], 2,
+	    # 			                   mu[, j, drop = FALSE], '-') %*%
+			#                          t(chol.inv(t(H[j,, ]) %*% H[j,, ] +
+			#                          	diag(sigma2, q)) %*% t(H[j,, ]))
+			#   }
+			# }
+      #
+      # w <- matrix(table(s) / numobs)
+      # lst$w[i] <- list(w)
+      # lst$H[i] <- list(H)
+      # lst$mu[i] <- list(mu)
+      # lst$psi[i] <- list(psi)
+      # lst$psi.inv[i] <- list(psi.inv)
+      #
 
       i_lst <- ppca_para(data, s, k, r, i, numobs)
-
       lst$w[i] <- list(i_lst$w)
       lst$H[i] <- list(i_lst$H)
       lst$mu[i] <- list(i_lst$mu)
