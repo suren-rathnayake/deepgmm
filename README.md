@@ -17,5 +17,5 @@ Can be installed directly using the devtools package.
 
 ```
 library(devtools)
-install_github("suren-rathnayake/EMMIXmfa")
+install_github("suren-rathnayake/deepgmm")
 ```
