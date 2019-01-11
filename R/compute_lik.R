@@ -60,6 +60,8 @@ for (i in 1 : tot.k)  {
 # ps.y <- ifelse(is.na(ps.y), 1/k, ps.y)
 # py <- exp(-cc) * py
 
+# followning lines were used instead of the lines above
+# to avod problmes with near zero pi_i's. 
 pys_max <- apply(pys, 1, max)
 pys <- sweep(pys, 1, pys_max, '-')
 pys <- exp(pys)

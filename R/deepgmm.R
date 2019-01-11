@@ -1,5 +1,5 @@
 deepgmm <- function(y, layers, k, r,
-            it = 250, eps = 0.001, init = 'kmeans', method = "factanal") {
+            it = 250, eps = 0.001, init = 'kmeans', method = 'factanal') {
 
   if (any(tolower(init) == c('kmeans', 'k-means', 'k')))
     init <- 'kmeans'
@@ -8,8 +8,8 @@ deepgmm <- function(y, layers, k, r,
   if (any(tolower(init) == c('hclass', 'h')))
     init <- 'hclass'
   if (any(tolower(method) == c('factanal', 'factana', 'fact', 'f')))
-    method <- "factanal"
-  if (class(y) == "data.frame")
+    method <- 'factanal'
+  if (class(y) == 'data.frame')
   	y <- as.matrix(y)
 
   # check arguments
@@ -25,8 +25,10 @@ deepgmm <- function(y, layers, k, r,
   for (i in 1 : layers) {
 
     if (i == 1) {
+
       data <- y
     } else {
+
       data <- z[, 1 : r[i], drop = FALSE]
     }
 
@@ -71,15 +73,12 @@ deepgmm <- function(y, layers, k, r,
       lst$psi.inv[i] <- list(i_lst$psi.inv)
       z <- i_lst$z
     }
-
-
   }
 
   ############################################################################
   if (layers == 1) {
     out <- deep.sem.alg.1(y, numobs, p, r[2], k, lst$H, lst$psi,
                         lst$psi.inv, lst$mu, lst$w, it, eps)
-
   }
   if (layers == 2) {
     out <- deep.sem.alg.2(y, numobs, p, r, k, lst$H, lst$psi,
