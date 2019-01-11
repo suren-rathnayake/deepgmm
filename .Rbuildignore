@@ -1,0 +1,7 @@
+README.md
+.travis.yml
+^.*\.Rproj$
+^\.Rproj\.user$
+
+# ignore pictures for readme.md
+^.*\.png$
