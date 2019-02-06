@@ -5,13 +5,10 @@ Version: 0.1.54
 Date: 2019-02-07
 Author:  Cinzia Viroli, Geoffrey J. McLachlan
 Maintainer: Suren Rathnayake <surenr@gmail.com>
-Description: Deep Gaussian mixture models are a generalization of
-    classical Gaussian mixtures to multiple layers 
-    Cinzia and McLachlan (2019)<doi.org/10.1007/s11222-017-9793-z>.
-    Each layer contain a set of latent variables that follow a 
-    mixture of Gaussian distributions. 
-    To avoid overparameterized solutions, dimension reduction is 
-    applied at each layer by way of factor models.
+Description: Deep Gaussian mixture models are a generalization of classical Gaussian mixtures 
+    to multiple layers Cinzia and McLachlan (2019)<doi.org/10.1007/s11222-017-9793-z>.
+    Each layer contain a set of latent variables that follow a  mixture of Gaussian distributions. 
+    To avoid overparameterized solutions, dimension reduction is applied at each layer by way of factor models.
 Depends: mvtnorm, corpcor
 Suggests: testthat
 License: GPL (>= 3)
