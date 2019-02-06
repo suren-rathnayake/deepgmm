@@ -5,12 +5,6 @@
 \packageTitle{deepgmm}
 }
 \description{
-The deep mixture model consists of a set of nested mixtures of
-linear models, which globally provide a nonlinear model able
-to describe the data in a very flexible way.
-In order to avoid overparameterized solutions, dimension reduction
-by factor models can be applied at each layer of the architecture,
-thus resulting in deep mixtures of factor analyzers.
 \packageDescription{deepgmm}
 }
 \details{
