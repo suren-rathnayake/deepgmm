@@ -39,8 +39,7 @@ deepgmm(y, layers, k, r,
    falls below this value.
 }
   \item{init}{
-   Initial partitioning of the observations to determine initial
-   parameter values. See Details.
+   Procedure to obtain an initial partition of the observations. See Details.
 }
 \item{init_est}{
  Procedure for computing the initial parameter values for the given initial partition of the data. See Details.
