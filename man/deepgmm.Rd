@@ -43,7 +43,7 @@ deepgmm(y, layers, k, r,
    parameter values. See Details.
 }
 \item{init_est}{
- Approach to compute the initial parameter values. See Details.
+ Procedure for computing the initial parameter values for the given initial partition of the data. See Details.
 }
 }
 \details{
@@ -91,7 +91,7 @@ Euclidean distance measure.
 
 After the initial partitioning has been chosen, initial values of
 the parameters in the component analyzers need to be 
-calculated. There are two methods available in \code{dgmm}.
+calculated. There are two options available in \code{init_est}.
 The default option, \code{init_est = "factanal"} provides estimates of the
 initial parameters based on factor analysis. If 
 \code{init_est = "ppca"} then mixtures of 
