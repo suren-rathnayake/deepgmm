@@ -91,11 +91,11 @@ Euclidean distance measure.
 After the initial partitioning has been chosen, initial values of
 the parameters in the component analyzers need to be 
 calculated. There are two options available in \code{init_est}.
-The default option, \code{init_est = "factanal"} provides estimates of the
-initial parameters based on factor analysis. If 
+The default option, \code{init_est = "factanal"} provides initial 
+estimates of the parameters based on factor analysis. If 
 \code{init_est = "ppca"} then mixtures of 
 probabilistic principal component analyzers are fitted within each layer
-to estimate values for model parameters. 
+to provide initial estimates of the parameters.
 }
 \value{
 An object of class \code{"dgmm"} containing fitted values.
@@ -125,15 +125,7 @@ It contains
 \author{
  Cinzia Viroli, Geoffrey J. McLachlan
 }
-%%\note{
-%%  ~~further notes~~
-%%}
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-%%\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-%%}
 \examples{
 \dontrun{
 library(gclus)
@@ -162,8 +154,7 @@ summary(fit)
 }
 }
 
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
+
 \keyword{cluster}% use one of  RShowDoc("KEYWORDS")
 \keyword{models}% __ONLY ONE__ keyword per line
 \keyword{multivariate}
