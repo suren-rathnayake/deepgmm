@@ -6,10 +6,10 @@ Date: 2019-02-07
 Author:  Cinzia Viroli, Geoffrey J. McLachlan
 Maintainer: Suren Rathnayake <surenr@gmail.com>
 Description: Deep Gaussian mixture models presents a generalization of classical Gaussian mixtures 
-    to multiple layers as proposed by Viroli and McLachlan (2019)<doi.org/10.1007/s11222-017-9793-z>.
-    Each layer contains a set of latent variables that follow a  mixture of Gaussian distributions. 
-    To avoid overparameterized solutions, dimension reduction is applied at each layer by way 
-    of factor models.
+    to multiple layers as proposed by Viroli and McLachlan (2019) 
+    <doi.org/10.1007/s11222-017-9793-z>. Each layer contains a set of latent variables that follow a 
+    mixture of Gaussian distributions. To avoid overparameterized solutions, dimension reduction is 
+    applied at each layer by way of factor models.
 URL: https://github.com/suren-rathnayake/deepgmm
 Depends: mvtnorm, corpcor
 Suggests: testthat
