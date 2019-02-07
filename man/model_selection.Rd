@@ -10,7 +10,7 @@
 }
 \usage{
 model_selection(y, layers, g, seeds = 3, it = 50, eps = 0.001,
-        init = "kmeans", method = "factanal", criterion = "BIC")
+        init = "kmeans", init_est = "factanal", criterion = "BIC")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -39,7 +39,7 @@ model_selection(y, layers, g, seeds = 3, it = 50, eps = 0.001,
    Initial paritioning of the observations to determine initial
    parameter values. See Details.
 }
-\item{method}{
+\item{init_est}{
  To determine how the initial parameter values are computed. See Details.
 }
 \item{criterion}{

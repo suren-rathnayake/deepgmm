@@ -9,7 +9,7 @@
 }
 \usage{
 deepgmm(y, layers, k, r,
-        it = 250, eps = 0.001, init = "kmeans", method = "factanal")
+        it = 250, eps = 0.001, init = "kmeans", init_est = "factanal")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -42,7 +42,7 @@ deepgmm(y, layers, k, r,
    Initial partitioning of the observations to determine initial
    parameter values. See Details.
 }
-\item{method}{
+\item{init_est}{
  To determine how the initial parameter values are computed. See Details.
 }
 }
@@ -91,9 +91,9 @@ Euclidean distance measure.
 After the initial partitioning has been chosen, initial values of
 the parameters in the component analyzers need to be 
 specified. There are two methods available in \code{dgmm}.
-The default option, \code{method = "factanal"} provides estimates of the
+The default option, \code{init_est = "factanal"} provides estimates of the
 initial parameters based on factor analysis. If 
-\code{method = "ppca"} then mixtures of 
+\code{init_est = "ppca"} then mixtures of 
 probabilistic principal component analyzers are fitted within each layer
 to estimate values for model parameters. 
 }

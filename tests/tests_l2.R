@@ -101,12 +101,12 @@ test_that('data types correct', {
 })
 
 
-context("method  = ppca")
+context("init_est  = ppca")
 
 set.seed(seed)
 y <- scale(y)
 model <- deepgmm(y = y, layers = layers, k = k, r = r,
-                  it = it, eps = eps, init = init, method = "ppca")
+                  it = it, eps = eps, init = init, init_est = "ppca")
 
 expect_that(model, is_a("dgmm"))
 #expect_that(model, is_a("emmix"))
@@ -117,7 +117,7 @@ expect_named(model, c("H", "w", "mu", "psi", "lik", "bic",
 set.seed(seed)
 y <- iris[, -5]
 model <- deepgmm(y = y, layers = layers, k = k, r = r,
-                  it = it, eps = eps, init = init, method = "ppca")
+                  it = it, eps = eps, init = init, init_est = "ppca")
 
 expect_that(model, is_a("dgmm"))
 expect_named(model, c("H", "w", "mu", "psi", "lik", "bic",

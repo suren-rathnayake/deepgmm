@@ -1,5 +1,5 @@
 deepgmm <- function(y, layers, k, r,
-            it = 250, eps = 0.001, init = 'kmeans', method = 'factanal') {
+            it = 250, eps = 0.001, init = 'kmeans', init_est = 'factanal') {
 
   if (any(tolower(init) == c('kmeans', 'k-means', 'k')))
     init <- 'kmeans'
@@ -7,8 +7,8 @@ deepgmm <- function(y, layers, k, r,
     init <- 'random'
   if (any(tolower(init) == c('hclass', 'h')))
     init <- 'hclass'
-  if (any(tolower(method) == c('factanal', 'factana', 'fact', 'f')))
-    method <- 'factanal'
+  if (any(tolower(init_est) == c('factanal', 'factana', 'fact', 'f')))
+    init_est <- 'factanal'
   if (class(y) == 'data.frame')
   	y <- as.matrix(y)
 
@@ -46,7 +46,7 @@ deepgmm <- function(y, layers, k, r,
     H <- array(0, c(k[i], r[i], r[i + 1]))
     mu <- matrix(0, r[i], k[i])
 
-	  if (method == "factanal") {
+	  if (init_est == "factanal") {
     # initialize parameters using factor analysis of covariance matrix
 
       i_lst <- factanal_para(data, s, k, r, i, numobs)
@@ -61,8 +61,8 @@ deepgmm <- function(y, layers, k, r,
     } else {
     # initialize parameters using probabilistic principal component analysis
 
-      if (method != "ppca")
-        stop("method has to be either `factanal` or `ppca`")
+      if (init_est != "ppca")
+        stop("init_est has to be either `factanal` or `ppca`")
 
       i_lst <- ppca_para(data, s, k, r, i, numobs)
 

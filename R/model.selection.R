@@ -1,5 +1,5 @@
 model_selection <- function (y, layers, g, seeds = 3, it = 50, eps = 0.001,
-                    init = "kmeans", method = "factanal", criterion = "BIC") {
+                    init = "kmeans", init_est = "factanal", criterion = "BIC") {
 
 bic.best <- Inf
 aic.best <- Inf
@@ -20,7 +20,7 @@ if (layers == 1) {
 
     set.seed(i)
     out <- try(deepgmm(y, 1, k = g, rr, it = it, eps = eps, init = init,
-                  method = method))
+                  init_est = init_est))
 
     if (!is.character(out)) {
       if (criterion=="BIC") if (out$bic < bic.best) {
@@ -43,7 +43,7 @@ if (layers == 1) {
   if (criterion == "AIC")
     index <- which(aic == min(aic, na.rm = TRUE), arr.ind = TRUE)[1, ]
 
-  message(paste("Best Fit with init =", init, "and method =", method, "\n"))
+  message(paste("Best Fit with init =", init, "and init_est =", init_est, "\n"))
   cat(paste0("Seed=", index[1], 
     ", r = ", index[2],
     ", BIC: ", round(out.best$bic, 2), 
@@ -66,7 +66,7 @@ if (layers == 2) {
       for (rr in 1 : nrow(r)) {
         set.seed(i)
         out <- try(deepgmm(y, 2, k[kk, ], r[rr, ], it = it, eps = eps,
-                      init = init, method = method))
+                      init = init, init_est = init_est))
         if (!is.character(out)) {
           if (criterion == "BIC")
             if (out$bic < bic.best) {
@@ -90,7 +90,7 @@ if (criterion == "BIC")
 if (criterion == "AIC")
   index <- which(aic == min(aic, na.rm = TRUE), arr.ind = TRUE)[1, ]
 
-message(paste("Best Fit with init =", init, "and method =", method, "\n"))
+message(paste("Best Fit with init =", init, "and init_est =", init_est, "\n"))
 cat(paste0("Seed = ", index[1], 
   ", k =", paste(k[index[2],], collapse=" "),
   ", r = ", paste(r[index[3], ], collapse = " "),
@@ -118,7 +118,7 @@ if (layers == 3) {
 
         set.seed(i)
         out <- try(deepgmm(y, 3, k[kk, ], r[rr, ], it = it, eps = eps,
-                      init = init, method = method))
+                      init = init, init_est = init_est))
         if (!is.character(out)) {
           if (criterion=="BIC")
             if (out$bic < bic.best) {
@@ -143,7 +143,7 @@ if (layers == 3) {
       if (criterion == "AIC")
         index <- which(aic == min(aic, na.rm = TRUE), arr.ind = TRUE)[1, ]
 
-     message(paste("Best Fit with init =", init, "and method =", method, "\n"))
+     message(paste("Best Fit with init =", init, "and init_est =", init_est, "\n"))
 
         cat(paste0("Seed = ", index[1], 
           ", k = ", paste(k[index[2], ], collapse=" "),
