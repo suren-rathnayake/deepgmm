@@ -19,7 +19,7 @@ deepgmm(y, layers, k, r,
 }
   \item{layers}{
    The number of layers in the deep Gaussian mixture model.
-   Admitted values are 1, 2 or 3.
+   Limited to 1, 2 or 3.
 }
   \item{k}{
    A vector of integers of length \code{layers}
@@ -43,15 +43,15 @@ deepgmm(y, layers, k, r,
    parameter values. See Details.
 }
 \item{init_est}{
- To determine how the initial parameter values are computed. See Details.
+ Approach to compute the initial parameter values. See Details.
 }
 }
 \details{
-The deep Gaussian mixture model is an hierarchical inference method organized
+The deep Gaussian mixture model is an hierarchical model organized
 in a multilayered architecture where, at each layer, 
 the variables follow a mixture of Gaussian distributions.
 This set of nested mixtures of linear models provides a globally 
-nonlinear model that can describe the data in a very flexible way. 
+nonlinear model that can model the data in a very flexible way. 
 In order to avoid overparameterized solutions, 
 dimension reduction by factor models can be applied at each layer of 
 the architecture, thus resulting in deep mixtures of factor analyzers.
@@ -66,7 +66,8 @@ is 3.
 The ith element of \code{k} contain number of groups in the ith layer. Thus
 the length \code{k} must equal to \code{layers}. 
 
-The parameters \code{r} contain the latent variable dimension of each layer. 
+The parameter vector \code{r} contains the latent variable dimension of 
+each layer. 
 Variables at different layers have progressively decreasing dimension,
 \eqn{r_1}, \eqn{r_2}, \dots, \eqn{r_h}, where \eqn{p > r_1 > r_2 > 
 \dots > r_h \geq 1}.
@@ -90,7 +91,7 @@ Euclidean distance measure.
 
 After the initial partitioning has been chosen, initial values of
 the parameters in the component analyzers need to be 
-specified. There are two methods available in \code{dgmm}.
+calculated. There are two methods available in \code{dgmm}.
 The default option, \code{init_est = "factanal"} provides estimates of the
 initial parameters based on factor analysis. If 
 \code{init_est = "ppca"} then mixtures of 
@@ -120,10 +121,7 @@ It contains
 \item{s}{Clustering of the observations}
 }
 \references{
-    Viroli, C. and McLachlan, G.J. (2018).
-    Deep Gaussian mixture models. Statistics and Computing.
-    (Advance Access, published 1 December, 2017). To appear.
-    Preprint arXiv:1711.06929.
+    Viroli, C. and McLachlan, G.J. (2019). Deep Gaussian mixture models. Statistics and Computing 29, 43-51.
 }
 \author{
  Cinzia Viroli, Geoffrey J. McLachlan

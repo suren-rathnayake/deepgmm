@@ -61,10 +61,8 @@ and list of BIC and AIC values.
 %% ...
 }
 \references{
-    Viroli, C. and McLachlan, G.J. (2018).
-    Deep Gaussian mixture models. Statistics and Computing.
-    (Advance Access, published 1 December, 2017). To appear.
-    Preprint arXiv:1711.06929.
+    Viroli, C. and McLachlan, G.J. (2019). Deep Gaussian mixture models. 
+    Statistics and Computing 29, 43-51.
 }
 % \author{
 % %%  ~~who you are~~
