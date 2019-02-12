@@ -127,7 +127,6 @@ It contains
 }
 
 \examples{
-%\dontrun{
 layers <- 2
 k <- c(3, 4) 
 r <- c(3, 2)
@@ -141,7 +140,6 @@ fit <-deepgmm(y = y, layers = layers, k = k, r = r,
 fit
 
 summary(fit)
-%}
 }
 
 
