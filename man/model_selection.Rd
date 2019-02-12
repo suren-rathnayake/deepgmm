@@ -12,7 +12,6 @@
 model_selection(y, layers, g, seeds = 3, it = 50, eps = 0.001,
         init = "kmeans", init_est = "factanal", criterion = "BIC")
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{y}{
    A matrix or a data frame in which rows correspond to
@@ -54,11 +53,6 @@ criterion (BIC or AIC). One can use diffefrent number of seeds.
 A list containing
 an object of class \code{"dgmm"} containing fitted values
 and list of BIC and AIC values.
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
 }
 \references{
     Viroli, C. and McLachlan, G.J. (2019). Deep Gaussian mixture models. 
@@ -86,8 +80,6 @@ summary(sel)
 }
 }
 
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
 \keyword{cluster}% use one of  RShowDoc("KEYWORDS")
 \keyword{models}% __ONLY ONE__ keyword per line
 \keyword{multivariate}

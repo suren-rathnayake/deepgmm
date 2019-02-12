@@ -75,7 +75,7 @@ deepgmm <- function(y, layers, k, r,
     }
   }
 
-  ############################################################################
+  ##########################################################
   if (layers == 1) {
     out <- deep.sem.alg.1(y, numobs, p, r[2], k, lst$H, lst$psi,
                         lst$psi.inv, lst$mu, lst$w, it, eps)

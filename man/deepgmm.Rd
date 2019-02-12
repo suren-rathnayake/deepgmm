@@ -11,7 +11,6 @@
 deepgmm(y, layers, k, r,
         it = 250, eps = 0.001, init = "kmeans", init_est = "factanal")
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{y}{
    A matrix or a data frame in which the rows correspond to
@@ -141,7 +140,6 @@ fit
 
 summary(fit)
 }
-
 
 \keyword{cluster}% use one of  RShowDoc("KEYWORDS")
 \keyword{models}% __ONLY ONE__ keyword per line
