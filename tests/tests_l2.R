@@ -49,11 +49,10 @@ test_that("scaled data - two layers", {
     }
   }
 
-  #test_that('data types correct', {
-    expect_is(model$lik,'numeric')
-    expect_is(model$bic,'numeric')
-    expect_is(model$aic,'numeric')
-    expect_is(model$clc,'numeric')
+  expect_is(model$lik,'numeric')
+  expect_is(model$bic,'numeric')
+  expect_is(model$aic,'numeric')
+  expect_is(model$clc,'numeric')
 })
 
 context("noscale")
@@ -97,11 +96,10 @@ test_that("unscaled data - two layers", {
     }
   }
 
-  # test_that('data types correct', {
-    expect_is(model$lik,'numeric')
-    expect_is(model$bic,'numeric')
-    expect_is(model$aic,'numeric')
-    expect_is(model$clc,'numeric')
+  expect_is(model$lik,'numeric')
+  expect_is(model$bic,'numeric')
+  expect_is(model$aic,'numeric')
+  expect_is(model$clc,'numeric')
 })
 
 

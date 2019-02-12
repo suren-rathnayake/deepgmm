@@ -19,7 +19,6 @@ test_that("scaled data - three layers", {
                     it = it, eps = eps, init = init)
 
   expect_that(model, is_a("dgmm"))
-  #expect_that(model, is_a("emmix"))
   expect_named(model, c("H", "w", "mu", "psi", "lik", "bic",
   	                    "aic", "clc", "icl_bic", "s", "h",
                         "k", "r", "numobs", "layers",  "call"))
@@ -68,7 +67,6 @@ test_that("scaled data - three layers", {
   expect_named(model, c("H", "w", "mu", "psi", "lik", "bic",
   	                    "aic", "clc", "icl_bic", "s", "h",
                         "k", "r", "numobs", "layers",  "call"))
-  #
   set.seed(seed)
   y <- iris[, -5]
   model <- deepgmm(y = y, layers = layers, k = k, r = r,
