@@ -77,20 +77,15 @@ and list of BIC and AIC values.
 % %% ~~objects to See Also as \code{\link{help}}, ~~~
 % }
 \examples{
-\dontrun{
-library(gclus)
-data(wine)
-# Scale variables
-y <- scale(wine[, -1])
-cls <- wine[, 1]
-## fit a DGMM with two layers
+\donttest{
 layers <- 2
-## number of groups in the different layers
-k <- 3
-# 3 is the number of clusters at the observed level,
-# 2 is the number of clusters at the latent level
+k <- c(3, 4) 
+r <- c(3, 2)
+it <- 50
+eps <- 0.001
+y <- scale(mtcars)
 
-sel <- model_selection(y, layers, k, seeds = 3, it = 250, eps = 0.001)
+sel <- model_selection(y, layers, 3, seeds = 1, it = 250, eps = 0.001)
 sel
 
 summary(sel)

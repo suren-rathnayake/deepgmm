@@ -10,13 +10,15 @@ eps <- 0.001
 seed <- 1
 init <- "random"
 
+test_that("scaled data - single layer", {
+  skip_on_cran()
+
 set.seed(seed)
 y <- scale(y)
 model <- deepgmm(y = y, layers = layers, k = k, r = r,
                   it = it, eps = eps, init = init)
 
 expect_that(model, is_a("dgmm"))
-#expect_that(model, is_a("emmix"))
 expect_named(model, c("H", "w", "mu", "psi", "lik", "bic",
 	                    "aic", "clc", "icl_bic", "s", "h",
                       "k", "r", "numobs", "layers",  "call"))
@@ -48,7 +50,7 @@ j <- 1
   }
 #}
 
-test_that('data types correct', {
+# test_that('data types correct', {
     expect_is(model$lik,'numeric')
     expect_is(model$bic,'numeric')
     expect_is(model$aic,'numeric')
@@ -57,23 +59,25 @@ test_that('data types correct', {
 
 context("init_est  = ppca")
 
-set.seed(seed)
-y <- scale(y)
-model <- deepgmm(y = y, layers = layers, k = k, r = r,
+test_that("un-scaled data - single layer", {
+  skip_on_cran()
+
+  set.seed(seed)
+  model <- deepgmm(y = mtcars, layers = layers, k = k, r = r,
                   it = it, eps = eps, init = init, init_est = "ppca")
 
-expect_that(model, is_a("dgmm"))
-#expect_that(model, is_a("emmix"))
-expect_named(model, c("H", "w", "mu", "psi", "lik", "bic",
-	                    "aic", "clc", "icl_bic", "s", "h",
-                      "k", "r", "numobs", "layers",  "call"))
-#
-set.seed(seed)
-y <- iris[, -5]
-model <- deepgmm(y = y, layers = layers, k = k, r = r,
-                  it = it, eps = eps, init = init, init_est = "ppca")
+  expect_that(model, is_a("dgmm"))
+  expect_named(model, c("H", "w", "mu", "psi", "lik", "bic",
+  	                    "aic", "clc", "icl_bic", "s", "h",
+                        "k", "r", "numobs", "layers",  "call"))
 
-expect_that(model, is_a("dgmm"))
-expect_named(model, c("H", "w", "mu", "psi", "lik", "bic",
-	                    "aic", "clc", "icl_bic", "s", "h",
-                      "k", "r", "numobs", "layers",  "call"))
+  set.seed(seed)
+  y <- iris[, -5]
+  model <- deepgmm(y = y, layers = layers, k = k, r = r,
+                    it = it, eps = eps, init = init, init_est = "ppca")
+
+  expect_that(model, is_a("dgmm"))
+  expect_named(model, c("H", "w", "mu", "psi", "lik", "bic",
+  	                    "aic", "clc", "icl_bic", "s", "h",
+                        "k", "r", "numobs", "layers",  "call"))
+})

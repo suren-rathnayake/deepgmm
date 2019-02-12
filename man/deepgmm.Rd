@@ -127,31 +127,21 @@ It contains
 }
 
 \examples{
-\dontrun{
-library(gclus)
-data(wine)
-
-# Scale variables
-y <- scale(wine[, -1])
-cls <- wine[, 1]
-
-## fit a DGMM with two layers
+%\dontrun{
 layers <- 2
-
-## number of groups in the different layers
-k <- c(3, 2)
-# 3 is the number of clusters at the observed level,
-# 2 is the number of clusters at the latent level
-
-## dimensions at the different layers
-r <- c(5, 1)
+k <- c(3, 4) 
+r <- c(3, 2)
+it <- 50
+eps <- 0.001
+y <- scale(mtcars)
 
 set.seed(1)
-fit <- deepgmm(y, layers, k, r, it=250, eps=0.001)
+fit <-deepgmm(y = y, layers = layers, k = k, r = r,
+                  it = it, eps = eps)
 fit
 
 summary(fit)
-}
+%}
 }
 
 
