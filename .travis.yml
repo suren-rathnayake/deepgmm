@@ -1,5 +1,7 @@
 language: r
 
+- NOT_CRAN=true
+
 cache: packages
 
 script:
