@@ -1,6 +1,8 @@
 language: r
 
-- NOT_CRAN=true
+env:
+  global:
+    - NOT_CRAN=true
 
 cache: packages
 
