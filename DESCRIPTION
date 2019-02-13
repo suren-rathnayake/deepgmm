@@ -11,6 +11,6 @@ Description: Deep Gaussian mixture models as proposed by Viroli and McLachlan (2
     a mixture of Gaussian distributions. To avoid overparameterized solutions, dimension 
     reduction is applied at each layer by way of factor models.
 URL: https://github.com/suren-rathnayake/deepgmm
-Depends: mvtnorm, corpcor
+Imports: mvtnorm, corpcor
 Suggests: testthat
 License: GPL (>= 3)
