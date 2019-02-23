@@ -1,9 +1,4 @@
-**Build Status**
-
 [![Build Status](https://travis-ci.org/suren-rathnayake/deepgmm.svg?branch=master)](https://travis-ci.org/suren-rathnayake/deepgmm)
-
-CRAN
-
 ![](https://cranlogs.r-pkg.org/badges/grand-total/deepgmm)
 
 # deepgmm
