@@ -9,9 +9,13 @@ This package is provides a mixture model based approach for deep learning. It is
 
 # Installation
 
-Can be installed directly using the devtools package.
+Can be installed directly from CRAN or from GitHub.
 
 ```
+# CRAN
+install.packages("deepgmm")
+
+# GitHub
 library(devtools)
 install_github("suren-rathnayake/deepgmm")
 ```
