@@ -1,6 +1,19 @@
 deepgmm <- function(y, layers, k, r,
-            it = 250, eps = 0.001, init = 'kmeans', init_est = 'factanal') {
+            it = 250, eps = 0.001, init = 'kmeans', init_est = 'factanal',
+            seed = NULL, scale = TRUE) {
 
+  if (!is.null(seed)) {
+
+    if(!is.numeric(seed)) {
+      stop("The value of seed must be an integer")
+    }
+
+    set.seed(seed)
+  }
+
+  if (scale)
+    y <- scale(y)
+  
   if (any(tolower(init) == c('kmeans', 'k-means', 'k')))
     init <- 'kmeans'
   if (any(tolower(init) == c('random', 'r')))
@@ -22,7 +35,7 @@ deepgmm <- function(y, layers, k, r,
   # Initialing parameters
   lst <- list(w = list(), H = list(), mu = list(), psi = list(),
                                                    psi.inv = list())
-  for (i in 1 : layers) {
+  for (i in 1:layers) {
 
     if (i == 1) {
 
@@ -33,6 +46,9 @@ deepgmm <- function(y, layers, k, r,
     }
 
     # provide initial parititioning of the observations
+    s <- initial_clustering(data, k, i, init)
+
+        # provide initial parititioning of the observations
     s <- initial_clustering(data, k, i, init)
 
     # in case if one of the groups is small
@@ -53,7 +69,7 @@ deepgmm <- function(y, layers, k, r,
 
       lst$w[i] <- list(i_lst$w)
       lst$H[i] <- list(i_lst$H)
-      lst$mu[i] <- list(i_lst$mu)
+      lst$mu[i] <- list(i_lst$mu) 
       lst$psi[i] <- list(i_lst$psi)
       lst$psi.inv[i] <- list(i_lst$psi.inv)
       z <- i_lst$z
@@ -92,7 +108,8 @@ deepgmm <- function(y, layers, k, r,
   out$lik <- out$likelihood
   output <- out[c("H", "w", "mu", "psi", "lik", "bic", "aic", "clc",
                   "icl_bic", "s", "h")]
-  output <- c(output, list(k = k, r = r[-1], numobs = numobs, layers = layers))
+  output <- c(output, list(k = k, r = r[-1], numobs = numobs, layers = layers,
+                           seed = seed))
   output$call <- match.call()
   class(output) <- "dgmm"
 

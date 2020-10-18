@@ -10,14 +10,14 @@ factanal_para <- function(data, s, k, r, i, numobs) {
   for (j in 1 : k[i]) {
 
     indices <- which(s == j)
-    stima <- try(factanal(data[indices, ], r[i + 1], rotation = "none",
-                scores = "Bartlett"), silent = TRUE)
+    stima <- try(factanal(data[indices, ], r[i + 1], rotation = "varimax",
+                scores = "regression"), silent = TRUE)
 
     if (is.character(stima)) {
 
-      psi[j,, ] <- 0.1 * diag(r[i])
-      psi.inv[j,, ] <- diag(r[i])
-      H[j,, ] <- matrix(runif(r[i] * r[i + 1]), r[i], r[i + 1])
+      #psi[j,, ] <- 0.1 * diag(r[i])
+      #psi.inv[j,, ] <- diag(r[i])
+      #H[j,, ] <- matrix(runif(r[i] * r[i + 1]), r[i], r[i + 1])
 
       zt <- try(princomp(data[indices, ])$scores[, 1 : r[i + 1]],
                 silent = TRUE)
@@ -27,14 +27,27 @@ factanal_para <- function(data, s, k, r, i, numobs) {
       } else {
         zt <- matrix(data[indices, sample(1 : r[i + 1])], ncol = r[i + 1])
       }
+      
+      H[j,, ] <- t(data[s == j, ]) %*% zt %*% ginv(t(zt) %*% zt)
+      uu <- data[indices, ] - t(H[j,, ] %*% t(zt))
+      psi[j,, ] <- diag(diag(var(uu)))
+      psi.inv[j,, ] <-  ginv(psi[j,, ])
+
       z[indices, ] <- zt
 
     } else {
 
-      psi[j,, ] <- diag(stima$uniq)
-      H[j,, ] <- stima$load
-      psi.inv[j,, ] <- diag(1/stima$uniq)
+      H[j,, ] <- t(data[indices, ]) %*% stima$scores %*% 
+                           ginv(t(stima$scores) %*% stima$scores)
+      uu <- data[indices, ] - t(H[j,, ] %*% t(stima$scores))
+      psi[j,, ] <- diag(diag(var(uu)))
+      psi.inv[j,, ] <- ginv(psi[j,, ])
       z[indices, ] <- stima$scores
+
+      # psi[j,, ] <- diag(stima$uniq)
+      # H[j,, ] <- stima$load
+      # psi.inv[j,, ] <- diag(1/stima$uniq)
+      # z[indices, ] <- stima$scores
     }
 
     mu[, j] <- colMeans(data[indices,, drop = FALSE])
