@@ -1,16 +1,17 @@
 Package: deepgmm
 Type: Package
 Title: Deep Gaussian Mixture Models
-Version: 0.1.56
-Date: 2019-02-07
-Author:  Cinzia Viroli, Geoffrey J. McLachlan
+Version: 0.1.61
+Date: 2020-10-19
+Author: Cinzia Viroli, Geoffrey J. McLachlan
 Maintainer: Suren Rathnayake <surenr@gmail.com>
 Description: Deep Gaussian mixture models as proposed by Viroli and McLachlan (2019) 
     <doi:10.1007/s11222-017-9793-z> provide a generalization of classical Gaussian mixtures 
-    to multiple layers. Each layer contains a set of latent variables that follow 
-    a mixture of Gaussian distributions. To avoid overparameterized solutions, dimension 
-    reduction is applied at each layer by way of factor models.
+    to multiple layers. Each layer contains a set of latent variables that follow a mixture of 
+    Gaussian distributions. To avoid overparameterized solutions, dimension reduction is 
+    applied at each layer by way of factor models.
 URL: https://github.com/suren-rathnayake/deepgmm
-Imports: mvtnorm, corpcor
+Imports: mvtnorm, corpcor, mclust
 Suggests: testthat
 License: GPL (>= 3)
+NeedsCompilation: no
