@@ -9,7 +9,8 @@
 }
 \usage{
 deepgmm(y, layers, k, r,
-        it = 250, eps = 0.001, init = "kmeans", init_est = "factanal")
+        it = 250, eps = 0.001, init = "kmeans", init_est = "factanal",
+        seed = NULL, scale = TRUE)
 }
 \arguments{
   \item{y}{
@@ -43,6 +44,14 @@ deepgmm(y, layers, k, r,
 \item{init_est}{
  Procedure for computing the initial parameter values for the given initial partition of the data. See Details.
 }
+\item{seed}{
+  Integer value to be passed to the \code{set.seed} function at the biginning of
+  the \code{deepgmm} function.
+}
+\item{scale}{
+  If \code{scale = TRUE}, the columns of data, \code{y}, will be scaled to
+  zero mean and unit variance. 
+}
 }
 \details{
 The deep Gaussian mixture model is an hierarchical model organized
@@ -74,18 +83,12 @@ The EM algorithm used by \code{dgmm} requires initialization.
 The initialization is done by partitioning the dataset, 
 and then estimating the initial values for model parameters 
 based on the partition. 
-There are three options available in \code{dgmm} for the
+There are four options available in \code{dgmm} for the
 initial partitioning of the data;
-random partitioning, clustering using the \emph{k}-means algorithm
-and using the agglomerative hierarchical clustering.
-With the \code{init = "random"}
-the partitioning is done randomly,
-with \code{init = "kmeans"} the data are partitioned using the
-\emph{k}-means algorithm of "Hartigan-Wong", 
-while with \code{init = "hclass"} agglomerative 
-hierarchical clustering is done to obtain initial partitioning. 
-For this option the dissimilarity structure is obtained using the 
-Euclidean distance measure.
+random partitioning (\code{init = "random"}), 
+clustering using the \emph{k}-means algorithm of "Hartigan-Wong" (\code{init = "kmeans"}),
+agglomerative hierarchical clustering (\code{init = "hclass"}),
+and Gaussian mixture model based clustering (\code{init = "mclust"}).
 
 After the initial partitioning has been chosen, initial values of
 the parameters in the component analyzers need to be 
@@ -117,6 +120,7 @@ It contains
 \item{clc}{The Classification likelihood information criterion for the model fit}
 \item{icl.bic}{The integrated classification criterion for the model fit}
 \item{s}{Clustering of the observations}
+\item{seed}{Value of the seed used}
 }
 \references{
     Viroli, C. and McLachlan, G.J. (2019). Deep Gaussian mixture models. Statistics and Computing 29, 43-51.
