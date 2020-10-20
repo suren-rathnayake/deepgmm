@@ -21,7 +21,7 @@ model <- deepgmm(y = y, layers = layers, k = k, r = r,
 expect_that(model, is_a("dgmm"))
 expect_named(model, c("H", "w", "mu", "psi", "lik", "bic",
 	                    "aic", "clc", "icl_bic", "s", "h",
-                      "k", "r", "numobs", "layers",  "call"))
+                      "k", "r", "numobs", "layers",  "seed", "call"))
 
 n <- nrow(y)
 p <- ncol(y)
@@ -69,7 +69,7 @@ test_that("un-scaled data - single layer", {
   expect_that(model, is_a("dgmm"))
   expect_named(model, c("H", "w", "mu", "psi", "lik", "bic",
   	                    "aic", "clc", "icl_bic", "s", "h",
-                        "k", "r", "numobs", "layers",  "call"))
+                        "k", "r", "numobs", "layers", "seed", "call"))
 
   set.seed(seed)
   y <- iris[, -5]
@@ -79,5 +79,5 @@ test_that("un-scaled data - single layer", {
   expect_that(model, is_a("dgmm"))
   expect_named(model, c("H", "w", "mu", "psi", "lik", "bic",
   	                    "aic", "clc", "icl_bic", "s", "h",
-                        "k", "r", "numobs", "layers",  "call"))
+                        "k", "r", "numobs", "layers", "seed", "call"))
 })

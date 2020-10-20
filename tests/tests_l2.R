@@ -19,9 +19,6 @@ test_that("scaled data - two layers", {
                     it = it, eps = eps, init = init)
 
   expect_that(model, is_a("dgmm"))
-  expect_named(model, c("H", "w", "mu", "psi", "lik", "bic",
-  	                    "aic", "clc", "icl_bic", "s", "h",
-                        "k", "r", "numobs", "layers",  "call"))
 
   n <- nrow(y)
   p <- ncol(y)
@@ -66,9 +63,6 @@ test_that("unscaled data - two layers", {
                     it = it, eps = eps, init = init)
 
   expect_that(model, is_a("dgmm"))
-  expect_named(model, c("H", "w", "mu", "psi", "lik", "bic",
-  	                    "aic", "clc", "icl_bic", "s", "h",
-                        "k", "r", "numobs", "layers",  "call"))
 
   n <- nrow(y)
   p <- ncol(y)
@@ -114,9 +108,7 @@ model <- deepgmm(y = mtcars, layers = layers, k = k, r = r,
                   it = it, eps = eps, init = init, init_est = "ppca")
 
 expect_that(model, is_a("dgmm"))
-expect_named(model, c("H", "w", "mu", "psi", "lik", "bic",
-	                    "aic", "clc", "icl_bic", "s", "h",
-                      "k", "r", "numobs", "layers",  "call"))
+
 
 set.seed(seed)
 y <- iris[, -5]
@@ -124,7 +116,5 @@ model <- deepgmm(y = y, layers = layers, k = k, r = r,
                   it = it, eps = eps, init = init, init_est = "ppca")
 
 expect_that(model, is_a("dgmm"))
-expect_named(model, c("H", "w", "mu", "psi", "lik", "bic",
-	                    "aic", "clc", "icl_bic", "s", "h",
-                      "k", "r", "numobs", "layers",  "call"))
+
 })
