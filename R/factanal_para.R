@@ -15,10 +15,6 @@ factanal_para <- function(data, s, k, r, i, numobs) {
 
     if (is.character(stima)) {
 
-      #psi[j,, ] <- 0.1 * diag(r[i])
-      #psi.inv[j,, ] <- diag(r[i])
-      #H[j,, ] <- matrix(runif(r[i] * r[i + 1]), r[i], r[i + 1])
-
       zt <- try(princomp(data[indices, ])$scores[, 1 : r[i + 1]],
                 silent = TRUE)
 
@@ -44,10 +40,6 @@ factanal_para <- function(data, s, k, r, i, numobs) {
       psi.inv[j,, ] <- ginv(psi[j,, ])
       z[indices, ] <- stima$scores
 
-      # psi[j,, ] <- diag(stima$uniq)
-      # H[j,, ] <- stima$load
-      # psi.inv[j,, ] <- diag(1/stima$uniq)
-      # z[indices, ] <- stima$scores
     }
 
     mu[, j] <- colMeans(data[indices,, drop = FALSE])

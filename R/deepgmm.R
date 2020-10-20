@@ -2,6 +2,9 @@ deepgmm <- function(y, layers, k, r,
             it = 250, eps = 0.001, init = 'kmeans', init_est = 'factanal',
             seed = NULL, scale = TRUE) {
 
+  if (any(class(y) %in% 'data.frame'))
+  	y <- as.matrix(y)
+
   if (!is.null(seed)) {
 
     if(!is.numeric(seed)) {
@@ -13,17 +16,16 @@ deepgmm <- function(y, layers, k, r,
 
   if (scale)
     y <- scale(y)
-  
-  if (any(tolower(init) == c('kmeans', 'k-means', 'k')))
+
+  if (any(tolower(init) %in% c('kmeans', 'k-means', 'k')))
     init <- 'kmeans'
-  if (any(tolower(init) == c('random', 'r')))
+  if (any(tolower(init) %in% c('random', 'r')))
     init <- 'random'
-  if (any(tolower(init) == c('hclass', 'h')))
+  if (any(tolower(init) %in% c('hclass', 'h')))
     init <- 'hclass'
   if (any(tolower(init_est) == c('factanal', 'factana', 'fact', 'f')))
     init_est <- 'factanal'
-  if (class(y) == 'data.frame')
-  	y <- as.matrix(y)
+
 
   # check arguments
   tmp <- valid_args(Y = y, layers = layers, k = k, r = r, it = it,
@@ -35,7 +37,7 @@ deepgmm <- function(y, layers, k, r,
   # Initialing parameters
   lst <- list(w = list(), H = list(), mu = list(), psi = list(),
                                                    psi.inv = list())
-  for (i in 1:layers) {
+for (i in 1:layers) {
 
     if (i == 1) {
 

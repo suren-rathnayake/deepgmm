@@ -28,7 +28,7 @@ initial_clustering <- function(data, k, i, init = 'random') {
   }
 
   if (init == 'mclust') {
-    if (k[i] > 1) {
+   if (k[i] > 1) {
       s <- Mclust(data, k[i], verbose=FALSE)$classification
     } else { 
       s <- rep(1, numobs)

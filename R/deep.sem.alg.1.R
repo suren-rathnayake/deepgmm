@@ -266,7 +266,7 @@ deep.sem.alg.1 <- function(y, numobs, p, r, k, H.list, psi.list,
     s1 <- rep(k1, numobs)
   }
 
-  if (! class(s1) %in% "matrix")
+  if (!any(class(s1) %in% "matrix"))
     s1 <- matrix(s1, nrow = numobs)
 
   # commented out by Suren
