@@ -42,7 +42,8 @@ deepgmm(y, layers, k, r,
    Procedure to obtain an initial partition of the observations. See Details.
 }
 \item{init_est}{
- Procedure for computing the initial parameter values for the given initial partition of the data. See Details.
+   Procedure for computing the initial parameter values for the given initial
+   partition of the data. See Details.
 }
 \item{seed}{
   Integer value to be passed to the \code{set.seed} function at the biginning of
@@ -50,17 +51,17 @@ deepgmm(y, layers, k, r,
 }
 \item{scale}{
   If \code{scale = TRUE}, the columns of data, \code{y}, will be scaled to
-  zero mean and unit variance. 
+  zero mean and unit variance.
 }
 }
 \details{
 The deep Gaussian mixture model is an hierarchical model organized
-in a multilayered architecture where, at each layer, 
+in a multilayered architecture where, at each layer,
 the variables follow a mixture of Gaussian distributions.
-This set of nested mixtures of linear models provides a globally 
-nonlinear model that can model the data in a very flexible way. 
-In order to avoid overparameterized solutions, 
-dimension reduction by factor models can be applied at each layer of 
+This set of nested mixtures of linear models provides a globally
+nonlinear model that can model the data in a very flexible way.
+In order to avoid overparameterized solutions,
+dimension reduction by factor models can be applied at each layer of
 the architecture, thus resulting in deep mixtures of factor analyzers.
 
 The data \code{y} must be a matrix or a data frame containing
@@ -68,52 +69,49 @@ numerical values, with no missing values. The rows must correspond to
 observations and the columns to variables.
 
 Presently, the maximum number of layers \code{layers} implemented
-is 3. 
+is 3.
 
 The ith element of \code{k} contain number of groups in the ith layer. Thus
-the length \code{k} must equal to \code{layers}. 
+the length \code{k} must equal to \code{layers}.
 
-The parameter vector \code{r} contains the latent variable dimension of 
-each layer. 
+The parameter vector \code{r} contains the latent variable dimension of
+each layer.
 Variables at different layers have progressively decreasing dimension,
-\eqn{r_1}, \eqn{r_2}, \dots, \eqn{r_h}, where \eqn{p > r_1 > r_2 > 
+\eqn{r_1}, \eqn{r_2}, \dots, \eqn{r_h}, where \eqn{p > r_1 > r_2 >
 \dots > r_h \geq 1}.
 
-The EM algorithm used by \code{dgmm} requires initialization. 
-The initialization is done by partitioning the dataset, 
-and then estimating the initial values for model parameters 
-based on the partition. 
+The EM algorithm used by \code{dgmm} requires initialization.
+The initialization is done by first partitioning the dataset,
+and then estimating the initial values for model parameters
+based on the partition.
 There are four options available in \code{dgmm} for the
 initial partitioning of the data;
-random partitioning (\code{init = "random"}), 
-clustering using the \emph{k}-means algorithm of "Hartigan-Wong" (\code{init = "kmeans"}),
-agglomerative hierarchical clustering (\code{init = "hclass"}),
-and Gaussian mixture model based clustering (\code{init = "mclust"}).
+random partitioning (\code{init = "random"}),
+clustering using the \emph{k}-means algorithm of "Hartigan-Wong"
+(\code{init = "kmeans"}), and
+agglomerative hierarchical clustering (\code{init = "hclass"}).
 
 After the initial partitioning has been chosen, initial values of
-the parameters in the component analyzers need to be 
-calculated. There are two options available in \code{init_est}.
-The default option, \code{init_est = "factanal"} provides initial 
-estimates of the parameters based on factor analysis. If 
-\code{init_est = "ppca"} then mixtures of 
-probabilistic principal component analyzers are fitted within each layer
-to provide initial estimates of the parameters.
+the parameters in the component analyzers need to be
+calculated. Curently only one option available.
+This default option, \code{init_est = "factanal"} provides initial
+estimates of the parameters based on factor analysis.
 }
 \value{
 An object of class \code{"dgmm"} containing fitted values.
 It contains
- \item{H}{A list in which the \emph{i}th element is the loading 
+ \item{H}{A list in which the \emph{i}th element is the loading
  matrix for the \emph{i}th layer}
- \item{w}{A list containing mixing proportions for each layer. (i.e. 
+ \item{w}{A list containing mixing proportions for each layer. (i.e.
  the element w[[i]][j] contain the mixing proportion of the \emph{j}th
  component in the \emph{i} layer.)}
  \item{mu}{A list of matrices containing components means in the columns.
   (i.e. the element mu[[i]][, j] contain the component mean of the \emph{j}th
  component in the \emph{i} layer.)}
- \item{psi}{A list of arrays which contain covariance matrices for 
- the random error components of each component (i.e. the element 
- psi[[i]][j, ,, ] contain the error covariance matrix 
- for the \emph{j}th component in the \emph{i} layer.)} 
+ \item{psi}{A list of arrays which contain covariance matrices for
+ the random error components of each component (i.e. the element
+ psi[[i]][j, ,, ] contain the error covariance matrix
+ for the \emph{j}th component in the \emph{i} layer.)}
 \item{lik}{The log-likelihood after each EM iteration}
 \item{bic}{The Bayesian information criterion for the model fit}
 \item{acl}{The Akaike information criterion for the model fit}
@@ -131,7 +129,7 @@ It contains
 
 \examples{
 layers <- 2
-k <- c(3, 4) 
+k <- c(3, 4)
 r <- c(3, 2)
 it <- 50
 eps <- 0.001
