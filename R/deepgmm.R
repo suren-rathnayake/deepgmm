@@ -26,7 +26,6 @@ deepgmm <- function(y, layers, k, r,
   if (any(tolower(init_est) == c('factanal', 'factana', 'fact', 'f')))
     init_est <- 'factanal'
 
-
   # check arguments
   tmp <- valid_args(Y = y, layers = layers, k = k, r = r, it = it,
                     eps = eps, init = init)
@@ -47,11 +46,11 @@ for (i in 1:layers) {
       data <- z[, 1 : r[i], drop = FALSE]
     }
 
-    # provide initial parititioning of the observations
+    # provide initial partitioning of the observations
     s <- initial_clustering(data, k, i, init)
 
-        # provide initial parititioning of the observations
-    s <- initial_clustering(data, k, i, init)
+    # # provide initial partitioning of the observations
+    # s <- initial_clustering(data, k, i, init)
 
     # in case if one of the groups is small
     for  (j in 1 : k[i]) {
@@ -71,26 +70,27 @@ for (i in 1:layers) {
 
       lst$w[i] <- list(i_lst$w)
       lst$H[i] <- list(i_lst$H)
-      lst$mu[i] <- list(i_lst$mu) 
-      lst$psi[i] <- list(i_lst$psi)
-      lst$psi.inv[i] <- list(i_lst$psi.inv)
-      z <- i_lst$z
-
-    } else {
-    # initialize parameters using probabilistic principal component analysis
-
-      if (init_est != "ppca")
-        stop("init_est has to be either `factanal` or `ppca`")
-
-      i_lst <- ppca_para(data, s, k, r, i, numobs)
-
-      lst$w[i] <- list(i_lst$w)
-      lst$H[i] <- list(i_lst$H)
       lst$mu[i] <- list(i_lst$mu)
       lst$psi[i] <- list(i_lst$psi)
       lst$psi.inv[i] <- list(i_lst$psi.inv)
       z <- i_lst$z
+
     }
+    # else {
+    # # initialize parameters using probabilistic principal component analysis
+    #
+    #   if (init_est != "ppca")
+    #     stop("init_est has to be either `factanal` or `ppca`")
+    #
+    #   i_lst <- ppca_para(data, s, k, r, i, numobs)
+    #
+    #   lst$w[i] <- list(i_lst$w)
+    #   lst$H[i] <- list(i_lst$H)
+    #   lst$mu[i] <- list(i_lst$mu)
+    #   lst$psi[i] <- list(i_lst$psi)
+    #   lst$psi.inv[i] <- list(i_lst$psi.inv)
+    #   z <- i_lst$z
+    # }
   }
 
   ##########################################################
