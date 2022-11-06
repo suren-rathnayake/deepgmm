@@ -7,4 +7,4 @@ importFrom("stats", "factanal", "filter", "kmeans", "princomp",
 importFrom("mvtnorm", "dmvnorm", "rmvnorm")
 importFrom("corpcor", "make.positive.definite", "is.positive.definite")
 importFrom("stats", "cov", "var")
-importFrom("mclust", "Mclust")
+importFrom("mclust", "Mclust", "mclustBIC")
