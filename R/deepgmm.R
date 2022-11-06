@@ -2,8 +2,9 @@ deepgmm <- function(y, layers, k, r,
             it = 250, eps = 0.001, init = 'kmeans', init_est = 'factanal',
             seed = NULL, scale = TRUE) {
 
-  if (any(class(y) %in% 'data.frame'))
+  if (any(class(y) %in% 'data.frame')) {
   	y <- as.matrix(y)
+  }
 
   if (!is.null(seed)) {
 
@@ -14,17 +15,24 @@ deepgmm <- function(y, layers, k, r,
     set.seed(seed)
   }
 
-  if (scale)
+  if (scale) {
     y <- scale(y)
+  }
 
-  if (any(tolower(init) %in% c('kmeans', 'k-means', 'k')))
-    init <- 'kmeans'
-  if (any(tolower(init) %in% c('random', 'r')))
-    init <- 'random'
-  if (any(tolower(init) %in% c('hclass', 'h')))
-    init <- 'hclass'
-  if (any(tolower(init_est) == c('factanal', 'factana', 'fact', 'f')))
-    init_est <- 'factanal'
+  tmp <- fix_para(init=init, init_est=init_est)
+  init <- tmp$init
+  init_est <- tmp$init_est
+
+  # if (any(tolower(init) %in% c('kmeans', 'k-means', 'k')))
+  #   init <- 'kmeans'
+  # if (any(tolower(init) %in% c('random', 'r')))
+  #   init <- 'random'
+  # if (any(tolower(init) %in% c('hclass', 'h')))
+  #   init <- 'hclass'
+  #   if (any(tolower(init) %in% c('mclust', 'mclst', 'm')))
+  #   init <- 'mclust'
+  # if (any(tolower(init_est) == c('factanal', 'factana', 'fact', 'f')))
+  #   init_est <- 'factanal'
 
   # check arguments
   tmp <- valid_args(Y = y, layers = layers, k = k, r = r, it = it,
@@ -55,6 +63,7 @@ for (i in 1:layers) {
     # in case if one of the groups is small
     for  (j in 1 : k[i]) {
       if ((table(s)[j]) < 2) {
+
         s[sample(1 : numobs, 2, replace = FALSE)] <- j
       }
     }

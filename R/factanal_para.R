@@ -19,11 +19,13 @@ factanal_para <- function(data, s, k, r, i, numobs) {
                 silent = TRUE)
 
       if (!is.character(zt)) {
+
         zt <- matrix(zt, ncol = r[i+1])
       } else {
+
         zt <- matrix(data[indices, sample(1 : r[i + 1])], ncol = r[i + 1])
       }
-      
+
       H[j,, ] <- t(data[s == j, ]) %*% zt %*% ginv(t(zt) %*% zt)
       uu <- data[indices, ] - t(H[j,, ] %*% t(zt))
       psi[j,, ] <- diag(diag(var(uu)))
@@ -33,7 +35,7 @@ factanal_para <- function(data, s, k, r, i, numobs) {
 
     } else {
 
-      H[j,, ] <- t(data[indices, ]) %*% stima$scores %*% 
+      H[j,, ] <- t(data[indices, ]) %*% stima$scores %*%
                            ginv(t(stima$scores) %*% stima$scores)
       uu <- data[indices, ] - t(H[j,, ] %*% t(stima$scores))
       psi[j,, ] <- diag(diag(var(uu)))

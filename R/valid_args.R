@@ -81,9 +81,9 @@ if (eps < 0) {
 }
 
 if ((!is.null(init)) && (init != "kmeans") 
-    && (init != "random") && (init != "hclass")) {
+    && (init != "random") && (init != "hclass") && (init != "mclust"))  {
 
-  stop("init must 'kmeans', 'random', or 'hclass'.")
+  stop("init must be 'kmeans', 'random', 'hclass' or 'mclust'.")
 }
 
 
