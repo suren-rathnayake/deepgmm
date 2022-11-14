@@ -88,8 +88,10 @@ There are four options available in \code{dgmm} for the
 initial partitioning of the data;
 random partitioning (\code{init = "random"}),
 clustering using the \emph{k}-means algorithm of "Hartigan-Wong"
-(\code{init = "kmeans"}), and
+(\code{init = "kmeans"}),
 agglomerative hierarchical clustering (\code{init = "hclass"}).
+and Gaussian mixture model based clustering
+(\code{init = "mclust"}).
 
 After the initial partitioning has been chosen, initial values of
 the parameters in the component analyzers need to be
